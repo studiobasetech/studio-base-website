@@ -93,8 +93,8 @@ export default function Navbar() {
             lg:px-12
             ${
               scrolled
-                ? "bg-black/70 py-3 shadow-[0_10px_40px_-20px_rgba(250,204,21,0.35)] backdrop-blur-xl"
-                : "bg-black/30 py-5 backdrop-blur-md"
+                ? "bg-black/70 py-2 shadow-[0_10px_40px_-20px_rgba(250,204,21,0.35)] backdrop-blur-xl"
+                : "bg-black/30 py-3 backdrop-blur-md"
             }
           `}
         >
@@ -109,7 +109,7 @@ export default function Navbar() {
                 alt="Studio Base"
                 width={120}
                 height={50}
-                className="h-12 w-auto object-contain"
+                className="h-9 w-auto object-contain"
                 priority
               />
             </motion.div>
@@ -128,7 +128,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onMouseEnter={() => setHovered(link.href)}
-                  className="relative rounded-full px-4 py-2 text-sm font-medium"
+                  className="relative rounded-full px-4 py-1.5 text-sm font-medium"
                 >
                   {highlighted && (
                     <motion.span
@@ -156,7 +156,7 @@ export default function Navbar() {
               href={consultationHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
-              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-yellow-400 px-6 py-2.5 text-sm font-medium text-yellow-400 transition-colors duration-300 hover:bg-yellow-400 hover:text-black"
+              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-yellow-400 px-5 py-2 text-sm font-medium text-yellow-400 transition-colors duration-300 hover:bg-yellow-400 hover:text-black"
             >
               {/* Light sweep */}
               <motion.span
