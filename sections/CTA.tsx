@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { consultationHref } from "@/data/site";
 
 export default function CTA() {
 
@@ -122,7 +124,7 @@ export default function CTA() {
             ">
 
 
-              <button className="
+              <Link href={consultationHref} className="
                 flex
                 items-center
                 gap-2
@@ -140,11 +142,11 @@ export default function CTA() {
 
                 <ArrowRight size={14}/>
 
-              </button>
+              </Link>
 
 
 
-              <button className="
+              <Link href="/contact" className="
                 rounded-full
                 border
                 border-white/30
@@ -158,7 +160,7 @@ export default function CTA() {
                 hover:text-yellow-400
               ">
                 Contact Us
-              </button>
+              </Link>
 
 
             </div>

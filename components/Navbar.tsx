@@ -14,14 +14,9 @@ import {
   type Variants,
 } from "framer-motion";
 
-// Change the href values if your page folders have different names.
-const links = [
-  { label: "Home", href: "/" },
-  { label: "Products & Services", href: "/products-services" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "About Studio Base", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import { consultationHref, navLinks as links } from "@/data/site";
+
+const MotionLink = motion.create(Link);
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -157,7 +152,8 @@ export default function Navbar() {
 
           {/* CTA button */}
           <div className="hidden justify-self-end lg:block">
-            <motion.button
+            <MotionLink
+              href={consultationHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-yellow-400 px-6 py-2.5 text-sm font-medium text-yellow-400 transition-colors duration-300 hover:bg-yellow-400 hover:text-black"
@@ -180,7 +176,7 @@ export default function Navbar() {
                 size={16}
                 className="relative transition-transform duration-300 group-hover:translate-x-1"
               />
-            </motion.button>
+            </MotionLink>
           </div>
 
           {/* Mobile menu button */}
@@ -250,13 +246,15 @@ export default function Navbar() {
                 </motion.div>
               ))}
 
-              <motion.button
+              <MotionLink
+                href={consultationHref}
+                onClick={() => setOpen(false)}
                 variants={menuItem}
                 className="mt-8 flex items-center justify-center gap-2 rounded-full bg-yellow-400 px-6 py-4 font-semibold text-black"
               >
                 Book a Consultation
                 <ArrowRight size={18} />
-              </motion.button>
+              </MotionLink>
             </motion.div>
           </motion.div>
         )}
