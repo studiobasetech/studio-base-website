@@ -12,15 +12,15 @@ import {
 /**
  * Wrap a page section to give it a premium scroll transition:
  * it rises and expands from a slightly smaller, rounded card into
- * full width as it scrolls into view. A thin gold divider draws in
+ * full width as it scrolls into view. Optionally a thin gold divider
  * above it.
  *
  *   <SectionTransition><Products /></SectionTransition>
- *   <SectionTransition divider={false}><CTA /></SectionTransition>
+ *   <SectionTransition divider><CTA /></SectionTransition>  // with gold line
  */
 export default function SectionTransition({
   children,
-  divider = true,
+  divider = false,
 }: {
   children: ReactNode;
   divider?: boolean;

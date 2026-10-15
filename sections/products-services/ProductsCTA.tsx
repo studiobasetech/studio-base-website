@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import ParticleField from "@/components/ParticleField";
-import { GlowLine, LightSweep, ShimmerText } from "@/components/Effects";
+import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 
 // Swap this for the laptop image from the mockup once it's in public/images.
@@ -57,8 +57,6 @@ export default function ProductsCTA() {
 
       {/* Particles (yellow) */}
       <ParticleField density={0.5} />
-
-      <GlowLine className="top-0" />
 
       <motion.div
         variants={container}

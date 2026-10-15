@@ -155,7 +155,7 @@ export default function WhyStudioBase() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.4, delay: 0.6, ease: EASE }}
-            className="absolute inset-x-0 bottom-0 h-px origin-left bg-gradient-to-r from-yellow-400/60 via-white/10 to-transparent"
+            className="absolute inset-x-0 bottom-0 h-px origin-left bg-gradient-to-r from-white/15 via-white/10 to-transparent"
           />
         </motion.div>
       </div>
