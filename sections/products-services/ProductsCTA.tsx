@@ -3,13 +3,17 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
-import ParticleField from "@/components/ParticleField";
+import {
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
-
-// Swap this for the laptop image from the mockup once it's in public/images.
-const CTA_IMAGE = "/images/products-hero.png";
+import SpaceScene from "./SpaceScene";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -33,30 +37,35 @@ const MotionLink = motion.create(Link);
 export default function ProductsCTA() {
   const ref = useRef<HTMLElement>(null);
 
-  // The image moves slower than the page while you scroll (parallax)
+  // The space scene moves slower than the page while you scroll (parallax)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1.05, 1.15]);
+  const sceneY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
+  // Mouse position (-0.5 to 0.5) for the planet parallax
+  const nx = useMotionValue(0);
+  const ny = useMotionValue(0);
+  const px = useSpring(nx, { stiffness: 50, damping: 20 });
+  const py = useSpring(ny, { stiffness: 50, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    nx.set((e.clientX - rect.left) / rect.width - 0.5);
+    ny.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
 
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-black px-6 py-20 lg:px-12 lg:py-28"
+      onMouseMove={handleMouseMove}
+      className="relative overflow-hidden bg-black px-6 py-24 lg:min-h-[560px] lg:px-12 lg:py-32"
     >
-      {/* Background image with parallax */}
-      <motion.div
-        style={{ y: imageY, scale: imageScale, backgroundImage: `url('${CTA_IMAGE}')` }}
-        className="absolute -inset-y-16 inset-x-0 bg-cover bg-[position:80%_center] opacity-60 lg:bg-right lg:opacity-100"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/10" />
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent" />
-
-      {/* Particles (yellow) */}
-      <ParticleField density={0.5} />
+      {/* Space scene (planet, stars, nebula) with scroll parallax */}
+      <motion.div style={{ y: sceneY }} className="absolute -inset-y-12 inset-x-0">
+        <SpaceScene nx={px} ny={py} variant="cta" />
+      </motion.div>
 
       <motion.div
         variants={container}

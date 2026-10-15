@@ -7,11 +7,20 @@ import { useEffect, useRef } from "react";
  * - three layers of stars at different depths
  * - stars twinkle and drift slowly
  * - layers shift with the mouse (closer stars move more) for a 3D feel
- * - a shooting star crosses every few seconds
+ * - shooting stars cross every few seconds
  * Fills its `relative` parent.
+ *
+ *   <StarField />                        // a shooting star every 4–9 s
+ *   <StarField meteorEvery={[1200, 3000]} />  // more often
  */
-export default function StarField() {
+export default function StarField({
+  meteorEvery = [4000, 9000],
+}: {
+  /** min and max milliseconds between shooting stars */
+  meteorEvery?: [number, number];
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [minGap, maxGap] = meteorEvery;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,7 +47,7 @@ export default function StarField() {
     let h = 0;
     let stars: Star[] = [];
     let meteor: Meteor | null = null;
-    let nextMeteor = performance.now() + 2500;
+    let nextMeteor = performance.now() + Math.min(2500, minGap);
     let frame = 0;
 
     // mouse offset, eased
@@ -149,7 +158,7 @@ export default function StarField() {
           m.life -= 0.012;
           if (m.life <= 0 || m.x < -100 || m.y > h + 100) {
             meteor = null;
-            nextMeteor = t + 4000 + Math.random() * 5000;
+            nextMeteor = t + minGap + Math.random() * (maxGap - minGap);
           }
         }
       }
@@ -167,7 +176,7 @@ export default function StarField() {
       window.removeEventListener("resize", build);
       window.removeEventListener("mousemove", onMove);
     };
-  }, []);
+  }, [minGap, maxGap]);
 
   return (
     <canvas

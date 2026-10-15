@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
-import SpaceScene from "./SpaceScene";
+import LaunchScene from "./LaunchScene";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -43,7 +43,7 @@ const word: Variants = {
 const MotionLink = motion.create(Link);
 
 export default function ProductsHero() {
-  /* Mouse position (-0.5 to 0.5) drives the parallax of the space scene */
+  /* Mouse position (-0.5 to 0.5) drives the parallax of the launch scene */
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
   const px = useSpring(nx, { stiffness: 50, damping: 20 });
@@ -58,10 +58,10 @@ export default function ProductsHero() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-black px-6 pb-16 pt-[340px] sm:pt-[440px] lg:flex lg:min-h-[720px] lg:items-center lg:px-12 lg:pb-20 lg:pt-28"
+      className="relative overflow-hidden bg-black px-6 pb-16 pt-[400px] sm:pt-[480px] lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-48 lg:pt-32"
     >
-      {/* Deep space background: stars, nebula, planet, HUD */}
-      <SpaceScene nx={px} ny={py} />
+      {/* Launch scene: stars, moon, launch complex, rocket, telemetry */}
+      <LaunchScene nx={px} ny={py} />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* TEXT */}

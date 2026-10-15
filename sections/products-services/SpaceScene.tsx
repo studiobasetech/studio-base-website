@@ -10,6 +10,7 @@ import StarField from "./StarField";
  * Everything is code, so it stays sharp on every screen.
  *
  * nx / ny: mouse position from -0.5 to 0.5 (for parallax).
+ * variant: "hero" = big planet, "cta" = smaller planet for a closing section.
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -185,12 +186,25 @@ function Hud() {
   );
 }
 
+// Planet size and position for each variant
+const planetPlacement = {
+  hero: "right-[-28%] top-[70px] w-[95vw] max-w-[440px] sm:right-[-12%] sm:max-w-[520px] lg:right-[-6%] lg:top-1/2 lg:w-[54vw] lg:max-w-[760px] lg:-translate-y-1/2",
+  cta: "right-[-35%] top-[-8%] w-[85vw] max-w-[380px] sm:right-[-12%] lg:right-[-2%] lg:top-1/2 lg:w-[44vw] lg:max-w-[560px] lg:-translate-y-1/2",
+};
+
+const textShade = {
+  hero: "bg-gradient-to-t from-black via-black/70 to-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/30 lg:to-transparent",
+  cta: "bg-gradient-to-r from-black via-black/75 to-black/10",
+};
+
 export default function SpaceScene({
   nx,
   ny,
+  variant = "hero",
 }: {
   nx: MotionValue<number>;
   ny: MotionValue<number>;
+  variant?: "hero" | "cta";
 }) {
   // parallax: nearer things move more
   const nebulaX = useTransform(nx, [-0.5, 0.5], [12, -12]);
@@ -228,7 +242,7 @@ export default function SpaceScene({
         initial={{ opacity: 0, scale: 0.85, y: 60 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 2.2, ease: EASE }}
-        className="absolute right-[-28%] top-[70px] aspect-square w-[95vw] max-w-[440px] sm:right-[-12%] sm:max-w-[520px] lg:right-[-6%] lg:top-1/2 lg:w-[54vw] lg:max-w-[760px] lg:-translate-y-1/2"
+        className={`absolute aspect-square ${planetPlacement[variant]}`}
       >
         <motion.div style={{ x: planetX, y: planetY }} className="relative h-full w-full">
           <Orbit front={false} />
@@ -242,8 +256,9 @@ export default function SpaceScene({
       </motion.div>
 
       {/* readability: darken behind the text */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/30 lg:to-transparent" />
+      <div className={`absolute inset-0 ${textShade[variant]}`} />
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent" />
     </div>
   );
 }
