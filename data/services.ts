@@ -17,7 +17,7 @@ export const techProducts = [
     title: "HCRM AI",
     subtitle: "AI-Powered Business Automation Platform",
     description:
-      "HCRM AI is an intelligent automation platform designed to help companies optimize operations, automate business processes, and improve productivity through advanced AI.",
+      "Automate client management, communication, project tracking, and team operations with artificial intelligence.",
     capabilities: [
       "AI Sales Agents",
       "Automated Customer Communication",
@@ -36,7 +36,7 @@ export const techProducts = [
     title: "BaseLead AI",
     subtitle: "AI-Powered Client Acquisition & Sales Intelligence Platform",
     description:
-      "BaseLead AI helps businesses identify potential customers, discover opportunities, generate personalized outreach strategies, and manage sales pipelines using artificial intelligence and data-driven insights.",
+      "Find and connect with potential clients using artificial intelligence, identify business opportunities, and amplify your sales process.",
     capabilities: [
       "AI-Powered Lead Discovery",
       "Customer Prospect Identification",
