@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ParticleField from "@/components/ParticleField";
 import { contact, navLinks, socials } from "@/data/site";
 
 // These pages don't exist yet. Point each href at the real page once it does.
@@ -11,8 +12,11 @@ const resources = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black px-6 py-16 lg:px-12">
-      <div className="mx-auto max-w-7xl">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-black px-6 py-16 lg:px-12">
+      {/* Constellation effect: dots connect to each other and to the mouse */}
+      <ParticleField density={0.6} />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-4">
           {/* BRAND */}
           <div>
