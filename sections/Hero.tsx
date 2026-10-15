@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -9,8 +9,6 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
-
-import ParticleField from "@/components/ParticleField";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -47,6 +45,140 @@ const word: Variants = {
     transition: { duration: 0.8, ease: EASE },
   },
 };
+
+/* ------------------------------------------------------------------ */
+/*  Particle network (canvas) drawn over the video                     */
+/* ------------------------------------------------------------------ */
+
+function ParticleField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const mouse = { x: -9999, y: -9999 };
+
+    let w = 0;
+    let h = 0;
+    let frame = 0;
+
+    type Particle = { x: number; y: number; vx: number; vy: number; r: number };
+    let particles: Particle[] = [];
+
+    const build = () => {
+      const rect = canvas.parentElement!.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = w < 768 ? 35 : 80;
+
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 1.4 + 0.5,
+      }));
+    };
+
+    const onMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    };
+
+    const onLeave = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    };
+
+    const LINK = 130;
+    const MOUSE_LINK = 180;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+
+        const mdx = mouse.x - p.x;
+        const mdy = mouse.y - p.y;
+        const md = Math.hypot(mdx, mdy);
+
+        if (md < MOUSE_LINK) {
+          p.x += mdx * 0.004;
+          p.y += mdy * 0.004;
+
+          ctx.strokeStyle = `rgba(250, 204, 21, ${(1 - md / MOUSE_LINK) * 0.5})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = "rgba(250, 204, 21, 0.7)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const d = Math.hypot(p.x - q.x, p.y - q.y);
+
+          if (d < LINK) {
+            ctx.strokeStyle = `rgba(250, 204, 21, ${(1 - d / LINK) * 0.2})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      frame = requestAnimationFrame(draw);
+    };
+
+    build();
+    draw();
+
+    window.addEventListener("resize", build);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseleave", onLeave);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", build);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none absolute inset-0 h-full w-full"
+    />
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Hero                                                               */
