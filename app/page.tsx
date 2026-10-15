@@ -5,18 +5,20 @@ import Process from "@/sections/Process";
 import WhyStudio from "@/sections/WhyStudio";
 import Technologies from "@/sections/Technologies";
 import CTA from "@/sections/CTA";
+import SectionTransition from "@/components/SectionTransition";
 
 // Navbar and Footer come from app/layout.tsx.
+// SectionTransition gives each section its scroll-in animation.
 export default function Home() {
   return (
     <>
       <Hero />
-      <Services />
-      <Products />
-      <Process />
-      <WhyStudio />
-      <Technologies />
-      <CTA />
+      <SectionTransition><Services /></SectionTransition>
+      <SectionTransition><Products /></SectionTransition>
+      <SectionTransition><Process /></SectionTransition>
+      <SectionTransition><WhyStudio /></SectionTransition>
+      <SectionTransition><Technologies /></SectionTransition>
+      <SectionTransition><CTA /></SectionTransition>
     </>
   );
 }

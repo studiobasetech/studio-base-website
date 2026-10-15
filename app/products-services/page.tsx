@@ -5,6 +5,7 @@ import TechProducts from "@/sections/products-services/TechProducts";
 import TechServices from "@/sections/products-services/TechServices";
 import WhyStudioBase from "@/sections/products-services/WhyStudioBase";
 import ProductsCTA from "@/sections/products-services/ProductsCTA";
+import SectionTransition from "@/components/SectionTransition";
 
 export const metadata: Metadata = {
   title: "Products & Services",
@@ -17,10 +18,10 @@ export default function ProductsServicesPage() {
     <>
       <ProductsHero />
       <Ticker />
-      <TechProducts />
-      <TechServices />
-      <WhyStudioBase />
-      <ProductsCTA />
+      <SectionTransition><TechProducts /></SectionTransition>
+      <SectionTransition><TechServices /></SectionTransition>
+      <SectionTransition><WhyStudioBase /></SectionTransition>
+      <SectionTransition><ProductsCTA /></SectionTransition>
     </>
   );
 }
