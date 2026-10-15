@@ -1,19 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-  type Variants,
-} from "framer-motion";
-import ParticleField from "@/components/ParticleField";
+import { motion, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
-import HeroVisual from "./HeroVisual";
+import SpaceScene from "./SpaceScene";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -51,75 +43,33 @@ const word: Variants = {
 const MotionLink = motion.create(Link);
 
 export default function ProductsHero() {
-  /* Mouse tracking: spotlight + 3D tilt of the visual */
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
+  /* Mouse position (-0.5 to 0.5) drives the parallax of the space scene */
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
-
-  const sx = useSpring(mx, { stiffness: 120, damping: 24 });
-  const sy = useSpring(my, { stiffness: 120, damping: 24 });
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, rgba(250,204,21,0.10), transparent 65%)`;
-
-  const tiltX = useSpring(nx, { stiffness: 50, damping: 20 });
-  const tiltY = useSpring(ny, { stiffness: 50, damping: 20 });
-
-  useEffect(() => {
-    mx.set(window.innerWidth * 0.7);
-    my.set(300);
-  }, [mx, my]);
+  const px = useSpring(nx, { stiffness: 50, damping: 20 });
+  const py = useSpring(ny, { stiffness: 50, damping: 20 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const px = e.clientX - rect.left;
-    const py = e.clientY - rect.top;
-    mx.set(px);
-    my.set(py);
-    nx.set(px / rect.width - 0.5);
-    ny.set(py / rect.height - 0.5);
+    nx.set((e.clientX - rect.left) / rect.width - 0.5);
+    ny.set((e.clientY - rect.top) / rect.height - 0.5);
   };
 
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-black px-6 pb-12 pt-24 lg:px-12 lg:pb-16 lg:pt-28"
+      className="relative overflow-hidden bg-black px-6 pb-16 pt-[340px] sm:pt-[440px] lg:flex lg:min-h-[720px] lg:items-center lg:px-12 lg:pb-20 lg:pt-28"
     >
-      {/* Very faint grid over the whole hero */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_at_70%_40%,black_20%,transparent_75%)]" />
+      {/* Deep space background: stars, nebula, planet, HUD */}
+      <SpaceScene nx={px} ny={py} />
 
-      {/* Constellation (soft gold) */}
-      <ParticleField color="253, 224, 71" density={0.5} />
-
-      {/* Cursor spotlight */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        style={{ background: spotlight }}
-      />
-
-      {/* Drifting glow behind the text */}
-      <motion.div
-        animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-24 top-1/3 h-[420px] w-[420px] rounded-full bg-yellow-400/[0.07] blur-[120px]"
-      />
-
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-4 lg:min-h-[560px] lg:grid-cols-[1.1fr_1fr] lg:gap-10">
-        {/* VISUAL (first on phones, right on desktop) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, filter: "blur(16px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.6, delay: 0.3, ease: EASE }}
-          className="mx-auto w-full max-w-[320px] sm:max-w-[400px] lg:order-2 lg:max-w-[560px]"
-        >
-          <HeroVisual nx={tiltX} ny={tiltY} />
-        </motion.div>
-
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* TEXT */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-2xl lg:order-1"
+          className="max-w-2xl lg:max-w-xl xl:max-w-2xl"
         >
           <motion.p
             variants={fadeUp}
