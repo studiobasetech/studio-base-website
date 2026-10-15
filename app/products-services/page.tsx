@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProductsHero from "@/sections/products-services/ProductsHero";
+import Ticker from "@/sections/products-services/Ticker";
 import TechProducts from "@/sections/products-services/TechProducts";
 import TechServices from "@/sections/products-services/TechServices";
 import WhyStudioBase from "@/sections/products-services/WhyStudioBase";
@@ -15,6 +16,7 @@ export default function ProductsServicesPage() {
   return (
     <>
       <ProductsHero />
+      <Ticker />
       <TechProducts />
       <TechServices />
       <WhyStudioBase />

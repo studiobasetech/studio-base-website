@@ -17,6 +17,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import { TiltCard } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 import { techServices } from "@/data/services";
 import { accents } from "./accents";
@@ -65,13 +66,14 @@ export default function TechServices() {
             const isOpen = open === i;
 
             return (
-              <Reveal key={service.title} delay={(i % 4) * 0.08} y={30}>
-                <motion.article
-                  data-cursor
+              <Reveal key={service.title} delay={(i % 4) * 0.1 + Math.floor(i / 4) * 0.15} y={50}>
+                <TiltCard
+                  rgb={a.rgb}
+                  tilt={9}
+                  float
+                  floatDelay={(i % 4) * 0.6}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  whileHover={{ y: -6 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                  className={`group relative flex h-full min-h-[210px] cursor-pointer flex-col overflow-hidden rounded-xl border bg-gradient-to-b from-white/[0.04] to-transparent p-5 pb-14 transition-colors duration-300 ${a.border} ${a.borderHover}`}
+                  className={`group flex min-h-[210px] cursor-pointer flex-col overflow-hidden rounded-xl border bg-gradient-to-b from-white/[0.04] to-transparent p-5 pb-14 transition-colors duration-300 ${isOpen ? a.borderOn : a.border} ${a.borderHover}`}
                   style={{
                     boxShadow: isOpen
                       ? `0 0 50px -10px rgba(${a.rgb},0.55)`
@@ -83,8 +85,19 @@ export default function TechServices() {
                     className={`pointer-events-none absolute -left-10 -top-10 h-28 w-28 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-150 ${a.glow}`}
                   />
 
-                  <div className="relative flex items-start gap-3">
-                    <Icon size={26} className={`shrink-0 ${a.text}`} strokeWidth={1.5} />
+                  <div className="relative z-10 flex items-start gap-3">
+                    <motion.span
+                      animate={{ scale: [1, 1.12, 1] }}
+                      transition={{ duration: 2.6, delay: i * 0.3, repeat: Infinity, ease: "easeInOut" }}
+                      className="shrink-0"
+                    >
+                      <Icon
+                        size={26}
+                        strokeWidth={1.5}
+                        className={`transition-transform duration-500 group-hover:rotate-[15deg] ${a.text}`}
+                        style={{ filter: `drop-shadow(0 0 8px rgba(${a.rgb},0.7))` }}
+                      />
+                    </motion.span>
                     <h3 className="whitespace-pre-line text-sm font-semibold leading-snug text-white">
                       {service.title}
                     </h3>
@@ -98,7 +111,7 @@ export default function TechServices() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.25 }}
-                        className="relative mt-4 space-y-1.5"
+                        className="relative z-10 mt-4 space-y-1.5"
                       >
                         {toList(service.description).map((item) => (
                           <li
@@ -126,7 +139,7 @@ export default function TechServices() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.25 }}
-                        className="relative mt-4 text-xs leading-relaxed text-zinc-400"
+                        className="relative z-10 mt-4 text-xs leading-relaxed text-zinc-400"
                       >
                         {service.description}
                       </motion.p>
@@ -134,15 +147,23 @@ export default function TechServices() {
                   </AnimatePresence>
 
                   {/* Plus button (turns into an X when open) */}
+                  {!isOpen && (
+                    <motion.span
+                      aria-hidden="true"
+                      animate={{ scale: [1, 1.9], opacity: [0.6, 0] }}
+                      transition={{ duration: 1.8, delay: i * 0.2, repeat: Infinity, ease: "easeOut" }}
+                      className={`absolute bottom-4 right-4 h-6 w-6 rounded-full border ${a.border}`}
+                    />
+                  )}
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ type: "spring", stiffness: 250, damping: 18 }}
                     aria-hidden="true"
-                    className={`absolute bottom-4 right-4 flex h-6 w-6 items-center justify-center rounded-full border border-current ${a.text}`}
+                    className={`absolute bottom-4 right-4 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-current ${a.text}`}
                   >
                     <Plus size={13} />
                   </motion.span>
-                </motion.article>
+                </TiltCard>
               </Reveal>
             );
           })}

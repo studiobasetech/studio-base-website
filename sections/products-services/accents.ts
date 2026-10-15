@@ -10,6 +10,7 @@ export const accents: Record<
     text: string;
     border: string;
     borderHover: string;
+    borderOn: string;
     iconBox: string;
     glow: string;
     button: string;
@@ -22,6 +23,7 @@ export const accents: Record<
     text: "text-yellow-400",
     border: "border-yellow-400/50",
     borderHover: "hover:border-yellow-400",
+    borderOn: "border-yellow-400",
     iconBox: "border-yellow-400/40 bg-yellow-400/10 text-yellow-400",
     glow: "bg-yellow-400/20",
     button: "bg-yellow-400 text-black hover:bg-yellow-300",
@@ -33,6 +35,7 @@ export const accents: Record<
     text: "text-purple-400",
     border: "border-purple-500/50",
     borderHover: "hover:border-purple-500",
+    borderOn: "border-purple-500",
     iconBox: "border-purple-500/40 bg-purple-500/15 text-purple-300",
     glow: "bg-purple-500/20",
     button: "bg-purple-600 text-white hover:bg-purple-500",
@@ -44,6 +47,7 @@ export const accents: Record<
     text: "text-blue-400",
     border: "border-blue-500/50",
     borderHover: "hover:border-blue-500",
+    borderOn: "border-blue-500",
     iconBox: "border-blue-500/40 bg-blue-500/10 text-blue-400",
     glow: "bg-blue-500/20",
     button: "bg-blue-600 text-white hover:bg-blue-500",
@@ -55,6 +59,7 @@ export const accents: Record<
     text: "text-cyan-400",
     border: "border-cyan-400/50",
     borderHover: "hover:border-cyan-400",
+    borderOn: "border-cyan-400",
     iconBox: "border-cyan-400/40 bg-cyan-400/10 text-cyan-400",
     glow: "bg-cyan-400/20",
     button: "bg-cyan-500 text-black hover:bg-cyan-400",
