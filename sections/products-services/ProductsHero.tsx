@@ -8,12 +8,12 @@ import {
   useMotionTemplate,
   useMotionValue,
   useSpring,
-  useTransform,
   type Variants,
 } from "framer-motion";
 import ParticleField from "@/components/ParticleField";
-import { GlowLine, LightSweep, ShimmerText } from "@/components/Effects";
+import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
+import HeroVisual from "./HeroVisual";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -51,7 +51,7 @@ const word: Variants = {
 const MotionLink = motion.create(Link);
 
 export default function ProductsHero() {
-  /* Mouse tracking: spotlight + image parallax */
+  /* Mouse tracking: spotlight + 3D tilt of the visual */
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const nx = useMotionValue(0);
@@ -59,15 +59,14 @@ export default function ProductsHero() {
 
   const sx = useSpring(mx, { stiffness: 120, damping: 24 });
   const sy = useSpring(my, { stiffness: 120, damping: 24 });
-  const spotlight = useMotionTemplate`radial-gradient(480px circle at ${sx}px ${sy}px, rgba(168,85,247,0.16), transparent 65%)`;
+  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, rgba(250,204,21,0.10), transparent 65%)`;
 
-  const spring = { stiffness: 50, damping: 20 };
-  const imageX = useSpring(useTransform(nx, [-0.5, 0.5], [22, -22]), spring);
-  const imageY = useSpring(useTransform(ny, [-0.5, 0.5], [14, -14]), spring);
+  const tiltX = useSpring(nx, { stiffness: 50, damping: 20 });
+  const tiltY = useSpring(ny, { stiffness: 50, damping: 20 });
 
   useEffect(() => {
     mx.set(window.innerWidth * 0.7);
-    my.set(260);
+    my.set(300);
   }, [mx, my]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -83,31 +82,13 @@ export default function ProductsHero() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-black px-6 pb-16 pt-28 lg:flex lg:min-h-[640px] lg:items-center lg:px-12 lg:pb-20 lg:pt-32"
+      className="relative overflow-hidden bg-black px-6 pb-12 pt-24 lg:px-12 lg:pb-16 lg:pt-28"
     >
-      {/* BACKGROUND IMAGE: fades in, drifts with the mouse, slowly breathes */}
-      <motion.div
-        initial={{ opacity: 0, scale: 1.12 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 2.2, ease: EASE }}
-        style={{ x: imageX, y: imageY }}
-        className="absolute inset-x-0 -top-4 h-[380px] sm:h-[460px] lg:-inset-6 lg:h-auto"
-      >
-        <motion.div
-          animate={{ scale: [1.04, 1.1, 1.04] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="h-full w-full bg-cover bg-[position:78%_center] lg:bg-right"
-          style={{ backgroundImage: "url('/images/products-hero.png')" }}
-        />
-      </motion.div>
+      {/* Very faint grid over the whole hero */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_at_70%_40%,black_20%,transparent_75%)]" />
 
-      {/* Fades so the text stays readable */}
-      <div className="absolute inset-x-0 top-0 h-[380px] bg-gradient-to-t from-black via-black/40 to-black/20 sm:h-[460px] lg:hidden" />
-      <div className="absolute inset-0 hidden bg-gradient-to-r from-black via-black/60 to-transparent lg:block" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent" />
-
-      {/* Particle network (purple) */}
-      <ParticleField color="192, 132, 252" density={0.7} />
+      {/* Constellation (soft gold) */}
+      <ParticleField color="253, 224, 71" density={0.5} />
 
       {/* Cursor spotlight */}
       <motion.div
@@ -119,17 +100,27 @@ export default function ProductsHero() {
       <motion.div
         animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-24 top-1/3 h-[420px] w-[420px] rounded-full bg-yellow-400/10 blur-[120px]"
+        className="pointer-events-none absolute -left-24 top-1/3 h-[420px] w-[420px] rounded-full bg-yellow-400/[0.07] blur-[120px]"
       />
 
-      {/* CONTENT */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 mx-auto w-full max-w-7xl pt-[210px] sm:pt-[270px] lg:pt-0"
-      >
-        <div className="max-w-2xl">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-4 lg:min-h-[560px] lg:grid-cols-[1.1fr_1fr] lg:gap-10">
+        {/* VISUAL (first on phones, right on desktop) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, filter: "blur(16px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.6, delay: 0.3, ease: EASE }}
+          className="mx-auto w-full max-w-[320px] sm:max-w-[400px] lg:order-2 lg:max-w-[560px]"
+        >
+          <HeroVisual nx={tiltX} ny={tiltY} />
+        </motion.div>
+
+        {/* TEXT */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="max-w-2xl lg:order-1"
+        >
           <motion.p
             variants={fadeUp}
             className="flex items-center gap-3 text-[10px] tracking-[0.45em] text-zinc-300"
@@ -198,10 +189,8 @@ export default function ProductsHero() {
               />
             </MotionLink>
           </motion.div>
-        </div>
-      </motion.div>
-
-      <GlowLine />
+        </motion.div>
+      </div>
     </section>
   );
 }

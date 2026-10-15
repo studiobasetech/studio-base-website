@@ -18,7 +18,8 @@ export default function ProductsServicesPage() {
     <>
       <ProductsHero />
       <Ticker />
-      <SectionTransition><TechProducts /></SectionTransition>
+      {/* no gold divider here: the moving banner already separates them */}
+      <SectionTransition divider={false}><TechProducts /></SectionTransition>
       <SectionTransition><TechServices /></SectionTransition>
       <SectionTransition><WhyStudioBase /></SectionTransition>
       <SectionTransition><ProductsCTA /></SectionTransition>

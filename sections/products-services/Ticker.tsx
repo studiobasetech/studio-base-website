@@ -21,8 +21,8 @@ export default function Ticker() {
   const row = [...words, ...words];
 
   return (
-    <div className="relative overflow-hidden bg-black py-4">
-      <div className="border-y border-yellow-400/30 bg-yellow-400/[0.04] py-3">
+    <div className="relative overflow-hidden bg-black">
+      <div className="border-y border-yellow-400/30 bg-yellow-400/[0.04] py-3.5">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
           transition={{ duration: 35, repeat: Infinity, ease: "linear" }}

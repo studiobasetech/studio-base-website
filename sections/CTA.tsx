@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ParticleField from "@/components/ParticleField";
 import { ArrowRight } from "lucide-react";
 import { consultationHref } from "@/data/site";
 
@@ -52,6 +53,11 @@ export default function CTA() {
           via-black/70
           to-black/20
         "/>
+
+
+        {/* CONSTELLATION */}
+
+        <ParticleField density={0.5} />
 
 
         {/* CONTENT */}
