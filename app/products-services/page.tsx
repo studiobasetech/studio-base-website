@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
-
-import ProductsHero from "../../sections/products-services/ProductsHero";
-import ProductsShowcase from "../../sections/products-services/ProductsShowcase";
-import ServicesGrid from "../../sections/products-services/ServicesGrid";
-import WhySection from "../../sections/products-services/WhySection";
-import PageCTA from "../../sections/products-services/PageCTA";
+import ProductsHero from "@/sections/products-services/ProductsHero";
+import TechProducts from "@/sections/products-services/TechProducts";
+import TechServices from "@/sections/products-services/TechServices";
+import WhyStudioBase from "@/sections/products-services/WhyStudioBase";
+import ProductsCTA from "@/sections/products-services/ProductsCTA";
 
 export const metadata: Metadata = {
   title: "Products & Services",
   description:
-    "Studio Base is a technology company specialized in artificial intelligence, software engineering, cybersecurity, and digital transformation solutions.",
+    "AI products (HCRM AI, BaseLead AI) and end-to-end technology services: AI automation, software engineering, apps, web platforms, cybersecurity, cloud, analytics and consulting.",
 };
 
 export default function ProductsServicesPage() {
   return (
     <>
       <ProductsHero />
-      <ProductsShowcase />
-      <ServicesGrid />
-      <WhySection />
-      <PageCTA />
+      <TechProducts />
+      <TechServices />
+      <WhyStudioBase />
+      <ProductsCTA />
     </>
   );
 }
