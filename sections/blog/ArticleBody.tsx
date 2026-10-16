@@ -48,7 +48,7 @@ export default function ArticleBody({ post }: { post: Post }) {
           case "quote":
             return (
               <Reveal key={i} y={24}>
-                <blockquote className="relative my-12 overflow-hidden rounded-xl border border-yellow-400/25 bg-gradient-to-br from-yellow-400/10 via-transparent to-violet-500/10 px-7 py-8 md:px-10">
+                <blockquote className="relative my-12 overflow-hidden rounded-xl border border-yellow-400/25 bg-gradient-to-br from-yellow-400/10 via-transparent to-yellow-400/[0.03] px-7 py-8 md:px-10">
                   <Quote size={40} className="absolute -right-1 -top-1 text-yellow-400/15" />
                   <p className="relative text-xl font-medium leading-relaxed text-white md:text-2xl">
                     {b.text}
@@ -82,7 +82,7 @@ export default function ArticleBody({ post }: { post: Post }) {
           case "callout":
             return (
               <Reveal key={i} y={24}>
-                <aside className="my-10 flex gap-4 rounded-xl border border-violet-400/30 bg-violet-500/[0.07] p-6">
+                <aside className="my-10 flex gap-4 rounded-xl border border-white/15 bg-white/[0.04] p-6">
                   <Lightbulb size={22} className="mt-1 shrink-0 text-yellow-300" />
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.25em] text-yellow-300">

@@ -16,11 +16,14 @@ import { useEffect, useRef } from "react";
 export default function StarField({
   meteorEvery = [4000, 9000],
   density = 1,
+  goldOnly = false,
 }: {
   /** min and max milliseconds between shooting stars */
   meteorEvery?: [number, number];
   /** 1 = default amount of stars; lower for fewer */
   density?: number;
+  /** only white and gold stars (no lavender / blue tints) */
+  goldOnly?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [minGap, maxGap] = meteorEvery;
@@ -57,14 +60,16 @@ export default function StarField({
     const target = { x: 0, y: 0 };
     const offset = { x: 0, y: 0 };
 
-    const palette = [
-      "255,255,255",
-      "255,255,255",
-      "255,255,255",
-      "253,230,138", // gold
-      "196,181,253", // lavender
-      "165,180,252", // ice blue
-    ];
+    const palette = goldOnly
+      ? ["255,255,255", "255,255,255", "255,255,255", "253,230,138", "250,204,21"]
+      : [
+          "255,255,255",
+          "255,255,255",
+          "255,255,255",
+          "253,230,138", // gold
+          "196,181,253", // lavender
+          "165,180,252", // ice blue
+        ];
 
     const build = () => {
       const rect = canvas.parentElement!.getBoundingClientRect();
@@ -179,7 +184,7 @@ export default function StarField({
       window.removeEventListener("resize", build);
       window.removeEventListener("mousemove", onMove);
     };
-  }, [minGap, maxGap, density]);
+  }, [minGap, maxGap, density, goldOnly]);
 
   return (
     <canvas

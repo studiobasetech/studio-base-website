@@ -25,7 +25,7 @@ export default function BlogHero() {
   return (
     <section className="relative overflow-hidden bg-black px-6 pb-16 pt-32 lg:px-12 lg:pb-20 lg:pt-40">
       {/* background: stars, perspective grid, glows, constellation */}
-      <StarField meteorEvery={[3000, 7000]} density={0.5} />
+      <StarField meteorEvery={[3000, 7000]} density={0.5} goldOnly />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] [mask-image:linear-gradient(to_top,black,transparent)]"
