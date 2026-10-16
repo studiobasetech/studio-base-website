@@ -23,7 +23,9 @@ export default function CTA() {
         rounded-xl
         border
         border-white/10
-        h-[320px]
+        min-h-[380px]
+        md:h-[320px]
+        md:min-h-0
       ">
 
 
@@ -66,9 +68,14 @@ export default function CTA() {
           relative
           z-10
           flex
-          h-full
+          min-h-[380px]
           items-center
-          px-8
+          px-6
+          py-10
+          sm:px-8
+          md:h-full
+          md:min-h-0
+          md:py-0
           lg:px-12
         ">
 
@@ -126,7 +133,9 @@ export default function CTA() {
             <div className="
               mt-6
               flex
-              gap-4
+              flex-wrap
+              gap-3
+              sm:gap-4
             ">
 
 

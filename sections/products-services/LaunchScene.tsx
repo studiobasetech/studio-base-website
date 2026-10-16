@@ -428,7 +428,7 @@ export default function LaunchScene({
       </motion.div>
 
       {/* STAGE: the top part on phones, the whole hero on desktop */}
-      <div className="absolute inset-x-0 top-0 h-[420px] sm:h-[500px] lg:inset-0 lg:h-auto">
+      <div className="absolute inset-x-0 top-0 h-[400px] sm:h-[500px] lg:inset-0 lg:h-auto">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
@@ -460,14 +460,14 @@ export default function LaunchScene({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="absolute right-6 top-24 hidden sm:block lg:right-12 lg:top-32"
+          className="absolute left-4 top-[76px] origin-top-left scale-[0.8] sm:left-auto sm:right-6 sm:top-24 sm:scale-100 lg:right-12 lg:top-32"
         >
           <Telemetry />
         </motion.div>
       </div>
 
       {/* readability: darken behind the text */}
-      <div className="absolute inset-x-0 bottom-0 top-[340px] bg-gradient-to-b from-transparent via-black/85 to-black sm:top-[420px] lg:hidden" />
+      <div className="absolute inset-x-0 bottom-0 top-[320px] bg-gradient-to-b from-transparent via-black/85 to-black sm:top-[420px] lg:hidden" />
       <div className="absolute inset-0 hidden bg-gradient-to-r from-black/85 via-black/25 to-transparent lg:block" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent" />
     </div>

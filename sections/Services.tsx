@@ -441,7 +441,7 @@ export default function Services() {
         <div className="mb-8">
           <p className="text-xs tracking-[0.4em] text-zinc-500">OUR SERVICES</p>
 
-          <h2 className="mt-4 max-w-5xl whitespace-nowrap text-4xl font-semibold leading-tight text-white md:text-5xl">
+          <h2 className="mt-4 max-w-5xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:whitespace-nowrap md:text-5xl">
             End-to-End{" "}
             <span className="text-yellow-400">Technology Solutions</span>
             <br />

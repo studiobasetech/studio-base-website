@@ -166,7 +166,7 @@ function Hud() {
       ))}
 
       {/* labels */}
-      <div className="absolute left-[4%] top-[14%] font-mono text-[9px] uppercase tracking-[0.25em] text-yellow-200/70 sm:text-[10px]">
+      <div className="absolute left-[4%] top-[14%] hidden font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-yellow-200/70 sm:text-[10px]">
         <p className="flex items-center gap-2">
           <motion.span
             animate={{ opacity: [1, 0.2, 1] }}
@@ -178,7 +178,7 @@ function Hud() {
         <p className="mt-1 text-zinc-500">Orbit 01 · AI Core</p>
       </div>
 
-      <div className="absolute bottom-[12%] right-[6%] text-right font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-500 sm:text-[10px]">
+      <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-500 sm:text-[10px]">
         <p className="text-yellow-200/70">{COORDS}</p>
         <p className="mt-1">Studio Base HQ</p>
       </div>

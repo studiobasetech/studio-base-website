@@ -58,7 +58,7 @@ export default function ProductsHero() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-black px-6 pb-16 pt-[400px] sm:pt-[480px] lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-48 lg:pt-32"
+      className="relative overflow-hidden bg-black px-6 pb-16 pt-[360px] sm:pt-[480px] lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-48 lg:pt-32"
     >
       {/* Launch scene: stars, moon, launch complex, rocket, telemetry */}
       <LaunchScene nx={px} ny={py} />
