@@ -7,8 +7,8 @@ const post: Post = {
     "Getting great results from AI is less about magic words and more about clear thinking. A field guide to context, examples, constraints and iteration.",
   category: "Artificial Intelligence",
   date: "2026-09-22",
-  image: "/images/blog/prompting-v3.jpg",
-  imageAlt: "A laptop showing a chat conversation between a person and an AI assistant",
+  image: "/images/blog/prompting-v4.jpg",
+  imageAlt: "A prompt workspace with a structured prompt on the left and an AI response being generated on the right",
   takeaways: [
     "Treat the model like a capable new colleague: give it context, not just commands.",
     "Show what good looks like with an example; it beats paragraphs of description.",

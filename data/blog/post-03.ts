@@ -7,8 +7,8 @@ const post: Post = {
     "You don’t need a research lab to use AI responsibly. A practical framework for handling data, checking for bias and keeping people informed.",
   category: "Artificial Intelligence",
   date: "2026-09-08",
-  image: "/images/blog/responsible-ai-v3.jpg",
-  imageAlt: "A balance scale weighing an AI chip against a group of people, with a shield and padlock above",
+  image: "/images/blog/responsible-ai-v4.jpg",
+  imageAlt: "A glass shield with a check mark beside an AI governance panel with privacy, fairness, transparency and human review switched on",
   takeaways: [
     "Responsible AI is a set of everyday habits, not a separate project.",
     "Know what data goes into each tool, where it is stored and who can see it.",

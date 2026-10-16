@@ -7,8 +7,8 @@ const post: Post = {
     "The office firewall used to be the castle wall. With cloud apps and remote work, that wall is gone. Why zero trust became the new baseline, and how to start.",
   category: "Cybersecurity",
   date: "2026-08-11",
-  image: "/images/blog/zero-trust-v3.jpg",
-  imageAlt: "A laptop protected by a security shield, with ID card, key, fingerprint and phone checks",
+  image: "/images/blog/zero-trust-v4.jpg",
+  imageAlt: "A fingerprint verification ring beside a zero trust policy panel checking identity, device, location and access",
   takeaways: [
     "Zero trust replaces “inside the network is safe” with “verify every request”.",
     "Identity is the new perimeter: strong sign-in and multi-factor authentication come first.",

@@ -7,8 +7,8 @@ const post: Post = {
     "Every time an app shows a map, takes a payment or sends a notification, APIs are at work. A plain-language guide to how they work and why they matter for every business.",
   category: "Web & Software",
   date: "2026-07-14",
-  image: "/images/blog/apis-v3.jpg",
-  imageAlt: "Colorful app icons for maps, payments, chat, shopping, calendar and email connected to a central hub",
+  image: "/images/blog/apis-v4.jpg",
+  imageAlt: "An API console sending a JSON request, connected to payment, maps, messaging, calendar and storage services",
   takeaways: [
     "An API is a contract that lets one piece of software request something from another.",
     "Connecting systems through APIs removes manual copying and keeps data consistent.",

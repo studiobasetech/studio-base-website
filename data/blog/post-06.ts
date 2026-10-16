@@ -7,8 +7,8 @@ const post: Post = {
     "Speed shapes first impressions, conversions and search visibility. A tour of what a browser does when someone opens your page, and where the time really goes.",
   category: "Web & Software",
   date: "2026-07-28",
-  image: "/images/blog/web-speed-v3.jpg",
-  imageAlt: "A browser window next to a speedometer showing a fast load time, with a lightning bolt",
+  image: "/images/blog/web-speed-v4.jpg",
+  imageAlt: "A website performance report with a score of 98, core metrics and a network waterfall",
   takeaways: [
     "Visitors judge a site within moments; perceived speed matters as much as raw speed.",
     "Images, fonts and third-party scripts are the most common sources of slowness.",

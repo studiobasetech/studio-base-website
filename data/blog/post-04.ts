@@ -7,8 +7,8 @@ const post: Post = {
     "Most automation projects fail for human reasons, not technical ones. How to choose the right processes, involve the right people and measure what matters.",
   category: "Automation",
   date: "2026-08-25",
-  image: "/images/blog/automation-v3.jpg",
-  imageAlt: "Documents moving along a conveyor belt through a machine with gears into a completed folder",
+  image: "/images/blog/automation-v4.jpg",
+  imageAlt: "A workflow automation canvas connecting a new order trigger to stock checks, invoicing, customer notifications and CRM updates",
   takeaways: [
     "Automate a process only after you understand and simplify it.",
     "Pick tasks that are frequent, rules-based and painful for the people doing them.",
