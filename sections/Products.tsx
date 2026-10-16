@@ -150,6 +150,7 @@ function ProductCard({
           boxShadow: { duration: 0.4 },
         }}
         className={`
+          group/card
           relative
           h-full
           cursor-pointer
@@ -172,8 +173,8 @@ function ProductCard({
 
         {/* Small hint in the corner */}
         <span
-          className={`absolute right-4 top-4 z-10 flex items-center gap-1 text-[10px] uppercase tracking-widest ${
-            selected ? style.text : "text-zinc-600"
+          className={`absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[10px] uppercase tracking-widest backdrop-blur-sm ${
+            selected ? style.text : "text-zinc-400"
           }`}
         >
           {selected ? (
@@ -185,14 +186,7 @@ function ProductCard({
           )}
         </span>
 
-        <motion.div
-          initial={false}
-          animate={{
-            gridTemplateColumns: selected ? "1fr 0.95fr" : "1fr 0.42fr",
-          }}
-          transition={{ type: "spring", stiffness: 140, damping: 20 }}
-          className="relative grid items-center gap-4"
-        >
+        <div className="relative grid items-stretch gap-6 sm:grid-cols-[1fr_1fr]">
           {/* TEXT */}
 
           <div>
@@ -254,34 +248,20 @@ function ProductCard({
             </Link>
           </div>
 
-          {/* PRODUCT IMAGE RIGHT */}
+          {/* PRODUCT IMAGE RIGHT: same look as the Products & Services
+              cards (large, bleeds to the card edge, floats, zooms on hover) */}
 
-          <motion.div
-            initial={false}
-            animate={{ height: selected ? 280 : 160 }}
-            transition={{ type: "spring", stiffness: 140, damping: 20 }}
-            className="relative overflow-hidden rounded-lg border border-white/10 bg-black"
-          >
-            <div
-              className={`
-                absolute
-                right-0
-                top-0
-                h-32
-                w-32
-                rounded-full
-                blur-3xl
-                ${style.glow}
-              `}
-            />
-
-            <img
+          <div className="relative -mx-6 -mb-6 h-64 overflow-hidden sm:my-[-1.5rem] sm:ml-0 sm:h-auto sm:min-h-[340px]">
+            <motion.img
               src={product.image}
-              alt={product.title}
-              className="relative h-full w-full object-cover"
+              alt={`${product.title} dashboard`}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 6, delay: index, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 h-[105%] w-full object-cover object-center transition-transform duration-700 group-hover/card:scale-110"
             />
-          </motion.div>
-        </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#090909] via-transparent to-transparent sm:bg-gradient-to-r" />
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );
