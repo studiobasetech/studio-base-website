@@ -128,7 +128,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onMouseEnter={() => setHovered(link.href)}
-                  className="relative rounded-full px-4 py-1.5 text-sm font-medium"
+                  className="relative rounded-full px-3 py-1.5 text-[13px] font-medium xl:px-4 xl:text-sm"
                 >
                   {highlighted && (
                     <motion.span

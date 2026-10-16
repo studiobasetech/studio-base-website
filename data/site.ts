@@ -8,6 +8,7 @@ export const navLinks = [
   { label: "Products & Services", href: "/products-services" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "About Studio Base", href: "/about" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

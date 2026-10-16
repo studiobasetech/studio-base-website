@@ -5,7 +5,6 @@ import { contact, navLinks, socials } from "@/data/site";
 // These pages don't exist yet. Point each href at the real page once it does.
 const resources = [
   { label: "Case Studies", href: "/portfolio" },
-  { label: "Blog", href: "#" },
   { label: "Careers", href: "#" },
   { label: "FAQ", href: "#" },
 ];
