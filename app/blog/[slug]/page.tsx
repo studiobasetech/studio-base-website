@@ -65,7 +65,7 @@ export default async function ArticlePage({
 
             {/* share + back (also useful on phones, where the sidebar is hidden) */}
             <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-8">
-              <ShareButtons title={post.title} />
+              <ShareButtons title={post.title} slug={post.slug} />
               <Link
                 href="/blog"
                 className="group inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-yellow-300"

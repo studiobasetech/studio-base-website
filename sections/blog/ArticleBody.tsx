@@ -4,17 +4,18 @@ import { headingId, type Post } from "@/data/blog";
 
 /** Renders an article's blocks with the site's typography. */
 export default function ArticleBody({ post }: { post: Post }) {
-  let section = 0;
-  let firstParagraph = true;
+  // which paragraph gets the drop cap, and the number shown on each heading
+  const firstP = post.body.findIndex((b) => b.type === "p");
+  const sectionNo = post.body.map(
+    (_, i) => post.body.slice(0, i + 1).filter((b) => b.type === "h2").length,
+  );
 
   return (
     <div className="text-[17px] leading-[1.85] text-zinc-300">
       {post.body.map((b, i) => {
         switch (b.type) {
           case "p": {
-            const lead = firstParagraph;
-            firstParagraph = false;
-            return lead ? (
+            return i === firstP ? (
               <p
                 key={i}
                 className="mb-7 text-lg leading-[1.8] text-zinc-200 first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-6xl first-letter:font-semibold first-letter:leading-[0.85] first-letter:text-yellow-400 md:text-xl"
@@ -29,7 +30,6 @@ export default function ArticleBody({ post }: { post: Post }) {
           }
 
           case "h2": {
-            section += 1;
             return (
               <Reveal key={i} y={24}>
                 <h2
@@ -37,7 +37,7 @@ export default function ArticleBody({ post }: { post: Post }) {
                   className="mb-6 mt-16 flex scroll-mt-28 items-baseline gap-4 text-2xl font-semibold leading-snug text-white md:text-3xl"
                 >
                   <span className="font-mono text-sm font-normal text-yellow-400">
-                    {String(section).padStart(2, "0")}
+                    {String(sectionNo[i]).padStart(2, "0")}
                   </span>
                   {b.text}
                 </h2>

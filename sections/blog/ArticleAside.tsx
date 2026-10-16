@@ -6,15 +6,13 @@ import { Check, Link2 } from "lucide-react";
 import { headingId, type Post } from "@/data/blog";
 
 /** Share buttons: copy link, LinkedIn, X. */
-export function ShareButtons({ title }: { title: string }) {
+export function ShareButtons({ title, slug }: { title: string; slug: string }) {
   const [copied, setCopied] = useState(false);
-  const [url, setUrl] = useState("");
-
-  useEffect(() => setUrl(window.location.href), []);
+  const url = `https://studiobase.tech/blog/${slug}/`;
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -133,7 +131,7 @@ export default function ArticleAside({ post }: { post: Post }) {
 
       <div>
         <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">Share</p>
-        <ShareButtons title={post.title} />
+        <ShareButtons title={post.title} slug={post.slug} />
       </div>
     </div>
   );
