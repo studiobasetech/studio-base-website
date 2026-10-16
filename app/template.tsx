@@ -24,12 +24,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
         {/* logo in the middle while the curtain is up */}
         <motion.img
-          src="/images/studio-base-logo.png"
+          src="/images/studio-base-logo-sb.png"
           alt=""
           initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="absolute left-1/2 top-1/2 h-14 w-auto -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 h-12 w-auto -translate-x-1/2 -translate-y-1/2"
         />
       </motion.div>
 

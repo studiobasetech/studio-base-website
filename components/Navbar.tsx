@@ -105,11 +105,11 @@ export default function Navbar() {
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
             >
               <Image
-                src="/images/studio-base-logo.png"
+                src="/images/studio-base-logo-sb.png"
                 alt="Studio Base"
-                width={120}
+                width={240}
                 height={50}
-                className="h-9 w-auto object-contain"
+                className="h-7 w-auto object-contain xl:h-8"
                 priority
               />
             </motion.div>

@@ -21,9 +21,9 @@ export default function Footer() {
           <div>
             <Link href="/">
               <img
-                src="/images/studio-base-logo.png"
+                src="/images/studio-base-logo-sb.png"
                 alt="Studio Base"
-                className="h-12 w-auto"
+                className="h-10 w-auto"
               />
             </Link>
 
