@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
+import ParticleField from "@/components/ParticleField";
 import GalaxyScene from "./GalaxyScene";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -62,6 +63,10 @@ export default function ProductsHero() {
     >
       {/* Galaxy scene: rendered galaxy + live stars, constellation and HUD */}
       <GalaxyScene nx={px} ny={py} />
+
+      {/* Constellation effect over the whole hero (dots link to each other
+          and reach toward the mouse) */}
+      <ParticleField density={0.85} strength={1.9} />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* TEXT */}

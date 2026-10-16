@@ -69,7 +69,7 @@ export default function ProductsCTA() {
       </motion.div>
 
       {/* Constellation effect (same as the Home "Let's Build Together") */}
-      <ParticleField density={0.5} />
+      <ParticleField density={0.9} />
 
       <motion.div
         variants={container}

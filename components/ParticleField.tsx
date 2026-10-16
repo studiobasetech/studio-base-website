@@ -8,15 +8,19 @@ import { useEffect, useRef } from "react";
  *
  *   <ParticleField />                       // yellow, like the Home hero
  *   <ParticleField color="168, 85, 247" />  // purple
+ *   <ParticleField strength={1.8} />          // bolder, for busy backgrounds
  */
 export default function ParticleField({
   color = "250, 204, 21",
   density = 1,
+  strength = 1,
 }: {
   /** "r, g, b" of the dots and lines */
   color?: string;
   /** 1 = same amount as the Home hero */
   density?: number;
+  /** 1 = normal; higher = brighter dots and thicker lines */
+  strength?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -55,7 +59,7 @@ export default function ParticleField({
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 1.4 + 0.5,
+        r: (Math.random() * 1.4 + 0.5) * (0.6 + 0.4 * strength),
       }));
     };
 
@@ -93,15 +97,15 @@ export default function ParticleField({
           p.x += mdx * 0.004;
           p.y += mdy * 0.004;
 
-          ctx.strokeStyle = `rgba(${color}, ${(1 - md / MOUSE_LINK) * 0.5})`;
-          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = `rgba(${color}, ${Math.min(1, (1 - md / MOUSE_LINK) * 0.5 * strength)})`;
+          ctx.lineWidth = 0.8 * strength;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouse.x, mouse.y);
           ctx.stroke();
         }
 
-        ctx.fillStyle = `rgba(${color}, 0.7)`;
+        ctx.fillStyle = `rgba(${color}, ${Math.min(1, 0.7 * strength)})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -111,8 +115,8 @@ export default function ParticleField({
           const d = Math.hypot(p.x - q.x, p.y - q.y);
 
           if (d < LINK) {
-            ctx.strokeStyle = `rgba(${color}, ${(1 - d / LINK) * 0.2})`;
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = `rgba(${color}, ${Math.min(1, (1 - d / LINK) * 0.2 * strength)})`;
+            ctx.lineWidth = 0.6 * Math.sqrt(strength);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(q.x, q.y);
@@ -137,7 +141,7 @@ export default function ParticleField({
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
     };
-  }, [color, density]);
+  }, [color, density, strength]);
 
   return (
     <canvas
