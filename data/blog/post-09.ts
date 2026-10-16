@@ -7,7 +7,7 @@ const post: Post = {
     "The cloud promised to make you pay only for what you use. In practice, many bills grow faster than the business. Where the money goes and how to take control.",
   category: "Cloud",
   date: "2026-06-16",
-  image: "/images/blog/cloud.jpg",
+  image: "/images/blog/cloud-v2.jpg",
   imageAlt: "A cloud connected to server racks, with a piggy bank, coins and a falling cost chart",
   takeaways: [
     "Cloud bills grow through idle resources, oversized machines and forgotten experiments.",

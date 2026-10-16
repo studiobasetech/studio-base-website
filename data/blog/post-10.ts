@@ -7,7 +7,7 @@ const post: Post = {
     "Buildings are becoming responsive. How connected lighting, sensors and data are changing the way offices, shops and homes are designed and used.",
   category: "Design & Spaces",
   date: "2026-06-02",
-  image: "/images/blog/smart-spaces.jpg",
+  image: "/images/blog/smart-spaces-v2.jpg",
   imageAlt: "A warm living room with pendant lights, a sofa, a plant, a smart thermostat and a phone app",
   takeaways: [
     "Smart spaces adapt light, climate and layout to how people actually use them.",

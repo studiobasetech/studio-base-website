@@ -7,7 +7,7 @@ const post: Post = {
     "You don’t need a data science team to make better decisions with data. How to pick the few numbers that matter, build trust in them and turn dashboards into action.",
   category: "Data",
   date: "2026-06-30",
-  image: "/images/blog/analytics.jpg",
+  image: "/images/blog/analytics-v2.jpg",
   imageAlt: "A computer monitor showing a business dashboard with bar charts, a trend line and a donut chart",
   takeaways: [
     "Start from decisions, not data: ask what you need to know to act differently.",

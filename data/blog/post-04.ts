@@ -7,7 +7,7 @@ const post: Post = {
     "Most automation projects fail for human reasons, not technical ones. How to choose the right processes, involve the right people and measure what matters.",
   category: "Automation",
   date: "2026-08-25",
-  image: "/images/blog/automation.jpg",
+  image: "/images/blog/automation-v2.jpg",
   imageAlt: "Documents moving along a conveyor belt through a machine with gears into a completed folder",
   takeaways: [
     "Automate a process only after you understand and simplify it.",
