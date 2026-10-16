@@ -12,6 +12,18 @@ import PostCard from "./PostCard";
 
 const MotionLink = motion.create(Link);
 
+/*
+ * Topic filter colours: same set as the blog card hovers
+ * (yellow, purple, blue, cyan, pink). Written out in full for Tailwind.
+ */
+const FILTER_COLORS = [
+  { on: "border-yellow-400 text-black", pill: "bg-yellow-400 shadow-[0_0_24px_-4px_rgba(250,204,21,0.7)]", off: "hover:border-yellow-400 hover:text-yellow-300" },
+  { on: "border-purple-500 text-white", pill: "bg-purple-500 shadow-[0_0_24px_-4px_rgba(168,85,247,0.7)]", off: "hover:border-purple-500 hover:text-purple-300" },
+  { on: "border-blue-500 text-white", pill: "bg-blue-500 shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)]", off: "hover:border-blue-500 hover:text-blue-300" },
+  { on: "border-cyan-400 text-black", pill: "bg-cyan-400 shadow-[0_0_24px_-4px_rgba(34,211,238,0.7)]", off: "hover:border-cyan-400 hover:text-cyan-300" },
+  { on: "border-pink-500 text-white", pill: "bg-pink-500 shadow-[0_0_24px_-4px_rgba(236,72,153,0.7)]", off: "hover:border-pink-500 hover:text-pink-300" },
+];
+
 /** Latest article, shown large at the top of the blog. */
 function FeaturedPost() {
   const post = posts[0];
@@ -88,24 +100,23 @@ export default function BlogIndex() {
           </div>
 
           <div className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1 md:mx-0 md:flex-wrap md:justify-end md:px-0">
-            {["All", ...categories].map((c) => {
+            {["All", ...categories].map((c, i) => {
               const on = c === active;
+              const col = FILTER_COLORS[i % FILTER_COLORS.length];
               return (
                 <button
                   key={c}
                   type="button"
                   onClick={() => setActive(c)}
                   className={`relative shrink-0 rounded-full border px-4 py-2 text-xs font-medium transition-colors duration-300 ${
-                    on
-                      ? "border-yellow-400 text-black"
-                      : "border-white/15 text-zinc-300 hover:border-yellow-400/60 hover:text-yellow-300"
+                    on ? col.on : `border-white/15 text-zinc-300 ${col.off}`
                   }`}
                 >
                   {on && (
                     <motion.span
                       layoutId="blog-filter"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      className="absolute inset-0 rounded-full bg-yellow-400"
+                      className={`absolute inset-0 rounded-full transition-colors duration-300 ${col.pill}`}
                     />
                   )}
                   <span className="relative">{c}</span>
