@@ -4,7 +4,6 @@ import { motion, type Variants } from "framer-motion";
 import ParticleField from "@/components/ParticleField";
 import { ShimmerText } from "@/components/Effects";
 import StarField from "@/sections/products-services/StarField";
-import { categories, posts } from "@/data/blog";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -105,15 +104,6 @@ export default function BlogHero() {
           variants={fadeUp}
           className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-4 text-xs font-medium uppercase tracking-[0.2em]"
         >
-          <span className="rounded-full border border-yellow-400/40 bg-yellow-400/10 px-4 py-1.5 text-yellow-200 shadow-[0_0_24px_-6px_rgba(250,204,21,0.6)]">
-            <span className="mr-1.5 text-sm font-semibold text-yellow-300">{String(posts.length).padStart(2, "0")}</span>
-            Articles
-          </span>
-          <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-1.5 text-cyan-200 shadow-[0_0_24px_-6px_rgba(34,211,238,0.6)]">
-            <span className="mr-1.5 text-sm font-semibold text-cyan-300">{String(categories.length).padStart(2, "0")}</span>
-            Topics
-          </span>
-          <span className="hidden h-px w-12 bg-gradient-to-r from-yellow-400 via-cyan-400 to-pink-500 sm:block" />
           <span className="flex flex-wrap gap-x-3 gap-y-1">
             {topics.map((t, i) => (
               <motion.span
