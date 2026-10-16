@@ -1,5 +1,5 @@
 /**
- * All blog articles. To add one: create post-11.ts (copy an existing
+ * All blog articles. To add one: create post-20.ts (copy an existing
  * file as a template), add its image to public/images/blog/, and add
  * it to the list below. Newest articles appear first automatically.
  */
@@ -13,11 +13,22 @@ import p06 from "./post-06";
 import p07 from "./post-07";
 import p08 from "./post-08";
 import p09 from "./post-09";
-import p10 from "./post-10";
+import p11 from "./post-11";
+import p12 from "./post-12";
+import p13 from "./post-13";
+import p14 from "./post-14";
+import p15 from "./post-15";
+import p16 from "./post-16";
+import p17 from "./post-17";
+import p18 from "./post-18";
+import p19 from "./post-19";
 
 export type { Block, Post };
 
-export const posts: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10].sort(
+export const posts: Post[] = [
+  p01, p02, p03, p04, p05, p06, p07, p08, p09,
+  p11, p12, p13, p14, p15, p16, p17, p18, p19,
+].sort(
   (a, b) => b.date.localeCompare(a.date),
 );
 
