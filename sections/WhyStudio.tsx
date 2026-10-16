@@ -17,7 +17,7 @@ const values = [
     description:
       "Cutting-edge solutions designed to create real business impact.",
     accent: "yellow",
-    rgb: "250,204,21",
+    rgb: "59,130,246",
   },
   {
     icon: Users,
@@ -46,10 +46,10 @@ const values = [
 // Full class names are written out so Tailwind can detect them.
 const styles = {
   yellow: {
-    card: "border-yellow-400/40 hover:border-yellow-400 hover:shadow-[0_0_40px_-10px_rgba(250,204,21,0.5)]",
-    glow: "bg-yellow-400/20",
-    icon: "text-yellow-400 border-yellow-400/50 shadow-yellow-400/20",
-    title: "group-hover:text-yellow-400",
+    card: "border-blue-500/40 hover:border-blue-500 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]",
+    glow: "bg-blue-500/20",
+    icon: "text-blue-500 border-blue-500/50 shadow-blue-500/20",
+    title: "group-hover:text-blue-500",
   },
   purple: {
     card: "border-purple-500/40 hover:border-purple-500 hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.55)]",
@@ -274,7 +274,7 @@ export default function WhyStudio() {
                   repeatType: "reverse",
                   ease: "easeInOut",
                 }}
-                className="inline-block bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-[length:200%_100%] bg-clip-text text-transparent"
+                className="inline-block bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 bg-[length:200%_100%] bg-clip-text text-transparent"
               >
                 Technology Provider.
               </motion.span>

@@ -137,7 +137,7 @@ export default function WhyStudioBase() {
                       />
                     </motion.span>
                   </span>
-                  <h3 className="whitespace-pre-line text-left text-sm font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-yellow-400">
+                  <h3 className="whitespace-pre-line text-left text-sm font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-blue-500">
                     {r.title}
                   </h3>
                 </div>

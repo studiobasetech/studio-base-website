@@ -20,7 +20,7 @@ export default function PageHeader({
   return (
     <section className="relative overflow-hidden px-6 pb-16 pt-36 lg:px-12 lg:pb-24 lg:pt-44">
       {/* Glow */}
-      <div className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-yellow-400/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-blue-500/10 blur-[120px]" />
 
       <Reveal className="relative mx-auto max-w-7xl">
         <p className="text-[10px] tracking-[0.45em] text-zinc-400">{eyebrow}</p>
@@ -30,7 +30,7 @@ export default function PageHeader({
           {accent && (
             <>
               <br />
-              <span className="text-yellow-400">{accent}</span>
+              <span className="text-blue-500">{accent}</span>
             </>
           )}
         </h1>

@@ -52,7 +52,7 @@ export default function SectionIntro({
               hidden: { width: 0 },
               show: { width: 32, transition: { duration: 0.8, ease: EASE } },
             }}
-            className="h-px bg-yellow-400"
+            className="h-px bg-blue-500"
           />
           {eyebrow}
         </motion.p>
@@ -67,7 +67,7 @@ export default function SectionIntro({
       {side && (
         <motion.div
           variants={item}
-          className="space-y-4 border-l border-yellow-400/30 pl-5 text-sm leading-relaxed text-zinc-400"
+          className="space-y-4 border-l border-blue-500/30 pl-5 text-sm leading-relaxed text-zinc-400"
         >
           {side}
         </motion.div>

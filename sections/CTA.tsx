@@ -40,7 +40,7 @@ export default function CTA() {
           "
           style={{
             backgroundImage:
-              "url('/images/cta-mountain.png')",
+              "url('/images/cta-mountain-blue.png')",
           }}
         />
 
@@ -108,7 +108,7 @@ export default function CTA() {
 
               <br />
 
-              <span className="text-yellow-400">
+              <span className="text-blue-500">
                 Into Real Solutions.
               </span>
 
@@ -144,14 +144,14 @@ export default function CTA() {
                 items-center
                 gap-2
                 rounded-full
-                bg-yellow-400
+                bg-blue-500
                 px-6
                 py-2.5
                 text-xs
                 font-semibold
                 text-black
                 transition
-                hover:bg-yellow-300
+                hover:bg-blue-400
               ">
                 Book a Consultation
 
@@ -171,8 +171,8 @@ export default function CTA() {
                 font-semibold
                 text-white
                 transition
-                hover:border-yellow-400
-                hover:text-yellow-400
+                hover:border-blue-500
+                hover:text-blue-500
               ">
                 Contact Us
               </Link>

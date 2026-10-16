@@ -22,7 +22,7 @@ export default function Ticker() {
 
   return (
     <div className="relative overflow-hidden bg-black">
-      <div className="border-y border-yellow-400/30 bg-yellow-400/[0.04] py-3.5">
+      <div className="border-y border-blue-500/30 bg-blue-500/[0.04] py-3.5">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
           transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
@@ -34,7 +34,7 @@ export default function Ticker() {
               className="flex items-center gap-8 whitespace-nowrap text-sm font-medium uppercase tracking-[0.3em] text-zinc-300"
             >
               {w}
-              <Sparkle size={12} className="text-yellow-400" />
+              <Sparkle size={12} className="text-blue-500" />
             </span>
           ))}
         </motion.div>

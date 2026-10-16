@@ -21,7 +21,7 @@ const fadeUp: Variants = {
 const topics = ["AI", "Automation", "Security", "Data", "Cloud", "Web"];
 
 // Same hover colours as the blog cards (purple left out on purpose: no purple in the hero)
-const topicColors = ["text-yellow-300", "text-cyan-300", "text-blue-400", "text-pink-400", "text-orange-300"];
+const topicColors = ["text-blue-400", "text-cyan-300", "text-yellow-300", "text-pink-400", "text-orange-300"];
 
 export default function BlogHero() {
   return (
@@ -40,7 +40,7 @@ export default function BlogHero() {
           style={{
             rotateX: 62,
             backgroundImage:
-              "linear-gradient(rgba(250,204,21,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(250,204,21,0.22) 1px, transparent 1px)",
+              "linear-gradient(rgba(59,130,246,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.22) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
           }}
         />
@@ -54,7 +54,7 @@ export default function BlogHero() {
       <motion.div
         animate={{ x: [0, -50, 0], y: [0, 40, 0], scale: [1, 1.1, 1] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute right-1/4 top-1/3 h-[380px] w-[460px] rounded-full bg-blue-500/20 blur-[130px]"
+        className="pointer-events-none absolute right-1/4 top-1/3 h-[380px] w-[460px] rounded-full bg-yellow-400/20 blur-[130px]"
       />
       <motion.div
         animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.2, 1] }}
@@ -64,7 +64,7 @@ export default function BlogHero() {
       <motion.div
         animate={{ x: [0, 40, 0], y: [0, -25, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -bottom-24 left-1/3 h-[340px] w-[520px] rounded-full bg-yellow-400/[0.14] blur-[130px]"
+        className="pointer-events-none absolute -bottom-24 left-1/3 h-[340px] w-[520px] rounded-full bg-blue-500/[0.14] blur-[130px]"
       />
       <motion.div
         animate={{ opacity: [0.5, 1, 0.5] }}

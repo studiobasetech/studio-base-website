@@ -6,12 +6,12 @@ import { useEffect, useRef } from "react";
  * Floating dots connected by lines that reach toward the mouse.
  * Place inside a `relative` element; it fills it.
  *
- *   <ParticleField />                       // yellow, like the Home hero
+ *   <ParticleField />                       // electric blue, like the Home hero
  *   <ParticleField color="168, 85, 247" />  // purple
  *   <ParticleField strength={1.8} />          // bolder, for busy backgrounds
  */
 export default function ParticleField({
-  color = "250, 204, 21",
+  color = "59, 130, 246",
   density = 1,
   strength = 1,
 }: {

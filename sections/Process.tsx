@@ -17,8 +17,8 @@ const steps = [
     title: "Discovery",
     description: "We understand your goals and opportunities.",
     icon: Search,
-    color: "text-yellow-400",
-    fill: "bg-yellow-400",
+    color: "text-blue-500",
+    fill: "bg-blue-500",
   },
   {
     number: "02",
@@ -33,8 +33,8 @@ const steps = [
     title: "Development",
     description: "We build, test, and refine your solution.",
     icon: Code2,
-    color: "text-blue-500",
-    fill: "bg-blue-500",
+    color: "text-yellow-400",
+    fill: "bg-yellow-400",
   },
   {
     number: "04",
@@ -49,8 +49,8 @@ const steps = [
     title: "Growth",
     description: "We provide ongoing support to help you scale.",
     icon: BarChart3,
-    color: "text-yellow-400",
-    fill: "bg-yellow-400",
+    color: "text-blue-500",
+    fill: "bg-blue-500",
   },
 ];
 

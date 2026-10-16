@@ -130,7 +130,7 @@ function ParticleField() {
           p.x += mdx * 0.004;
           p.y += mdy * 0.004;
 
-          ctx.strokeStyle = `rgba(250, 204, 21, ${(1 - md / MOUSE_LINK) * 0.5})`;
+          ctx.strokeStyle = `rgba(59, 130, 246, ${(1 - md / MOUSE_LINK) * 0.5})`;
           ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
@@ -138,7 +138,7 @@ function ParticleField() {
           ctx.stroke();
         }
 
-        ctx.fillStyle = "rgba(250, 204, 21, 0.7)";
+        ctx.fillStyle = "rgba(59, 130, 246, 0.7)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -148,7 +148,7 @@ function ParticleField() {
           const d = Math.hypot(p.x - q.x, p.y - q.y);
 
           if (d < LINK) {
-            ctx.strokeStyle = `rgba(250, 204, 21, ${(1 - d / LINK) * 0.2})`;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${(1 - d / LINK) * 0.2})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -197,7 +197,7 @@ export default function Hero() {
   const sx = useSpring(mx, { stiffness: 120, damping: 24 });
   const sy = useSpring(my, { stiffness: 120, damping: 24 });
 
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, rgba(250,204,21,0.14), transparent 65%)`;
+  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${sx}px ${sy}px, rgba(59,130,246,0.14), transparent 65%)`;
 
   const spring = { stiffness: 50, damping: 20 };
 
@@ -267,7 +267,7 @@ export default function Hero() {
       <motion.div
         animate={{ x: [0, 60, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-24 top-1/3 h-[420px] w-[420px] rounded-full bg-yellow-400/10 blur-[120px]"
+        className="pointer-events-none absolute -left-24 top-1/3 h-[420px] w-[420px] rounded-full bg-blue-500/10 blur-[120px]"
       />
 
       {/* Content */}
@@ -280,7 +280,7 @@ export default function Hero() {
         >
           <motion.p
             variants={fadeUp}
-            className="mb-4 text-sm tracking-[0.4em] text-yellow-400"
+            className="mb-4 text-sm tracking-[0.4em] text-blue-500"
           >
             TECHNOLOGY. STRATEGY. REAL IMPACT.
           </motion.p>
@@ -307,7 +307,7 @@ export default function Hero() {
                           repeatType: "reverse",
                           ease: "easeInOut",
                         }}
-                        className="inline-block bg-gradient-to-r from-yellow-400 via-yellow-100 to-yellow-400 bg-[length:200%_100%] bg-clip-text text-transparent"
+                        className="inline-block bg-gradient-to-r from-blue-500 via-blue-200 to-blue-500 bg-[length:200%_100%] bg-clip-text text-transparent"
                       >
                         {w}
                       </motion.span>
@@ -336,14 +336,14 @@ export default function Hero() {
               whileTap={{ scale: 0.96 }}
               animate={{
                 boxShadow: [
-                  "0 0 0 0 rgba(250,204,21,0.5)",
-                  "0 0 0 18px rgba(250,204,21,0)",
+                  "0 0 0 0 rgba(59,130,246,0.5)",
+                  "0 0 0 18px rgba(59,130,246,0)",
                 ],
               }}
               transition={{
                 boxShadow: { duration: 1.8, repeat: Infinity, ease: "easeOut" },
               }}
-              className="relative overflow-hidden rounded-full bg-yellow-400 px-8 py-3 font-medium text-black transition-colors hover:bg-yellow-300"
+              className="relative overflow-hidden rounded-full bg-blue-500 px-8 py-3 font-medium text-white transition-colors hover:bg-blue-400"
             >
               {/* Light sweep across the button */}
               <motion.span
@@ -364,7 +364,7 @@ export default function Hero() {
               href="/products-services"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
-              className="rounded-full border border-zinc-600 px-8 py-3 transition-colors hover:border-yellow-400 hover:text-yellow-400"
+              className="rounded-full border border-zinc-600 px-8 py-3 transition-colors hover:border-blue-500 hover:text-blue-500"
             >
               Explore Our Services
             </MotionLink>
@@ -375,7 +375,7 @@ export default function Hero() {
       {/* Glowing line at the bottom edge */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"
         animate={{ opacity: [0.3, 1, 0.3] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -387,7 +387,7 @@ export default function Hero() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="flex h-10 w-6 justify-center rounded-full border border-white/30 pt-2"
         >
-          <span className="h-2 w-1 rounded-full bg-yellow-400" />
+          <span className="h-2 w-1 rounded-full bg-blue-500" />
         </motion.div>
       </div>
     </section>

@@ -7,7 +7,7 @@ import StarField from "./StarField";
 /**
  * Products & Services hero background.
  *
- * A rendered spiral galaxy (public/images/galaxy-hero.jpg) with live
+ * A rendered spiral galaxy (public/images/galaxy-hero-blue.jpg) with live
  * layers on top: twinkling stars and shooting stars, gold Matrix-style
  * code rain, and thin gold orbit rings + a radar sweep locked onto the
  * galaxy core. Slow zoom + mouse parallax for depth. (The constellation
@@ -28,8 +28,8 @@ const DISK_SQUASH = 0.46;
 /* Tilted rings that follow the plane of the galaxy */
 function OrbitRings() {
   const rings = [
-    { size: 40, dash: "2 10", speed: 80, color: "rgba(250,204,21,0.45)", width: 0.35 },
-    { size: 56, dash: "60 30 4 30", speed: 120, color: "rgba(253,230,138,0.35)", width: 0.3 },
+    { size: 40, dash: "2 10", speed: 80, color: "rgba(59,130,246,0.45)", width: 0.35 },
+    { size: 56, dash: "60 30 4 30", speed: 120, color: "rgba(147,197,253,0.35)", width: 0.3 },
     { size: 76, dash: "1 6", speed: 160, color: "rgba(196,181,253,0.25)", width: 0.3 },
   ];
 
@@ -78,7 +78,7 @@ function OrbitRings() {
           left: "-28cqw",
           top: "-28cqw",
           background:
-            "conic-gradient(from 0deg, rgba(250,204,21,0.16), rgba(250,204,21,0) 50deg, transparent 360deg)",
+            "conic-gradient(from 0deg, rgba(59,130,246,0.16), rgba(59,130,246,0) 50deg, transparent 360deg)",
           maskImage: "radial-gradient(circle, black 30%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(circle, black 30%, transparent 70%)",
         }}
@@ -126,7 +126,7 @@ export default function GalaxyScene({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/galaxy-hero.jpg"
+              src="/images/galaxy-hero-blue.jpg"
               alt=""
               className="absolute inset-0 h-full w-full select-none"
               draggable={false}

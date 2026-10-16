@@ -22,12 +22,12 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
 
   const enc = encodeURIComponent;
   const btn =
-    "flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-yellow-400 hover:text-yellow-300";
+    "flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-blue-500 hover:text-blue-400";
 
   return (
     <div className="flex items-center gap-2">
       <button type="button" onClick={copy} aria-label="Copy link" className={btn}>
-        {copied ? <Check size={16} className="text-yellow-300" /> : <Link2 size={16} />}
+        {copied ? <Check size={16} className="text-blue-400" /> : <Link2 size={16} />}
       </button>
       <a
         aria-label="Share on LinkedIn"
@@ -47,7 +47,7 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
       >
         <span className="text-sm">𝕏</span>
       </a>
-      {copied && <span className="text-xs text-yellow-300">Link copied</span>}
+      {copied && <span className="text-xs text-blue-400">Link copied</span>}
     </div>
   );
 }
@@ -91,11 +91,11 @@ export default function ArticleAside({ post }: { post: Post }) {
       <div>
         <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
           <span>Reading</span>
-          <span className="text-yellow-300">{Math.round(progress * 100)}%</span>
+          <span className="text-blue-400">{Math.round(progress * 100)}%</span>
         </div>
         <div className="mt-2 h-px bg-white/10">
           <motion.div
-            className="h-px bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.8)]"
+            className="h-px bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"
             style={{ width: `${progress * 100}%` }}
           />
         </div>
@@ -114,11 +114,11 @@ export default function ArticleAside({ post }: { post: Post }) {
                   href={`#${id}`}
                   className={`relative -ml-px flex gap-3 border-l py-1.5 pl-4 text-[13px] leading-snug transition-colors ${
                     on
-                      ? "border-yellow-400 text-white"
+                      ? "border-blue-500 text-white"
                       : "border-transparent text-zinc-500 hover:text-zinc-200"
                   }`}
                 >
-                  <span className={`font-mono text-[11px] ${on ? "text-yellow-400" : "text-zinc-600"}`}>
+                  <span className={`font-mono text-[11px] ${on ? "text-blue-500" : "text-zinc-600"}`}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {h}

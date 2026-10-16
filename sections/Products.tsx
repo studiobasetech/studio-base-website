@@ -45,19 +45,19 @@ const products = [
       "Sales Analytics & Insights",
     ],
 
-    image: "/images/baselead-ai.png",
-    accent: "yellow",
+    image: "/images/baselead-ai-blue.png",
+    accent: "blue",
   },
 ];
 
 const styles = {
-  yellow: {
-    border: "border-yellow-400/40 hover:border-yellow-400",
-    borderOn: "border-yellow-400",
-    text: "text-yellow-400",
-    glow: "bg-yellow-400/30",
-    dot: "bg-yellow-400",
-    rgb: "250,204,21",
+  blue: {
+    border: "border-blue-500/40 hover:border-blue-500",
+    borderOn: "border-blue-500",
+    text: "text-blue-500",
+    glow: "bg-blue-500/30",
+    dot: "bg-blue-500",
+    rgb: "59,130,246",
   },
 
   purple: {
@@ -295,7 +295,7 @@ export default function Products() {
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-white">
               <span className="block whitespace-nowrap">Innovative Tools</span>
 
-              <span className="block whitespace-nowrap text-yellow-400">
+              <span className="block whitespace-nowrap text-blue-500">
                 Built for Growth.
               </span>
             </h2>
@@ -307,7 +307,7 @@ export default function Products() {
 
             <Link
               href="/products-services#our-products"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-yellow-400 px-7 py-3 text-sm font-medium text-black transition-colors hover:bg-yellow-300"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-blue-500 px-7 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400"
             >
               Explore Our Products
               <ArrowRight size={14} />

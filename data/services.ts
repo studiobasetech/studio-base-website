@@ -47,9 +47,9 @@ export const techProducts = [
       "Sales Pipeline Management",
       "CRM Integration",
     ],
-    image: "/images/baselead-ai.png",
+    image: "/images/baselead-ai-blue.png",
     href: "/contact",
-    accent: "yellow" as Accent,
+    accent: "blue" as Accent,
   },
 ];
 
@@ -64,7 +64,7 @@ export const techServices = [
     title: "Artificial Intelligence\n& Business Automation",
     description:
       "AI agents, intelligent process automation, sales automation, workflow automation, and custom AI integrations.",
-    accent: "yellow" as Accent,
+    accent: "blue" as Accent,
   },
   {
     icon: "software",
@@ -78,7 +78,7 @@ export const techServices = [
     title: "Application\nDevelopment",
     description:
       "Mobile applications, web applications, cross-platform solutions, application architecture, and maintenance.",
-    accent: "blue" as Accent,
+    accent: "yellow" as Accent,
   },
   {
     icon: "web",
@@ -92,7 +92,7 @@ export const techServices = [
     title: "Cybersecurity\nSolutions",
     description:
       "Security assessments, vulnerability analysis, penetration testing, application security, data protection, and monitoring.",
-    accent: "blue" as Accent,
+    accent: "yellow" as Accent,
   },
   {
     icon: "cloud",
@@ -113,7 +113,7 @@ export const techServices = [
     title: "Technology Strategy\n& AI Consulting",
     description:
       "Technology strategy, AI adoption consulting, software architecture, digital transformation planning, and process optimization.",
-    accent: "yellow" as Accent,
+    accent: "blue" as Accent,
   },
 ];
 
@@ -132,14 +132,14 @@ export const reasons = [
     icon: "results",
     title: "Measurable\nResults",
     description: "Increased efficiency, productivity and growth.",
-    accent: "yellow" as Accent,
+    accent: "blue" as Accent,
   },
   {
     icon: "expertise",
     title: "Trusted\nExpertise",
     description:
       "A network of specialized experts in AI, software, and cybersecurity.",
-    accent: "blue" as Accent,
+    accent: "yellow" as Accent,
   },
   {
     icon: "scalable",

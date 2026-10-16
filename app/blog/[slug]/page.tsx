@@ -68,7 +68,7 @@ export default async function ArticlePage({
               <ShareButtons title={post.title} slug={post.slug} />
               <Link
                 href="/blog"
-                className="group inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-yellow-300"
+                className="group inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-blue-400"
               >
                 <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
                 All articles

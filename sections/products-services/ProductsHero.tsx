@@ -121,14 +121,14 @@ export default function ProductsHero() {
               whileTap={{ scale: 0.96 }}
               animate={{
                 boxShadow: [
-                  "0 0 0 0 rgba(250,204,21,0.5)",
-                  "0 0 0 18px rgba(250,204,21,0)",
+                  "0 0 0 0 rgba(59,130,246,0.5)",
+                  "0 0 0 18px rgba(59,130,246,0)",
                 ],
               }}
               transition={{
                 boxShadow: { duration: 1.8, repeat: Infinity, ease: "easeOut" },
               }}
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-yellow-400 px-7 py-3 text-sm font-semibold text-black transition-colors hover:bg-yellow-300"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
               <span className="relative">Book a Consultation</span>

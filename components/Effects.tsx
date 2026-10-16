@@ -18,7 +18,7 @@ export function TiltCard({
   children,
   className = "",
   style,
-  rgb = "250,204,21",
+  rgb = "59,130,246",
   tilt = 8,
   float = false,
   floatDelay = 0,
@@ -113,7 +113,7 @@ export function ShimmerText({
     <motion.span
       animate={{ backgroundPosition: ["0% 50%", "100% 50%"] }}
       transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-      className={`inline-block bg-gradient-to-r from-yellow-400 via-yellow-100 to-yellow-400 bg-[length:200%_100%] bg-clip-text text-transparent ${className}`}
+      className={`inline-block bg-gradient-to-r from-blue-500 via-blue-200 to-blue-500 bg-[length:200%_100%] bg-clip-text text-transparent ${className}`}
     >
       {children}
     </motion.span>
@@ -150,7 +150,7 @@ export function GlowLine({ className = "bottom-0" }: { className?: string }) {
   return (
     <motion.div
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-x-0 z-10 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent ${className}`}
+      className={`pointer-events-none absolute inset-x-0 z-10 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent ${className}`}
       animate={{ opacity: [0.3, 1, 0.3] }}
       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
     />

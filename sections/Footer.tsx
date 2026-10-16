@@ -42,7 +42,7 @@ export default function Footer() {
                     aria-label={s.label}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition hover:text-yellow-400"
+                    className="transition hover:text-blue-500"
                   >
                     {s.short}
                   </a>
@@ -63,7 +63,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-zinc-500 transition hover:text-yellow-400"
+                    className="text-sm text-zinc-500 transition hover:text-blue-500"
                   >
                     {item.label}
                   </Link>
@@ -80,7 +80,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-sm text-zinc-500 transition hover:text-yellow-400"
+                    className="text-sm text-zinc-500 transition hover:text-blue-500"
                   >
                     {item.label}
                   </Link>
@@ -94,13 +94,13 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white">Contact</h3>
             <a
               href={`mailto:${contact.email}`}
-              className="mt-5 block text-sm text-zinc-500 transition hover:text-yellow-400"
+              className="mt-5 block text-sm text-zinc-500 transition hover:text-blue-500"
             >
               {contact.email}
             </a>
             <a
               href={`tel:${contact.phone.replace(/\s/g, "")}`}
-              className="mt-2 block text-sm text-zinc-500 transition hover:text-yellow-400"
+              className="mt-2 block text-sm text-zinc-500 transition hover:text-blue-500"
             >
               {contact.phone}
             </a>

@@ -32,7 +32,7 @@ export default function ArticleHero({ post }: { post: Post }) {
   return (
     <section className="relative overflow-hidden bg-black px-6 pb-6 pt-32 lg:px-12 lg:pt-40">
       <ParticleField density={0.6} />
-      <div className="pointer-events-none absolute -right-24 top-10 h-[360px] w-[460px] rounded-full bg-yellow-400/10 blur-[130px]" />
+      <div className="pointer-events-none absolute -right-24 top-10 h-[360px] w-[460px] rounded-full bg-blue-500/10 blur-[130px]" />
 
       <motion.div
         variants={container}
@@ -43,7 +43,7 @@ export default function ArticleHero({ post }: { post: Post }) {
         <motion.div variants={fadeUp}>
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-zinc-400 transition-colors hover:text-yellow-300"
+            className="group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-zinc-400 transition-colors hover:text-blue-400"
           >
             <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
             Blog
@@ -52,7 +52,7 @@ export default function ArticleHero({ post }: { post: Post }) {
 
         <motion.p
           variants={fadeUp}
-          className="mt-8 inline-block rounded-full border border-yellow-400/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-yellow-300"
+          className="mt-8 inline-block rounded-full border border-blue-500/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-blue-400"
         >
           {post.category}
         </motion.p>
@@ -73,7 +73,7 @@ export default function ArticleHero({ post }: { post: Post }) {
           className="mt-8 flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400"
         >
           <span>{formatDate(post.date)}</span>
-          <span className="h-px w-8 bg-yellow-400/60" />
+          <span className="h-px w-8 bg-blue-500/60" />
           <span className="flex items-center gap-1.5">
             <Clock size={12} /> {readingTime(post)} min read
           </span>
@@ -86,7 +86,7 @@ export default function ArticleHero({ post }: { post: Post }) {
         initial={{ opacity: 0, y: 60, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.6, ease: EASE }}
-        className="relative z-10 mx-auto mt-12 aspect-[16/9] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_120px_-40px_rgba(250,204,21,0.35)] lg:mt-16"
+        className="relative z-10 mx-auto mt-12 aspect-[16/9] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_120px_-40px_rgba(59,130,246,0.35)] lg:mt-16"
       >
         <motion.div style={{ scale, y }} className="absolute inset-0">
           <Image

@@ -41,11 +41,11 @@ function Orbit({ front }: { front: boolean }) {
           className="relative h-full w-full rounded-full"
         >
           {/* ring line */}
-          <div className="absolute inset-0 rounded-full border border-yellow-300/40 shadow-[0_0_24px_rgba(250,204,21,0.25)]" />
+          <div className="absolute inset-0 rounded-full border border-blue-400/40 shadow-[0_0_24px_rgba(59,130,246,0.25)]" />
           <div className="absolute inset-[3%] rounded-full border border-dashed border-white/10" />
 
           {/* satellite */}
-          <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-100 shadow-[0_0_14px_5px_rgba(250,204,21,0.9),0_0_50px_14px_rgba(250,204,21,0.35)]" />
+          <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-200 shadow-[0_0_14px_5px_rgba(59,130,246,0.9),0_0_50px_14px_rgba(59,130,246,0.35)]" />
         </motion.div>
       </div>
     </div>
@@ -56,7 +56,7 @@ function Planet() {
   return (
     <div className="absolute inset-0">
       {/* outer haze */}
-      <div className="absolute -inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(250,204,21,0.10)_45%,rgba(124,58,237,0.10)_58%,transparent_70%)] blur-2xl" />
+      <div className="absolute -inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.10)_45%,rgba(124,58,237,0.10)_58%,transparent_70%)] blur-2xl" />
 
       {/* gold atmosphere rim (lit side, top-left) */}
       <motion.div
@@ -65,7 +65,7 @@ function Planet() {
         className="absolute -inset-[2.5%] rounded-full [mask-image:linear-gradient(135deg,black_20%,transparent_60%)]"
         style={{
           background:
-            "radial-gradient(circle, transparent 47.5%, rgba(254,240,138,0.95) 49%, rgba(250,204,21,0.45) 50.5%, rgba(250,204,21,0.10) 53%, transparent 58%)",
+            "radial-gradient(circle, transparent 47.5%, rgba(147,197,253,0.95) 49%, rgba(59,130,246,0.45) 50.5%, rgba(59,130,246,0.10) 53%, transparent 58%)",
           filter: "blur(1.5px)",
         }}
       />
@@ -77,7 +77,7 @@ function Planet() {
           background:
             "radial-gradient(circle at 30% 28%, #3b2a63 0%, #1a1238 30%, #0a0718 58%, #020105 80%)",
           boxShadow:
-            "inset 22px 18px 50px -12px rgba(253,224,71,0.55), inset -80px -90px 140px rgba(0,0,0,0.95)",
+            "inset 22px 18px 50px -12px rgba(96,165,250,0.55), inset -80px -90px 140px rgba(0,0,0,0.95)",
         }}
       >
         {/* slowly rotating surface bands */}
@@ -88,7 +88,7 @@ function Planet() {
           style={{
             backgroundImage: `
               radial-gradient(ellipse 18% 6% at 20% 30%, rgba(167,139,250,0.35), transparent),
-              radial-gradient(ellipse 25% 5% at 60% 55%, rgba(250,204,21,0.18), transparent),
+              radial-gradient(ellipse 25% 5% at 60% 55%, rgba(59,130,246,0.18), transparent),
               radial-gradient(ellipse 14% 4% at 85% 70%, rgba(129,140,248,0.3), transparent),
               radial-gradient(ellipse 22% 5% at 40% 78%, rgba(167,139,250,0.22), transparent),
               repeating-linear-gradient(180deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 2px, transparent 2px, transparent 14px)
@@ -100,10 +100,10 @@ function Planet() {
         {/* tech grid on the planet (latitude / longitude) */}
         <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full opacity-[0.12]">
           {[20, 35, 50, 65, 80].map((y) => (
-            <ellipse key={`lat-${y}`} cx="50" cy={y} rx={Math.sqrt(2500 - (y - 50) ** 2)} ry="2.2" fill="none" stroke="#fde68a" strokeWidth="0.25" />
+            <ellipse key={`lat-${y}`} cx="50" cy={y} rx={Math.sqrt(2500 - (y - 50) ** 2)} ry="2.2" fill="none" stroke="#93c5fd" strokeWidth="0.25" />
           ))}
           {[12, 26, 40].map((rx) => (
-            <ellipse key={`lon-${rx}`} cx="50" cy="50" rx={rx} ry="50" fill="none" stroke="#fde68a" strokeWidth="0.25" />
+            <ellipse key={`lon-${rx}`} cx="50" cy="50" rx={rx} ry="50" fill="none" stroke="#93c5fd" strokeWidth="0.25" />
           ))}
         </svg>
 
@@ -114,7 +114,7 @@ function Planet() {
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle, rgba(253,224,71,0.9) 0.6px, transparent 1.2px)",
+              "radial-gradient(circle, rgba(96,165,250,0.9) 0.6px, transparent 1.2px)",
             backgroundSize: "22px 22px",
             maskImage:
               "radial-gradient(circle at 75% 75%, black 0%, transparent 45%)",
@@ -141,7 +141,7 @@ function Hud() {
         className="absolute inset-0 h-full w-full"
       >
         <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="0.3" />
-        <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(250,204,21,0.35)" strokeWidth="0.4" strokeDasharray="0.4 3" />
+        <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(59,130,246,0.35)" strokeWidth="0.4" strokeDasharray="0.4 3" />
       </motion.svg>
 
       <motion.svg
@@ -151,7 +151,7 @@ function Hud() {
         className="absolute inset-[6%] h-[88%] w-[88%]"
       >
         {/* arc segments */}
-        <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(250,204,21,0.55)" strokeWidth="0.6" strokeDasharray="40 120 12 136" strokeLinecap="round" />
+        <circle cx="100" cy="100" r="98" fill="none" stroke="rgba(59,130,246,0.55)" strokeWidth="0.6" strokeDasharray="40 120 12 136" strokeLinecap="round" />
         <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(196,181,253,0.35)" strokeWidth="0.4" strokeDasharray="8 30" />
       </motion.svg>
 
@@ -162,16 +162,16 @@ function Hud() {
         "bottom-0 left-0 border-b border-l",
         "bottom-0 right-0 border-b border-r",
       ].map((pos) => (
-        <span key={pos} className={`absolute h-5 w-5 border-yellow-300/50 ${pos}`} />
+        <span key={pos} className={`absolute h-5 w-5 border-blue-400/50 ${pos}`} />
       ))}
 
       {/* labels */}
-      <div className="absolute left-[4%] top-[14%] hidden font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-yellow-200/70 sm:text-[10px]">
+      <div className="absolute left-[4%] top-[14%] hidden font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-blue-300/70 sm:text-[10px]">
         <p className="flex items-center gap-2">
           <motion.span
             animate={{ opacity: [1, 0.2, 1] }}
             transition={{ duration: 1.4, repeat: Infinity }}
-            className="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.9)]"
+            className="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.9)]"
           />
           Systems online
         </p>
@@ -179,7 +179,7 @@ function Hud() {
       </div>
 
       <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-500 sm:text-[10px]">
-        <p className="text-yellow-200/70">{COORDS}</p>
+        <p className="text-blue-300/70">{COORDS}</p>
         <p className="mt-1">Studio Base HQ</p>
       </div>
     </div>
@@ -233,7 +233,7 @@ export default function SpaceScene({
         <motion.div
           animate={{ opacity: [0.5, 0.9, 0.5] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute right-[30%] top-[30%] h-[300px] w-[300px] rounded-full bg-yellow-500/10 blur-[120px]"
+          className="absolute right-[30%] top-[30%] h-[300px] w-[300px] rounded-full bg-blue-600/10 blur-[120px]"
         />
       </motion.div>
 

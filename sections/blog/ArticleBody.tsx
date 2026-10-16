@@ -18,7 +18,7 @@ export default function ArticleBody({ post }: { post: Post }) {
             return i === firstP ? (
               <p
                 key={i}
-                className="mb-7 text-lg leading-[1.8] text-zinc-200 first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-6xl first-letter:font-semibold first-letter:leading-[0.85] first-letter:text-yellow-400 md:text-xl"
+                className="mb-7 text-lg leading-[1.8] text-zinc-200 first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-6xl first-letter:font-semibold first-letter:leading-[0.85] first-letter:text-blue-500 md:text-xl"
               >
                 {b.text}
               </p>
@@ -36,7 +36,7 @@ export default function ArticleBody({ post }: { post: Post }) {
                   id={headingId(b.text)}
                   className="mb-6 mt-16 flex scroll-mt-28 items-baseline gap-4 text-2xl font-semibold leading-snug text-white md:text-3xl"
                 >
-                  <span className="font-mono text-sm font-normal text-yellow-400">
+                  <span className="font-mono text-sm font-normal text-blue-500">
                     {String(sectionNo[i]).padStart(2, "0")}
                   </span>
                   {b.text}
@@ -48,12 +48,12 @@ export default function ArticleBody({ post }: { post: Post }) {
           case "quote":
             return (
               <Reveal key={i} y={24}>
-                <blockquote className="relative my-12 overflow-hidden rounded-xl border border-yellow-400/25 bg-gradient-to-br from-yellow-400/10 via-transparent to-yellow-400/[0.03] px-7 py-8 md:px-10">
-                  <Quote size={40} className="absolute -right-1 -top-1 text-yellow-400/15" />
+                <blockquote className="relative my-12 overflow-hidden rounded-xl border border-blue-500/25 bg-gradient-to-br from-blue-500/10 via-transparent to-blue-500/[0.03] px-7 py-8 md:px-10">
+                  <Quote size={40} className="absolute -right-1 -top-1 text-blue-500/15" />
                   <p className="relative text-xl font-medium leading-relaxed text-white md:text-2xl">
                     {b.text}
                   </p>
-                  <span className="mt-5 block h-px w-16 bg-yellow-400" />
+                  <span className="mt-5 block h-px w-16 bg-blue-500" />
                 </blockquote>
               </Reveal>
             );
@@ -68,7 +68,7 @@ export default function ArticleBody({ post }: { post: Post }) {
                   const rest = label ? item.slice(k + 2) : item;
                   return (
                     <li key={j} className="flex gap-4">
-                      <span className="mt-[11px] h-2 w-2 shrink-0 rotate-45 bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.7)]" />
+                      <span className="mt-[11px] h-2 w-2 shrink-0 rotate-45 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.7)]" />
                       <span>
                         {label && <strong className="font-semibold text-white">{label}: </strong>}
                         {rest}
@@ -83,9 +83,9 @@ export default function ArticleBody({ post }: { post: Post }) {
             return (
               <Reveal key={i} y={24}>
                 <aside className="my-10 flex gap-4 rounded-xl border border-white/15 bg-white/[0.04] p-6">
-                  <Lightbulb size={22} className="mt-1 shrink-0 text-yellow-300" />
+                  <Lightbulb size={22} className="mt-1 shrink-0 text-blue-400" />
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-yellow-300">
+                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-blue-400">
                       {b.title}
                     </p>
                     <p className="mt-2 text-base leading-relaxed text-zinc-200">{b.text}</p>
@@ -98,15 +98,15 @@ export default function ArticleBody({ post }: { post: Post }) {
 
       {/* key takeaways */}
       <Reveal y={30}>
-        <section className="relative mt-16 overflow-hidden rounded-2xl border border-yellow-400/40 bg-[#0a0904] p-7 shadow-[0_0_60px_-25px_rgba(250,204,21,0.6)] md:p-10">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-yellow-400/15 blur-3xl" />
-          <p className="relative flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-yellow-300">
+        <section className="relative mt-16 overflow-hidden rounded-2xl border border-blue-500/40 bg-[#0a0904] p-7 shadow-[0_0_60px_-25px_rgba(59,130,246,0.6)] md:p-10">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-500/15 blur-3xl" />
+          <p className="relative flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-400">
             <Sparkles size={14} /> Key takeaways
           </p>
           <ol className="relative mt-6 space-y-4">
             {post.takeaways.map((t, j) => (
               <li key={j} className="flex gap-4 text-base leading-relaxed text-zinc-100">
-                <span className="font-mono text-sm text-yellow-400">{String(j + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-sm text-blue-500">{String(j + 1).padStart(2, "0")}</span>
                 {t}
               </li>
             ))}

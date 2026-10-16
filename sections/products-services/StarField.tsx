@@ -61,12 +61,12 @@ export default function StarField({
     const offset = { x: 0, y: 0 };
 
     const palette = goldOnly
-      ? ["255,255,255", "255,255,255", "255,255,255", "253,230,138", "250,204,21"]
+      ? ["255,255,255", "255,255,255", "255,255,255", "147,197,253", "59,130,246"]
       : [
           "255,255,255",
           "255,255,255",
           "255,255,255",
-          "253,230,138", // gold
+          "147,197,253", // light blue
           "196,181,253", // lavender
           "165,180,252", // ice blue
         ];
@@ -152,8 +152,8 @@ export default function StarField({
           const m = meteor;
           const tail = 14;
           const grad = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * tail, m.y - m.vy * tail);
-          grad.addColorStop(0, `rgba(255,248,220,${m.life})`);
-          grad.addColorStop(1, "rgba(250,204,21,0)");
+          grad.addColorStop(0, `rgba(224,236,255,${m.life})`);
+          grad.addColorStop(1, "rgba(59,130,246,0)");
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.4;
           ctx.beginPath();

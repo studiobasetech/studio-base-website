@@ -25,7 +25,7 @@ const TOKENS = [
 const CHARS = "abcdefghijklmnopqrstuvwxyz0123456789{}()[]<>=;:+-*/&|!_.$#";
 
 export default function MatrixRain({
-  color = "250, 204, 21",
+  color = "59, 130, 246",
   fontSize = 15,
   opacity = 0.55,
 }: {
@@ -139,7 +139,7 @@ export default function MatrixRain({
               // leading character: almost white, with a glow
               ctx.shadowColor = `rgba(${color}, 0.9)`;
               ctx.shadowBlur = 8;
-              ctx.fillStyle = `rgba(255, 248, 220, ${Math.min(1, opacity * 1.6 + near * 0.4)})`;
+              ctx.fillStyle = `rgba(224, 236, 255, ${Math.min(1, opacity * 1.6 + near * 0.4)})`;
             } else {
               ctx.shadowBlur = 0;
               ctx.fillStyle = `rgba(${color}, ${Math.min(1, fade ** 1.6 * (opacity + near * 0.5))})`;

@@ -288,7 +288,7 @@ export default function ProjectGrid() {
       <motion.div
         animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-0 top-1/4 h-96 w-96 rounded-full bg-yellow-400/[0.06] blur-[120px]"
+        className="pointer-events-none absolute left-0 top-1/4 h-96 w-96 rounded-full bg-blue-500/[0.06] blur-[120px]"
       />
       <motion.div
         animate={{ x: [0, -80, 0], y: [0, -40, 0] }}

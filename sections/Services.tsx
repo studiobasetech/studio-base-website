@@ -94,95 +94,95 @@ type ColorKey = "yellow" | "purple" | "blue" | "cyan" | "pink";
 
 // Base colors (border + icon color)
 const colors = {
-  yellow: "border-yellow-400/40 text-yellow-400",
+  yellow: "border-blue-500/40 text-blue-500",
   purple: "border-purple-500/40 text-purple-400",
-  blue: "border-blue-500/40 text-blue-400",
+  blue: "border-yellow-400/40 text-yellow-300",
   cyan: "border-cyan-400/40 text-cyan-400",
   pink: "border-pink-500/40 text-pink-400",
 };
 
 // Brighter border on hover
 const hoverBorder = {
-  yellow: "hover:border-yellow-400",
+  yellow: "hover:border-blue-500",
   purple: "hover:border-purple-500",
-  blue: "hover:border-blue-500",
+  blue: "hover:border-yellow-400",
   cyan: "hover:border-cyan-400",
   pink: "hover:border-pink-500",
 };
 
 // Full border when the card is selected
 const selectedBorder = {
-  yellow: "border-yellow-400 text-yellow-400",
+  yellow: "border-blue-500 text-blue-500",
   purple: "border-purple-500 text-purple-400",
-  blue: "border-blue-500 text-blue-400",
+  blue: "border-yellow-400 text-yellow-300",
   cyan: "border-cyan-400 text-cyan-400",
   pink: "border-pink-500 text-pink-400",
 };
 
 // RGB values used for the glow shadows
 const rgb = {
-  yellow: "250,204,21",
+  yellow: "59,130,246",
   purple: "168,85,247",
-  blue: "59,130,246",
+  blue: "250,204,21",
   cyan: "34,211,238",
   pink: "236,72,153",
 };
 
 // Soft glow blob in the corner of each card
 const glowColors = {
-  yellow: "bg-yellow-400/20",
+  yellow: "bg-blue-500/20",
   purple: "bg-purple-500/20",
-  blue: "bg-blue-500/20",
+  blue: "bg-yellow-400/20",
   cyan: "bg-cyan-400/20",
   pink: "bg-pink-500/20",
 };
 
 // Title color when hovered or selected
 const titleHover = {
-  yellow: "group-hover:text-yellow-400",
+  yellow: "group-hover:text-blue-500",
   purple: "group-hover:text-purple-400",
-  blue: "group-hover:text-blue-400",
+  blue: "group-hover:text-yellow-300",
   cyan: "group-hover:text-cyan-400",
   pink: "group-hover:text-pink-400",
 };
 
 const titleOn = {
-  yellow: "text-yellow-400",
+  yellow: "text-blue-500",
   purple: "text-purple-400",
-  blue: "text-blue-400",
+  blue: "text-yellow-300",
   cyan: "text-cyan-400",
   pink: "text-pink-400",
 };
 
 // Plus button color when hovered or selected
 const plusHover = {
-  yellow: "group-hover:border-yellow-400 group-hover:text-yellow-400",
+  yellow: "group-hover:border-blue-500 group-hover:text-blue-500",
   purple: "group-hover:border-purple-400 group-hover:text-purple-400",
-  blue: "group-hover:border-blue-400 group-hover:text-blue-400",
+  blue: "group-hover:border-yellow-300 group-hover:text-yellow-300",
   cyan: "group-hover:border-cyan-400 group-hover:text-cyan-400",
   pink: "group-hover:border-pink-400 group-hover:text-pink-400",
 };
 
 const plusOn = {
-  yellow: "border-yellow-400 text-yellow-400",
+  yellow: "border-blue-500 text-blue-500",
   purple: "border-purple-400 text-purple-400",
-  blue: "border-blue-400 text-blue-400",
+  blue: "border-yellow-300 text-yellow-300",
   cyan: "border-cyan-400 text-cyan-400",
   pink: "border-pink-400 text-pink-400",
 };
 
 const bulletColors = {
-  yellow: "bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.8)]",
+  yellow: "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]",
   purple: "bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]",
-  blue: "bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]",
+  blue: "bg-yellow-300 shadow-[0_0_8px_rgba(253,224,71,0.8)]",
   cyan: "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]",
   pink: "bg-pink-400 shadow-[0_0_8px_rgba(244,114,182,0.8)]",
 };
 
 const dotColors = {
-  yellow: "bg-yellow-400",
+  yellow: "bg-blue-500",
   purple: "bg-purple-400",
-  blue: "bg-blue-400",
+  blue: "bg-yellow-300",
   cyan: "bg-cyan-400",
   pink: "bg-pink-400",
 };
@@ -443,7 +443,7 @@ export default function Services() {
 
           <h2 className="mt-4 max-w-5xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:whitespace-nowrap md:text-5xl">
             End-to-End{" "}
-            <span className="text-yellow-400">Technology Solutions</span>
+            <span className="text-blue-500">Technology Solutions</span>
             <br />
             for Modern Businesses.
           </h2>

@@ -17,9 +17,9 @@ const MotionLink = motion.create(Link);
  * (yellow, purple, blue, cyan, pink). Written out in full for Tailwind.
  */
 const FILTER_COLORS = [
-  { on: "border-yellow-400 text-black", pill: "bg-yellow-400 shadow-[0_0_24px_-4px_rgba(250,204,21,0.7)]", off: "hover:border-yellow-400 hover:text-yellow-300" },
+  { on: "border-blue-500 text-white", pill: "bg-blue-500 shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)]", off: "hover:border-blue-500 hover:text-blue-400" },
   { on: "border-purple-500 text-white", pill: "bg-purple-500 shadow-[0_0_24px_-4px_rgba(168,85,247,0.7)]", off: "hover:border-purple-500 hover:text-purple-300" },
-  { on: "border-blue-500 text-white", pill: "bg-blue-500 shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)]", off: "hover:border-blue-500 hover:text-blue-300" },
+  { on: "border-yellow-400 text-black", pill: "bg-yellow-400 shadow-[0_0_24px_-4px_rgba(250,204,21,0.7)]", off: "hover:border-yellow-400 hover:text-yellow-200" },
   { on: "border-cyan-400 text-black", pill: "bg-cyan-400 shadow-[0_0_24px_-4px_rgba(34,211,238,0.7)]", off: "hover:border-cyan-400 hover:text-cyan-300" },
   { on: "border-pink-500 text-white", pill: "bg-pink-500 shadow-[0_0_24px_-4px_rgba(236,72,153,0.7)]", off: "hover:border-pink-500 hover:text-pink-300" },
 ];
@@ -32,7 +32,7 @@ function FeaturedPost() {
     <Reveal>
       <Link
         href={`/blog/${post.slug}`}
-        className="group relative grid overflow-hidden rounded-2xl border border-yellow-400/30 bg-[#07070a] shadow-[0_0_60px_-25px_rgba(250,204,21,0.5)] transition-colors duration-500 hover:border-yellow-400/70 lg:grid-cols-[1.35fr_1fr]"
+        className="group relative grid overflow-hidden rounded-2xl border border-blue-500/30 bg-[#07070a] shadow-[0_0_60px_-25px_rgba(59,130,246,0.5)] transition-colors duration-500 hover:border-blue-500/70 lg:grid-cols-[1.35fr_1fr]"
       >
         <div className="relative aspect-[16/9] overflow-hidden lg:aspect-auto lg:min-h-[420px]">
           <Image
@@ -44,7 +44,7 @@ function FeaturedPost() {
             className="object-cover transition-transform duration-[1200ms] group-hover:scale-105"
           />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-1/4 lg:bg-gradient-to-r lg:from-transparent lg:to-[#07070a]/70" />
-          <span className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-yellow-400 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-black">
+          <span className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-blue-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
             <motion.span
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ duration: 1.4, repeat: Infinity }}
@@ -55,10 +55,10 @@ function FeaturedPost() {
         </div>
 
         <div className="relative flex flex-col justify-center p-6 md:p-10">
-          <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-yellow-300">
+          <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-blue-400">
             {post.category}
           </p>
-          <h2 className="mt-4 text-2xl font-semibold leading-tight text-white transition-colors duration-300 group-hover:text-yellow-200 md:text-4xl">
+          <h2 className="mt-4 text-2xl font-semibold leading-tight text-white transition-colors duration-300 group-hover:text-blue-300 md:text-4xl">
             {post.title}
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-zinc-400 md:text-base">{post.excerpt}</p>
@@ -69,7 +69,7 @@ function FeaturedPost() {
               <Clock size={12} /> {readingTime(post)} min read
             </span>
           </div>
-          <span className="relative mt-8 inline-flex w-fit items-center gap-2 overflow-hidden rounded-full bg-yellow-400 px-6 py-2.5 text-sm font-semibold text-black">
+          <span className="relative mt-8 inline-flex w-fit items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-6 py-2.5 text-sm font-semibold text-white">
             <LightSweep />
             <span className="relative">Read article</span>
             <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
@@ -154,7 +154,7 @@ export default function BlogIndex() {
             href="/contact"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-yellow-400 hover:text-yellow-300"
+            className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-blue-500 hover:text-blue-400"
           >
             Have a topic you’d like us to write about?
           </MotionLink>

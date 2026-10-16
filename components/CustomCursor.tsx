@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { Rocket } from "lucide-react";
 
 /**
- * Replaces the normal mouse pointer with a yellow rocket.
+ * Replaces the normal mouse pointer with a blue rocket.
  * - It points in the direction you are moving the mouse
  * - A flame grows behind it the faster you move
  * - It grows over links/buttons and shrinks when you click
@@ -153,14 +153,14 @@ export default function CustomCursor() {
           {/* Flame (sits behind the rocket) */}
           <div
             ref={flame}
-            className="absolute left-1/2 top-full h-9 w-3 origin-top rounded-full bg-gradient-to-b from-yellow-200 via-orange-400 to-transparent blur-[1px]"
+            className="absolute left-1/2 top-full h-9 w-3 origin-top rounded-full bg-gradient-to-b from-blue-300 via-cyan-400 to-transparent blur-[1px]"
           />
 
           {/* Rocket (the icon points up-right, so it is turned to point up) */}
           <Rocket
             size={60}
             strokeWidth={2}
-            className="-rotate-45 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.9)]"
+            className="-rotate-45 text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.9)]"
           />
         </div>
       </div>

@@ -58,12 +58,12 @@ export default function SectionTransition({
           {/* gold line drawing out from the center */}
           <motion.div
             style={{ scaleX: lineScale }}
-            className="h-px w-full origin-center bg-gradient-to-r from-transparent via-yellow-400/70 to-transparent"
+            className="h-px w-full origin-center bg-gradient-to-r from-transparent via-blue-500/70 to-transparent"
           />
           {/* small light travelling along the line */}
           <motion.div
             style={{ left: lightX }}
-            className="absolute -top-[3px] h-[7px] w-24 -translate-x-1/2 rounded-full bg-yellow-300/80 blur-[6px]"
+            className="absolute -top-[3px] h-[7px] w-24 -translate-x-1/2 rounded-full bg-blue-400/80 blur-[6px]"
           />
         </div>
       )}

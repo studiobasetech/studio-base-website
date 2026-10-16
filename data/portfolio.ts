@@ -13,11 +13,11 @@ export type PortfolioCategory = {
 };
 
 export const portfolioCategories: PortfolioCategory[] = [
-  { id: "ai", label: "AI Solutions\n& Automation", icon: "brain", accent: "yellow" },
+  { id: "ai", label: "AI Solutions\n& Automation", icon: "brain", accent: "blue" },
   { id: "software", label: "Software\nEngineering", icon: "code", accent: "purple" },
-  { id: "mobile", label: "Mobile\nApplications", icon: "phone", accent: "blue" },
+  { id: "mobile", label: "Mobile\nApplications", icon: "phone", accent: "yellow" },
   { id: "platforms", label: "Digital\nPlatforms", icon: "layers", accent: "cyan" },
-  { id: "security", label: "Cybersecurity\nSolutions", icon: "shield", accent: "yellow" },
+  { id: "security", label: "Cybersecurity\nSolutions", icon: "shield", accent: "blue" },
 ];
 
 export type Project = {
@@ -41,8 +41,8 @@ export const projects: Project[] = [
     tag: "AI & Automation",
     title: "AI Sales Automation System",
     client: "Real Estate Company",
-    image: "/images/portfolio/project-ai-sales.jpg",
-    accent: "yellow",
+    image: "/images/portfolio/project-ai-sales-blue.jpg",
+    accent: "blue",
     challenge:
       "Manually handling leads and follow-ups was time consuming and resulted in lost opportunities.",
     solution:
@@ -113,8 +113,8 @@ export const projects: Project[] = [
     tag: "Digital Platform",
     title: "E-Commerce Platform",
     client: "Home Decor Brand",
-    image: "/images/portfolio/project-ecommerce.jpg",
-    accent: "blue",
+    image: "/images/portfolio/project-ecommerce-gold.jpg",
+    accent: "yellow",
     challenge:
       "Needed a modern, scalable e-commerce platform with an optimized user experience.",
     solution: "Custom shopping solution with integrations and automation.",
@@ -136,8 +136,8 @@ export const projects: Project[] = [
     tag: "Cybersecurity",
     title: "Security Infrastructure Enhancement",
     client: "Financial Services Company",
-    image: "/images/portfolio/project-security.jpg",
-    accent: "yellow",
+    image: "/images/portfolio/project-security-blue.jpg",
+    accent: "blue",
     challenge: "Outdated infrastructure and security vulnerabilities.",
     solution:
       "Comprehensive cybersecurity assessment, infrastructure hardening, and monitoring system.",

@@ -69,11 +69,11 @@ function Planet({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
         <motion.div
           animate={{ opacity: [0.35, 0.7, 0.35] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-[8%] rounded-full bg-yellow-400/20 blur-[90px]"
+          className="absolute inset-[8%] rounded-full bg-blue-500/20 blur-[90px]"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/portfolio/planet.jpg"
+          src="/images/portfolio/planet-blue.jpg"
           alt=""
           aria-hidden="true"
           className="relative h-full w-full object-contain mix-blend-screen"
@@ -102,11 +102,11 @@ function Laptop({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
       >
         <motion.div style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}>
           {/* screen */}
-          <div className="relative rounded-t-2xl border border-white/15 bg-[#0b0b0f] p-[2.2%] shadow-[0_40px_120px_-30px_rgba(250,204,21,0.45)]">
+          <div className="relative rounded-t-2xl border border-white/15 bg-[#0b0b0f] p-[2.2%] shadow-[0_40px_120px_-30px_rgba(59,130,246,0.45)]">
             <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-black">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/portfolio/laptop-screen.jpg"
+                src="/images/portfolio/laptop-screen-blue.jpg"
                 alt="Global impact dashboard showing active projects, countries, ROI and uptime"
                 className="h-full w-full object-cover"
               />
@@ -125,7 +125,7 @@ function Laptop({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
             <span className="absolute left-1/2 top-0 h-1 w-[16%] -translate-x-1/2 rounded-b-md bg-zinc-900/80" />
           </div>
           {/* reflection / shadow */}
-          <div className="mx-auto mt-3 h-6 w-[90%] rounded-[50%] bg-yellow-400/20 blur-2xl" />
+          <div className="mx-auto mt-3 h-6 w-[90%] rounded-[50%] bg-blue-500/20 blur-2xl" />
         </motion.div>
       </motion.div>
     </motion.div>
@@ -196,10 +196,10 @@ export default function PortfolioHero() {
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               animate={{
-                boxShadow: ["0 0 0 0 rgba(250,204,21,0.5)", "0 0 0 18px rgba(250,204,21,0)"],
+                boxShadow: ["0 0 0 0 rgba(59,130,246,0.5)", "0 0 0 18px rgba(59,130,246,0)"],
               }}
               transition={{ boxShadow: { duration: 1.8, repeat: Infinity, ease: "easeOut" } }}
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-yellow-400 px-7 py-3 text-sm font-semibold text-black transition-colors hover:bg-yellow-300"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
               <span className="relative">Book a Consultation</span>
@@ -210,7 +210,7 @@ export default function PortfolioHero() {
               href="/contact"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
-              className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-yellow-400 hover:text-yellow-400"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-500 hover:text-blue-500"
             >
               Discuss a Project
               <MessageCircle size={15} className="transition-transform duration-300 group-hover:rotate-12" />
@@ -233,9 +233,9 @@ export default function PortfolioHero() {
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4 + c.delay, repeat: Infinity, ease: "easeInOut" }}
-                className="rounded-xl border border-yellow-400/30 bg-black/60 px-4 py-2.5 shadow-[0_0_30px_-10px_rgba(250,204,21,0.6)] backdrop-blur-md"
+                className="rounded-xl border border-blue-500/30 bg-black/60 px-4 py-2.5 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)] backdrop-blur-md"
               >
-                <p className="text-lg font-semibold leading-none text-yellow-300">{c.value}</p>
+                <p className="text-lg font-semibold leading-none text-blue-400">{c.value}</p>
                 <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-zinc-400">{c.label}</p>
               </motion.div>
             </motion.div>

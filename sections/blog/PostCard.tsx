@@ -13,12 +13,12 @@ import { formatDate, readingTime, type Post } from "@/data/blog";
  */
 const ACCENTS = [
   {
-    rgb: "250,204,21",
-    border: "border-yellow-400/25 hover:border-yellow-400",
-    title: "group-hover:text-yellow-400",
-    chip: "border-yellow-400/40 text-yellow-300",
-    arrow: "group-hover:border-yellow-400 group-hover:bg-yellow-400 group-hover:text-black",
-    glow: "bg-yellow-400/25",
+    rgb: "59,130,246",
+    border: "border-blue-500/25 hover:border-blue-500",
+    title: "group-hover:text-blue-500",
+    chip: "border-blue-500/40 text-blue-400",
+    arrow: "group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white",
+    glow: "bg-blue-500/25",
   },
   {
     rgb: "168,85,247",
@@ -29,12 +29,12 @@ const ACCENTS = [
     glow: "bg-purple-500/25",
   },
   {
-    rgb: "59,130,246",
-    border: "border-blue-500/25 hover:border-blue-500",
-    title: "group-hover:text-blue-400",
-    chip: "border-blue-400/40 text-blue-300",
-    arrow: "group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white",
-    glow: "bg-blue-500/25",
+    rgb: "250,204,21",
+    border: "border-yellow-400/25 hover:border-yellow-400",
+    title: "group-hover:text-yellow-300",
+    chip: "border-yellow-300/40 text-yellow-200",
+    arrow: "group-hover:border-yellow-400 group-hover:bg-yellow-400 group-hover:text-black",
+    glow: "bg-yellow-400/25",
   },
   {
     rgb: "34,211,238",

@@ -93,7 +93,7 @@ export default function Navbar() {
             lg:px-12
             ${
               scrolled
-                ? "bg-black/70 py-2 shadow-[0_10px_40px_-20px_rgba(250,204,21,0.35)] backdrop-blur-xl"
+                ? "bg-black/70 py-2 shadow-[0_10px_40px_-20px_rgba(59,130,246,0.35)] backdrop-blur-xl"
                 : "bg-black/30 py-3 backdrop-blur-md"
             }
           `}
@@ -134,13 +134,13 @@ export default function Navbar() {
                     <motion.span
                       layoutId="nav-pill"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      className="absolute inset-0 rounded-full border border-yellow-400/40 bg-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.25)]"
+                      className="absolute inset-0 rounded-full border border-blue-500/40 bg-blue-500/10 shadow-[0_0_20px_rgba(59,130,246,0.25)]"
                     />
                   )}
 
                   <span
                     className={`relative z-10 transition-colors duration-200 ${
-                      highlighted ? "text-yellow-400" : "text-zinc-300"
+                      highlighted ? "text-blue-500" : "text-zinc-300"
                     }`}
                   >
                     {link.label}
@@ -156,12 +156,12 @@ export default function Navbar() {
               href={consultationHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
-              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-yellow-400 px-5 py-2 text-sm font-medium text-yellow-400 transition-colors duration-300 hover:bg-yellow-400 hover:text-black"
+              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-blue-500 px-5 py-2 text-sm font-medium text-blue-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
             >
               {/* Light sweep */}
               <motion.span
                 aria-hidden="true"
-                className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-yellow-300/40 to-transparent"
+                className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"
                 animate={{ x: ["-120%", "420%"] }}
                 transition={{
                   duration: 1.4,
@@ -191,7 +191,7 @@ export default function Navbar() {
           {/* Bottom edge: faint line, moving light, scroll progress */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px overflow-hidden bg-white/10">
             <motion.div
-              className="h-px w-1/4 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
+              className="h-px w-1/4 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
               animate={{ x: ["-100%", "500%"] }}
               transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
             />
@@ -200,7 +200,7 @@ export default function Navbar() {
           <motion.div
             aria-hidden="true"
             style={{ scaleX: progress }}
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.8)]"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gradient-to-r from-blue-500 via-blue-300 to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"
           />
         </nav>
       </motion.header>
@@ -216,7 +216,7 @@ export default function Navbar() {
             className="fixed inset-0 z-40 flex flex-col justify-center bg-black/95 px-8 backdrop-blur-xl lg:hidden"
           >
             {/* Glow */}
-            <div className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-yellow-400/10 blur-[100px]" />
+            <div className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-blue-500/10 blur-[100px]" />
 
             <motion.div
               variants={menuList}
@@ -233,8 +233,8 @@ export default function Navbar() {
                   >
 
                     <span
-                      className={`text-3xl font-semibold transition-colors group-hover:text-yellow-400 ${
-                        isActive(link.href) ? "text-yellow-400" : "text-white"
+                      className={`text-3xl font-semibold transition-colors group-hover:text-blue-500 ${
+                        isActive(link.href) ? "text-blue-500" : "text-white"
                       }`}
                     >
                       {link.label}
@@ -247,7 +247,7 @@ export default function Navbar() {
                 href={consultationHref}
                 onClick={() => setOpen(false)}
                 variants={menuItem}
-                className="mt-8 flex items-center justify-center gap-2 rounded-full bg-yellow-400 px-6 py-4 font-semibold text-black"
+                className="mt-8 flex items-center justify-center gap-2 rounded-full bg-blue-500 px-6 py-4 font-semibold text-white"
               >
                 Book a Consultation
                 <ArrowRight size={18} />
