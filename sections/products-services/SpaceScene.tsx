@@ -5,7 +5,7 @@ import StarField from "./StarField";
 
 /**
  * Background for the Products & Services hero: deep space with a
- * starfield, drifting nebula, a large dark planet with a gold
+ * starfield, drifting nebula, a large dark planet with a blue
  * atmosphere, an orbit ring with a satellite, and a thin tech HUD.
  * Everything is code, so it stays sharp on every screen.
  *
@@ -58,7 +58,7 @@ function Planet() {
       {/* outer haze */}
       <div className="absolute -inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.10)_45%,rgba(124,58,237,0.10)_58%,transparent_70%)] blur-2xl" />
 
-      {/* gold atmosphere rim (lit side, top-left) */}
+      {/* blue atmosphere rim (lit side, top-left) */}
       <motion.div
         animate={{ opacity: [0.75, 1, 0.75] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}

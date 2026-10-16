@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const EASE = [0.76, 0, 0.24, 1] as const;
 
 /**
- * Runs every time you open a page: a black curtain with a thin gold
+ * Runs every time you open a page: a black curtain with a thin blue
  * edge slides up and away, and the new page fades in underneath it.
  */
 export default function Template({ children }: { children: React.ReactNode }) {
@@ -19,7 +19,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
         className="pointer-events-none fixed inset-0 z-[60] bg-black"
       >
-        {/* gold edge along the bottom of the curtain */}
+        {/* blue edge along the bottom of the curtain */}
         <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
 
         {/* logo in the middle while the curtain is up */}

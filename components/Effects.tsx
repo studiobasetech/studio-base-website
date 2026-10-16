@@ -99,7 +99,7 @@ export function TiltCard({
 }
 
 /* ------------------------------------------------------------------ */
-/*  ShimmerText: yellow text with a light moving across it             */
+/*  ShimmerText: electric blue text with a light moving across it             */
 /* ------------------------------------------------------------------ */
 
 export function ShimmerText({
@@ -143,7 +143,7 @@ export function LightSweep({
 }
 
 /* ------------------------------------------------------------------ */
-/*  GlowLine: pulsing yellow line along the bottom of a section        */
+/*  GlowLine: pulsing blue line along the bottom of a section        */
 /* ------------------------------------------------------------------ */
 
 export function GlowLine({ className = "bottom-0" }: { className?: string }) {

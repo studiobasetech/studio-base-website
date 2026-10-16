@@ -12,11 +12,11 @@ import {
 /**
  * Wrap a page section to give it a premium scroll transition:
  * it rises and expands from a slightly smaller, rounded card into
- * full width as it scrolls into view. Optionally a thin gold divider
+ * full width as it scrolls into view. Optionally a thin blue divider
  * above it.
  *
  *   <SectionTransition><Products /></SectionTransition>
- *   <SectionTransition divider><CTA /></SectionTransition>  // with gold line
+ *   <SectionTransition divider><CTA /></SectionTransition>  // with blue line
  */
 export default function SectionTransition({
   children,
@@ -55,7 +55,7 @@ export default function SectionTransition({
     <div ref={ref} className="relative">
       {divider && (
         <div className="pointer-events-none relative z-20 mx-auto h-px max-w-7xl px-6 lg:px-12">
-          {/* gold line drawing out from the center */}
+          {/* blue line drawing out from the center */}
           <motion.div
             style={{ scaleX: lineScale }}
             className="h-px w-full origin-center bg-gradient-to-r from-transparent via-blue-500/70 to-transparent"

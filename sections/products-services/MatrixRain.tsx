@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  * Matrix-style "code rain": streams of real code (const, async, =>,
  * return, 0x1F...) falling down the screen, each with a bright leading
  * character and a fading trail.
- * Gold to match the brand. Streams near the mouse light up.
+ * Electric blue to match the brand. Streams near the mouse light up.
  * Fills its `relative` parent. Pauses for people who prefer less motion.
  */
 

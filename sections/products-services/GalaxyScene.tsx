@@ -8,8 +8,8 @@ import StarField from "./StarField";
  * Products & Services hero background.
  *
  * A rendered spiral galaxy (public/images/galaxy-hero-blue.jpg) with live
- * layers on top: twinkling stars and shooting stars, gold Matrix-style
- * code rain, and thin gold orbit rings + a radar sweep locked onto the
+ * layers on top: twinkling stars and shooting stars, blue Matrix-style
+ * code rain, and thin blue orbit rings + a radar sweep locked onto the
  * galaxy core. Slow zoom + mouse parallax for depth. (The constellation
  * effect is added in ProductsHero, above the text shading.)
  *
@@ -18,7 +18,7 @@ import StarField from "./StarField";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Where the galaxy core sits inside galaxy-hero.jpg (fractions of the image)
+// Where the galaxy core sits inside galaxy-hero-blue.jpg (fractions of the image)
 const CORE_X = 66;
 const CORE_Y = 46;
 // The galaxy's tilt in the image, so the rings line up with its disk

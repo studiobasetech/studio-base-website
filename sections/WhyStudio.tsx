@@ -16,7 +16,7 @@ const values = [
     title: "Innovative Technology",
     description:
       "Cutting-edge solutions designed to create real business impact.",
-    accent: "yellow",
+    accent: "blue",
     rgb: "59,130,246",
   },
   {
@@ -45,7 +45,7 @@ const values = [
 
 // Full class names are written out so Tailwind can detect them.
 const styles = {
-  yellow: {
+  blue: {
     card: "border-blue-500/40 hover:border-blue-500 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]",
     glow: "bg-blue-500/20",
     icon: "text-blue-500 border-blue-500/50 shadow-blue-500/20",

@@ -20,7 +20,7 @@ const MotionLink = motion.create(Link);
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 
-// Headline split into two lines; the second line is yellow.
+// Headline split into two lines; the second line is blue.
 const headlineLines = [
   { words: ["Technology", "Solutions"], accent: false },
   { words: ["for", "a", "Smarter", "Future."], accent: true },

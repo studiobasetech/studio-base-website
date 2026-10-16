@@ -22,7 +22,7 @@ export default function StarField({
   meteorEvery?: [number, number];
   /** 1 = default amount of stars; lower for fewer */
   density?: number;
-  /** only white and gold stars (no lavender / blue tints) */
+  /** only white and light-blue stars (no lavender tints) */
   goldOnly?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -35,7 +35,7 @@ export default function Reveal({
 }
 
 /**
- * Thin gold bar at the top of the page that fills as you scroll.
+ * Thin blue bar at the top of the page that fills as you scroll.
  * Place it once, at the top of your page.
  */
 export function ScrollProgress() {

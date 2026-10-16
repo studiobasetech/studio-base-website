@@ -14,7 +14,7 @@ const MotionLink = motion.create(Link);
 
 /*
  * Topic filter colours: same set as the blog card hovers
- * (yellow, purple, blue, cyan, pink). Written out in full for Tailwind.
+ * (blue, purple, yellow, cyan, pink). Written out in full for Tailwind.
  */
 const FILTER_COLORS = [
   { on: "border-blue-500 text-white", pill: "bg-blue-500 shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)]", off: "hover:border-blue-500 hover:text-blue-400" },

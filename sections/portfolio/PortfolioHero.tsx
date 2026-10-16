@@ -65,7 +65,7 @@ function Planet({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="relative aspect-square"
       >
-        {/* soft gold halo that breathes */}
+        {/* soft blue halo that breathes */}
         <motion.div
           animate={{ opacity: [0.35, 0.7, 0.35] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
