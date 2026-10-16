@@ -3,16 +3,26 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Matrix-style "code rain": streams of characters falling down the
- * screen, each with a bright leading character and a fading trail.
+ * Matrix-style "code rain": streams of real code (const, async, =>,
+ * return, 0x1F...) falling down the screen, each with a bright leading
+ * character and a fading trail.
  * Gold to match the brand. Streams near the mouse light up.
  * Fills its `relative` parent. Pauses for people who prefer less motion.
  */
 
-// Characters used in the streams: katakana, digits, hex and code symbols
-const CHARS =
-  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン" +
-  "0123456789ABCDEF{}<>/=;:+*#$&[]()";
+// Real code fragments: streams spell these out as they fall, so it reads
+// as code (not random symbols)
+const TOKENS = [
+  "const", "let", "async", "await", "return", "import", "export", "function",
+  "if", "else", "for", "=>", "{}", "()", "[]", "===", "!==", "&&", "||",
+  "null", "true", "false", "new", "class", "this", "type", "api", "ai",
+  "data", "query", "fetch", "json", "user", "model", "deploy", "cloud",
+  "0x1F", "0xFF", "404", "200", "1010", "0110", "</>", "//", "/*", "*/",
+  "npm", "git", "push", "init", "run", "key", "id", "map", "sync", "node",
+];
+
+// Single characters for the flicker as streams fall
+const CHARS = "abcdefghijklmnopqrstuvwxyz0123456789{}()[]<>=;:+-*/&|!_.$#";
 
 export default function MatrixRain({
   color = "250, 204, 21",
@@ -36,6 +46,16 @@ export default function MatrixRain({
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const pick = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+
+    // A column of characters made of code tokens, read top to bottom
+    const codeColumn = (n: number) => {
+      const out: string[] = [];
+      while (out.length < n) {
+        const t = TOKENS[Math.floor(Math.random() * TOKENS.length)];
+        out.push(...t.split(""), " ");
+      }
+      return out.slice(0, n);
+    };
 
     type Stream = {
       x: number;
@@ -62,7 +82,7 @@ export default function MatrixRain({
         y: startAbove ? -Math.random() * rows : Math.random() * rows,
         speed: 0.18 + Math.random() * 0.35,
         length,
-        chars: Array.from({ length: rows + length + 2 }, pick),
+        chars: codeColumn(rows + length + 2),
         active: Math.random() < 0.8, // leave gaps so it never looks like a wall
         delay: Math.floor(Math.random() * 120),
       };
@@ -77,7 +97,7 @@ export default function MatrixRain({
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      ctx.font = `500 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
 
@@ -128,8 +148,8 @@ export default function MatrixRain({
           }
           ctx.shadowBlur = 0;
 
-          // characters flicker / change as they fall
-          if (Math.random() < 0.3) {
+          // a few characters flicker as they fall (most keep spelling code)
+          if (Math.random() < 0.12) {
             s.chars[Math.floor(Math.random() * s.chars.length)] = pick();
           }
 

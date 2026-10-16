@@ -64,9 +64,9 @@ export default function ProductsHero() {
       {/* Galaxy scene: rendered galaxy + live stars, constellation and HUD */}
       <GalaxyScene nx={px} ny={py} />
 
-      {/* Constellation effect over the whole hero (dots link to each other
-          and reach toward the mouse) */}
-      <ParticleField density={0.85} strength={1.9} />
+      {/* Constellation effect over the whole hero, same settings as the
+          Home hero (dots link to each other and reach toward the mouse) */}
+      <ParticleField />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* TEXT */}
@@ -78,14 +78,8 @@ export default function ProductsHero() {
         >
           <motion.p
             variants={fadeUp}
-            className="flex items-center gap-3 text-[10px] tracking-[0.45em] text-zinc-300"
+            className="text-[10px] tracking-[0.45em] text-zinc-300"
           >
-            <motion.span
-              initial={{ width: 0 }}
-              animate={{ width: 32 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
-              className="h-px bg-yellow-400"
-            />
             PRODUCTS & SERVICES
           </motion.p>
 
