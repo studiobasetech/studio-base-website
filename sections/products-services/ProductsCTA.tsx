@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
+import ParticleField from "@/components/ParticleField";
 import SpaceScene from "./SpaceScene";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -66,6 +67,9 @@ export default function ProductsCTA() {
       <motion.div style={{ y: sceneY }} className="absolute -inset-y-12 inset-x-0">
         <SpaceScene nx={px} ny={py} variant="cta" />
       </motion.div>
+
+      {/* Constellation effect (same as the Home "Let's Build Together") */}
+      <ParticleField density={0.5} />
 
       <motion.div
         variants={container}

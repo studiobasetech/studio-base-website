@@ -15,9 +15,12 @@ import { useEffect, useRef } from "react";
  */
 export default function StarField({
   meteorEvery = [4000, 9000],
+  density = 1,
 }: {
   /** min and max milliseconds between shooting stars */
   meteorEvery?: [number, number];
+  /** 1 = default amount of stars; lower for fewer */
+  density?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [minGap, maxGap] = meteorEvery;
@@ -73,7 +76,7 @@ export default function StarField({
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.round((w * h) / 2600);
+      const count = Math.round(((w * h) / 2600) * density);
       stars = Array.from({ length: count }, () => {
         const depth = [0.2, 0.5, 1][Math.floor(Math.random() * 3)];
         return {
@@ -176,7 +179,7 @@ export default function StarField({
       window.removeEventListener("resize", build);
       window.removeEventListener("mousemove", onMove);
     };
-  }, [minGap, maxGap]);
+  }, [minGap, maxGap, density]);
 
   return (
     <canvas
