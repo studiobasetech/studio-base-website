@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { consultationHref } from "@/data/site";
 import {
   motion,
   useMotionValue,
@@ -11,6 +13,8 @@ import {
 } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+const MotionLink = motion.create(Link);
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -326,7 +330,8 @@ export default function Hero() {
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
-            <motion.button
+            <MotionLink
+              href={consultationHref}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               animate={{
@@ -353,15 +358,16 @@ export default function Hero() {
                 }}
               />
               <span className="relative">Book a Consultation →</span>
-            </motion.button>
+            </MotionLink>
 
-            <motion.button
+            <MotionLink
+              href="/products-services"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               className="rounded-full border border-zinc-600 px-8 py-3 transition-colors hover:border-yellow-400 hover:text-yellow-400"
             >
               Explore Our Services
-            </motion.button>
+            </MotionLink>
           </motion.div>
         </motion.div>
       </div>

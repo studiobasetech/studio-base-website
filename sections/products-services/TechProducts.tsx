@@ -64,7 +64,9 @@ export default function TechProducts() {
             const Icon = icons[product.id as keyof typeof icons] ?? Cpu;
 
             return (
-              <Reveal key={product.id} delay={i * 0.15} className="h-full">
+              // id = anchor for links like /products-services#hcrm-ai
+              <div key={product.id} id={product.id} className="h-full scroll-mt-28">
+              <Reveal delay={i * 0.15} className="h-full">
                 <TiltCard
                   rgb={a.rgb}
                   tilt={5}
@@ -177,6 +179,7 @@ export default function TechProducts() {
                   </div>
                 </TiltCard>
               </Reveal>
+              </div>
             );
           })}
         </div>

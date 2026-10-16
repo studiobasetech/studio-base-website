@@ -2,11 +2,11 @@ import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
 import { contact, navLinks, socials } from "@/data/site";
 
-// These pages don't exist yet. Point each href at the real page once it does.
+// Careers opens an email; FAQ goes to Contact until those pages exist.
 const resources = [
   { label: "Case Studies", href: "/portfolio" },
-  { label: "Careers", href: "#" },
-  { label: "FAQ", href: "#" },
+  { label: "Careers", href: `mailto:${contact.email}?subject=Careers%20at%20Studio%20Base` },
+  { label: "FAQ", href: "/contact" },
 ];
 
 export default function Footer() {
@@ -33,18 +33,25 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 flex gap-5 text-sm text-zinc-400">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition hover:text-yellow-400"
-                >
-                  {s.short}
-                </a>
-              ))}
+              {/* Icons become clickable once a real URL is set in data/site.ts */}
+              {socials.map((s) =>
+                s.href && s.href !== "#" ? (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    aria-label={s.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition hover:text-yellow-400"
+                  >
+                    {s.short}
+                  </a>
+                ) : (
+                  <span key={s.label} aria-label={s.label} className="opacity-50">
+                    {s.short}
+                  </span>
+                ),
+              )}
             </div>
           </div>
 

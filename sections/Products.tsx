@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import {
   motion,
@@ -231,7 +232,8 @@ function ProductCard({
               ))}
             </ul>
 
-            <button
+            <Link
+              href={`/products-services#${product.title.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={(e) => e.stopPropagation()}
               className={`
                 group
@@ -249,7 +251,7 @@ function ProductCard({
                 size={14}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
-            </button>
+            </Link>
           </div>
 
           {/* PRODUCT IMAGE RIGHT */}
@@ -323,10 +325,13 @@ export default function Products() {
               opportunities, automate processes, and drive measurable results.
             </p>
 
-            <button className="mt-7 flex items-center gap-2 rounded-full bg-yellow-400 px-7 py-3 text-sm font-medium text-black">
+            <Link
+              href="/products-services#our-products"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-yellow-400 px-7 py-3 text-sm font-medium text-black transition-colors hover:bg-yellow-300"
+            >
               Explore Our Products
               <ArrowRight size={14} />
-            </button>
+            </Link>
           </div>
 
           {/* PRODUCTS (carousel) */}
