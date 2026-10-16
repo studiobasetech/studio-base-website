@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import {
@@ -35,7 +35,20 @@ const fadeUp: Variants = {
 
 const MotionLink = motion.create(Link);
 
-export default function ProductsCTA() {
+/**
+ * Closing call to action with the space scene. Text can be changed per
+ * page (the Portfolio page uses its own wording); defaults are the
+ * Products & Services text.
+ */
+export default function ProductsCTA({
+  eyebrow = "LET'S BUILD TOGETHER",
+  title,
+  description = "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
+}: {
+  eyebrow?: string;
+  title?: ReactNode;
+  description?: string;
+} = {}) {
   const ref = useRef<HTMLElement>(null);
 
   // The space scene moves slower than the page while you scroll (parallax)
@@ -83,24 +96,27 @@ export default function ProductsCTA() {
             variants={fadeUp}
             className="text-[10px] tracking-[0.45em] text-zinc-300"
           >
-            LET&apos;S BUILD TOGETHER
+            {eyebrow}
           </motion.p>
 
           <motion.h2
             variants={fadeUp}
             className="mt-4 text-3xl font-medium leading-tight text-white md:text-5xl"
           >
-            Ready to Transform
-            <br />
-            Your Business with <ShimmerText>Technology?</ShimmerText>
+            {title ?? (
+              <>
+                Ready to Transform
+                <br />
+                Your Business with <ShimmerText>Technology?</ShimmerText>
+              </>
+            )}
           </motion.h2>
 
           <motion.p
             variants={fadeUp}
             className="mt-5 max-w-md text-sm leading-relaxed text-zinc-300"
           >
-            Partner with Studio Base and turn your ideas into powerful
-            technology solutions that drive real business growth.
+            {description}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
