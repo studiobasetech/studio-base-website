@@ -7,7 +7,7 @@ const post: Post = {
     "AI is moving from answering questions to completing tasks. Here is what separates an agent from a chatbot, where agents shine today, and how to introduce them without losing control.",
   category: "Artificial Intelligence",
   date: "2026-10-06",
-  image: "/images/blog/ai-agents-v2.jpg",
+  image: "/images/blog/ai-agents-v3.jpg",
   imageAlt: "A friendly robot assistant completing tasks on a checklist, with email and calendar icons",
   takeaways: [
     "An agent is defined by what it can do: plan, use tools and check its own results.",

@@ -46,12 +46,12 @@ export default function BlogHero() {
       <motion.div
         animate={{ x: [0, 60, 0], y: [0, -30, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-20 top-10 h-[420px] w-[520px] rounded-full bg-violet-600/20 blur-[130px]"
+        className="pointer-events-none absolute -right-20 top-10 h-[420px] w-[520px] rounded-full bg-yellow-400/[0.06] blur-[140px]"
       />
       <motion.div
         animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-24 top-1/3 h-[380px] w-[380px] rounded-full bg-yellow-400/10 blur-[120px]"
+        className="pointer-events-none absolute -left-24 top-1/3 h-[380px] w-[380px] rounded-full bg-yellow-400/[0.07] blur-[120px]"
       />
       <ParticleField />
 
