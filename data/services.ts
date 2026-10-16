@@ -29,7 +29,7 @@ export const techProducts = [
     ],
     image: "/images/hcrm-ai.png",
     href: "/contact",
-    accent: "yellow" as Accent,
+    accent: "purple" as Accent,
   },
   {
     id: "baselead-ai",
@@ -49,7 +49,7 @@ export const techProducts = [
     ],
     image: "/images/baselead-ai.png",
     href: "/contact",
-    accent: "purple" as Accent,
+    accent: "yellow" as Accent,
   },
 ];
 

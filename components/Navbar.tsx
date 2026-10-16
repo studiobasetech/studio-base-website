@@ -224,16 +224,13 @@ export default function Navbar() {
               animate="show"
               className="relative flex flex-col gap-2"
             >
-              {links.map((link, i) => (
+              {links.map((link) => (
                 <motion.div key={link.href} variants={menuItem}>
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
                     className="group flex items-baseline gap-4 border-b border-white/10 py-4"
                   >
-                    <span className="text-xs text-yellow-400/70">
-                      0{i + 1}
-                    </span>
 
                     <span
                       className={`text-3xl font-semibold transition-colors group-hover:text-yellow-400 ${

@@ -21,6 +21,9 @@ const fadeUp: Variants = {
 // Words that slowly cycle in the background ticker line
 const topics = ["AI", "Automation", "Security", "Data", "Cloud", "Web", "Design"];
 
+// Same hover colours as the blog cards (purple left out on purpose: no purple in the hero)
+const topicColors = ["text-yellow-300", "text-cyan-300", "text-blue-400", "text-pink-400", "text-orange-300"];
+
 export default function BlogHero() {
   return (
     <section className="relative overflow-hidden bg-black px-6 pb-16 pt-32 lg:px-12 lg:pb-20 lg:pt-40">
@@ -43,15 +46,31 @@ export default function BlogHero() {
           }}
         />
       </div>
+      {/* colour aura (no purple) */}
       <motion.div
-        animate={{ x: [0, 60, 0], y: [0, -30, 0], scale: [1, 1.15, 1] }}
+        animate={{ x: [0, 70, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-20 top-10 h-[420px] w-[520px] rounded-full bg-yellow-400/[0.06] blur-[140px]"
+        className="pointer-events-none absolute -right-24 -top-10 h-[460px] w-[560px] rounded-full bg-cyan-400/20 blur-[140px]"
       />
       <motion.div
-        animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
+        animate={{ x: [0, -50, 0], y: [0, 40, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute right-1/4 top-1/3 h-[380px] w-[460px] rounded-full bg-blue-500/20 blur-[130px]"
+      />
+      <motion.div
+        animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.2, 1] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-24 top-1/3 h-[380px] w-[380px] rounded-full bg-yellow-400/[0.07] blur-[120px]"
+        className="pointer-events-none absolute -left-28 top-1/4 h-[400px] w-[440px] rounded-full bg-pink-500/[0.16] blur-[130px]"
+      />
+      <motion.div
+        animate={{ x: [0, 40, 0], y: [0, -25, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute -bottom-24 left-1/3 h-[340px] w-[520px] rounded-full bg-yellow-400/[0.14] blur-[130px]"
+      />
+      <motion.div
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute bottom-10 -right-10 h-[300px] w-[360px] rounded-full bg-orange-400/[0.14] blur-[120px]"
       />
       <ParticleField />
 
@@ -84,21 +103,24 @@ export default function BlogHero() {
         {/* stats + topic line */}
         <motion.div
           variants={fadeUp}
-          className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400"
+          className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-4 text-xs font-medium uppercase tracking-[0.2em]"
         >
-          <span>
-            <span className="text-yellow-300">{String(posts.length).padStart(2, "0")}</span> articles
+          <span className="rounded-full border border-yellow-400/40 bg-yellow-400/10 px-4 py-1.5 text-yellow-200 shadow-[0_0_24px_-6px_rgba(250,204,21,0.6)]">
+            <span className="mr-1.5 text-sm font-semibold text-yellow-300">{String(posts.length).padStart(2, "0")}</span>
+            Articles
           </span>
-          <span>
-            <span className="text-yellow-300">{String(categories.length).padStart(2, "0")}</span> topics
+          <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-1.5 text-cyan-200 shadow-[0_0_24px_-6px_rgba(34,211,238,0.6)]">
+            <span className="mr-1.5 text-sm font-semibold text-cyan-300">{String(categories.length).padStart(2, "0")}</span>
+            Topics
           </span>
-          <span className="hidden h-px w-16 bg-white/20 sm:block" />
+          <span className="hidden h-px w-12 bg-gradient-to-r from-yellow-400 via-cyan-400 to-pink-500 sm:block" />
           <span className="flex flex-wrap gap-x-3 gap-y-1">
             {topics.map((t, i) => (
               <motion.span
                 key={t}
-                animate={{ opacity: [0.35, 1, 0.35] }}
+                animate={{ opacity: [0.45, 1, 0.45] }}
                 transition={{ duration: 3, delay: i * 0.4, repeat: Infinity }}
+                className={topicColors[i % topicColors.length]}
               >
                 {t}
                 {i < topics.length - 1 && <span className="ml-3 text-zinc-600">/</span>}
