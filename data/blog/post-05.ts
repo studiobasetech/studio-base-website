@@ -8,7 +8,7 @@ const post: Post = {
   category: "Cybersecurity",
   date: "2026-08-11",
   image: "/images/blog/zero-trust.jpg",
-  imageAlt: "A golden shield with a keyhole surrounded by a hexagonal grid",
+  imageAlt: "A laptop protected by a security shield, with ID card, key, fingerprint and phone checks",
   takeaways: [
     "Zero trust replaces “inside the network is safe” with “verify every request”.",
     "Identity is the new perimeter: strong sign-in and multi-factor authentication come first.",

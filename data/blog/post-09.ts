@@ -8,7 +8,7 @@ const post: Post = {
   category: "Cloud",
   date: "2026-06-16",
   image: "/images/blog/cloud.jpg",
-  imageAlt: "A glowing cloud of particles above a golden grid with beams of light",
+  imageAlt: "A cloud connected to server racks, with a piggy bank, coins and a falling cost chart",
   takeaways: [
     "Cloud bills grow through idle resources, oversized machines and forgotten experiments.",
     "Tag every resource with an owner and a purpose so costs can be traced.",

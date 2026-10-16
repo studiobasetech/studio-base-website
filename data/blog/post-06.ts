@@ -8,7 +8,7 @@ const post: Post = {
   category: "Web & Software",
   date: "2026-07-28",
   image: "/images/blog/web-speed.jpg",
-  imageAlt: "Streaks of golden and violet light bursting from a bright center",
+  imageAlt: "A browser window next to a speedometer showing a fast load time, with a lightning bolt",
   takeaways: [
     "Visitors judge a site within moments; perceived speed matters as much as raw speed.",
     "Images, fonts and third-party scripts are the most common sources of slowness.",

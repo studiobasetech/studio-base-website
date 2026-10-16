@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ArrowLeft, Clock } from "lucide-react";
+import ParticleField from "@/components/ParticleField";
 import { formatDate, readingTime, type Post } from "@/data/blog";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -18,31 +19,20 @@ const fadeUp: Variants = {
   show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: EASE } },
 };
 
-/** Big image with the title over it; the image drifts and fades as you scroll. */
+/**
+ * Article opening: title on black, then the illustration in full colour
+ * as a large rounded image that zooms gently as you scroll.
+ */
 export default function ArticleHero({ post }: { post: Post }) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
-  const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.25]);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: imageRef, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1.12, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
 
   return (
-    <section
-      ref={ref}
-      className="relative flex min-h-[78vh] items-end overflow-hidden bg-black px-6 pb-14 pt-32 lg:min-h-[86vh] lg:px-12 lg:pb-20"
-    >
-      <motion.div style={{ y, scale, opacity }} className="absolute inset-0">
-        <Image
-          src={post.image}
-          alt={post.imageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10" />
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent" />
+    <section className="relative overflow-hidden bg-black px-6 pb-6 pt-32 lg:px-12 lg:pt-40">
+      <ParticleField density={0.6} />
+      <div className="pointer-events-none absolute -right-24 top-10 h-[360px] w-[460px] rounded-full bg-yellow-400/10 blur-[130px]" />
 
       <motion.div
         variants={container}
@@ -53,7 +43,7 @@ export default function ArticleHero({ post }: { post: Post }) {
         <motion.div variants={fadeUp}>
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-zinc-300 transition-colors hover:text-yellow-300"
+            className="group inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-zinc-400 transition-colors hover:text-yellow-300"
           >
             <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
             Blog
@@ -62,7 +52,7 @@ export default function ArticleHero({ post }: { post: Post }) {
 
         <motion.p
           variants={fadeUp}
-          className="mt-8 inline-block rounded-full border border-yellow-400/50 bg-black/40 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-yellow-300 backdrop-blur-sm"
+          className="mt-8 inline-block rounded-full border border-yellow-400/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-yellow-300"
         >
           {post.category}
         </motion.p>
@@ -87,6 +77,26 @@ export default function ArticleHero({ post }: { post: Post }) {
           <span className="flex items-center gap-1.5">
             <Clock size={12} /> {readingTime(post)} min read
           </span>
+        </motion.div>
+      </motion.div>
+
+      {/* illustration */}
+      <motion.div
+        ref={imageRef}
+        initial={{ opacity: 0, y: 60, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 1.2, delay: 0.6, ease: EASE }}
+        className="relative z-10 mx-auto mt-12 aspect-[16/9] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_120px_-40px_rgba(250,204,21,0.35)] lg:mt-16"
+      >
+        <motion.div style={{ scale, y }} className="absolute inset-0">
+          <Image
+            src={post.image}
+            alt={post.imageAlt}
+            fill
+            priority
+            sizes="(min-width: 1280px) 1152px, 100vw"
+            className="object-cover"
+          />
         </motion.div>
       </motion.div>
     </section>

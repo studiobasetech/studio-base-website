@@ -8,7 +8,7 @@ const post: Post = {
   category: "Artificial Intelligence",
   date: "2026-09-22",
   image: "/images/blog/prompting.jpg",
-  imageAlt: "Streams of golden light converging into a single bright point",
+  imageAlt: "A laptop showing a chat conversation between a person and an AI assistant",
   takeaways: [
     "Treat the model like a capable new colleague: give it context, not just commands.",
     "Show what good looks like with an example; it beats paragraphs of description.",

@@ -8,7 +8,7 @@ const post: Post = {
   category: "Artificial Intelligence",
   date: "2026-09-08",
   image: "/images/blog/responsible-ai.jpg",
-  imageAlt: "A wireframe globe balanced on a beam of golden light",
+  imageAlt: "A balance scale weighing an AI chip against a group of people, with a shield and padlock above",
   takeaways: [
     "Responsible AI is a set of everyday habits, not a separate project.",
     "Know what data goes into each tool, where it is stored and who can see it.",

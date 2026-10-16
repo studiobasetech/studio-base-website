@@ -8,7 +8,7 @@ const post: Post = {
   category: "Data",
   date: "2026-06-30",
   image: "/images/blog/analytics.jpg",
-  imageAlt: "Glowing bar charts in gold and violet with a rising trend line",
+  imageAlt: "A computer monitor showing a business dashboard with bar charts, a trend line and a donut chart",
   takeaways: [
     "Start from decisions, not data: ask what you need to know to act differently.",
     "Track a handful of metrics that connect directly to goals.",

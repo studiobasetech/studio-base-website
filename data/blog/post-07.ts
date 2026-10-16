@@ -8,7 +8,7 @@ const post: Post = {
   category: "Web & Software",
   date: "2026-07-14",
   image: "/images/blog/apis.jpg",
-  imageAlt: "A constellation of glowing hubs connected by curved golden lines",
+  imageAlt: "Colorful app icons for maps, payments, chat, shopping, calendar and email connected to a central hub",
   takeaways: [
     "An API is a contract that lets one piece of software request something from another.",
     "Connecting systems through APIs removes manual copying and keeps data consistent.",

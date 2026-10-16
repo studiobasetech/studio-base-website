@@ -31,7 +31,7 @@ function FeaturedPost() {
             sizes="(min-width: 1024px) 60vw, 100vw"
             className="object-cover transition-transform duration-[1200ms] group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#07070a]" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-1/4 lg:bg-gradient-to-r lg:from-transparent lg:to-[#07070a]/70" />
           <span className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-yellow-400 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-black">
             <motion.span
               animate={{ opacity: [1, 0.3, 1] }}

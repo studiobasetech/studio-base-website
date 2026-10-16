@@ -8,7 +8,7 @@ const post: Post = {
   category: "Design & Spaces",
   date: "2026-06-02",
   image: "/images/blog/smart-spaces.jpg",
-  imageAlt: "A glowing isometric wireframe room with ceiling lights and sensor waves",
+  imageAlt: "A warm living room with pendant lights, a sofa, a plant, a smart thermostat and a phone app",
   takeaways: [
     "Smart spaces adapt light, climate and layout to how people actually use them.",
     "Occupancy data reveals which areas work and which sit empty.",

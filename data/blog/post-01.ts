@@ -8,7 +8,7 @@ const post: Post = {
   category: "Artificial Intelligence",
   date: "2026-10-06",
   image: "/images/blog/ai-agents.jpg",
-  imageAlt: "A glowing neural network with gold reasoning paths running through it",
+  imageAlt: "A friendly robot assistant completing tasks on a checklist, with email and calendar icons",
   takeaways: [
     "An agent is defined by what it can do: plan, use tools and check its own results.",
     "The best first use cases are repetitive, rules-heavy and easy to verify.",

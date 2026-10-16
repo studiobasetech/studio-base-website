@@ -8,7 +8,7 @@ const post: Post = {
   category: "Automation",
   date: "2026-08-25",
   image: "/images/blog/automation.jpg",
-  imageAlt: "Interlocking golden gears made of light",
+  imageAlt: "Documents moving along a conveyor belt through a machine with gears into a completed folder",
   takeaways: [
     "Automate a process only after you understand and simplify it.",
     "Pick tasks that are frequent, rules-based and painful for the people doing them.",
