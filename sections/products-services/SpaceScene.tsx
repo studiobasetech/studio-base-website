@@ -15,8 +15,8 @@ import StarField from "./StarField";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Coordinates shown in the HUD (Cancún, Mexico)
-const COORDS = "21.1619° N · 86.8515° W";
+// Coordinates shown in the HUD (Austin, TX)
+const COORDS = "30.2672° N · 97.7431° W";
 
 /* An elliptical orbit. Rendered twice (behind and in front of the
    planet) so the ring looks like it wraps around it. */

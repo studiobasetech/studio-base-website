@@ -151,7 +151,7 @@ export default function BlogIndex() {
 
         <div className="mt-16 flex justify-center">
           <MotionLink
-            href="/contact"
+            href="/contact#contact-form"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
             className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-blue-500 hover:text-blue-400"

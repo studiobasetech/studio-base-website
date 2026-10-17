@@ -28,7 +28,7 @@ export const techProducts = [
       "Data Analysis & Insights",
     ],
     image: "/images/hcrm-ai.png",
-    href: "/contact",
+    href: "/contact#contact-form",
     accent: "purple" as Accent,
   },
   {
@@ -47,9 +47,9 @@ export const techProducts = [
       "Sales Pipeline Management",
       "CRM Integration",
     ],
-    image: "/images/baselead-ai-blue.png",
-    href: "/contact",
-    accent: "blue" as Accent,
+    image: "/images/baselead-ai-gold.png",
+    href: "/contact#contact-form",
+    accent: "yellow" as Accent,
   },
 ];
 

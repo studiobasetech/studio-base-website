@@ -98,12 +98,6 @@ export default function Footer() {
             >
               {contact.email}
             </a>
-            <a
-              href={`tel:${contact.phone.replace(/\s/g, "")}`}
-              className="mt-2 block text-sm text-zinc-500 transition hover:text-blue-500"
-            >
-              {contact.phone}
-            </a>
             <p className="mt-2 text-sm text-zinc-500">{contact.location}</p>
           </div>
         </div>

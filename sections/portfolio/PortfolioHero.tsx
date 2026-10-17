@@ -207,7 +207,7 @@ export default function PortfolioHero() {
             </MotionLink>
 
             <MotionLink
-              href="/contact"
+              href="/contact#contact-form"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-500 hover:text-blue-500"

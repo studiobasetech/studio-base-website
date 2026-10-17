@@ -254,7 +254,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <MotionLink
-              href="/contact"
+              href="/contact#contact-form"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-semibold ${a.button}`}

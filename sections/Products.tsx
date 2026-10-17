@@ -45,8 +45,8 @@ const products = [
       "Sales Analytics & Insights",
     ],
 
-    image: "/images/baselead-ai-blue.png",
-    accent: "blue",
+    image: "/images/baselead-ai-gold.png",
+    accent: "yellow",
   },
 ];
 
@@ -67,6 +67,15 @@ const styles = {
     glow: "bg-purple-500/30",
     dot: "bg-purple-400",
     rgb: "168,85,247",
+  },
+
+  yellow: {
+    border: "border-yellow-400/40 hover:border-yellow-400",
+    borderOn: "border-yellow-400",
+    text: "text-yellow-300",
+    glow: "bg-yellow-400/25",
+    dot: "bg-yellow-400",
+    rgb: "250,204,21",
   },
 };
 

@@ -13,9 +13,8 @@ export const navLinks = [
 ];
 
 export const contact = {
-  email: "hello@studiobase.com",
-  phone: "+52 998 123 4567",
-  location: "Cancun, Mexico",
+  email: "info@studiobase.tech",
+  location: "Austin, TX",
 };
 
 // Replace "#" with your real profile URLs.
@@ -27,4 +26,4 @@ export const socials = [
 ];
 
 // Where every "Book a Consultation" button goes.
-export const consultationHref = "/contact";
+export const consultationHref = "/contact#contact-form";
