@@ -1,9 +1,21 @@
+"use client";
+
 import { Lightbulb, Quote, Sparkles } from "lucide-react";
 import Reveal from "@/components/Reveal";
-import { headingId, type Post } from "@/data/blog";
+import { headingId, localizePost, type Post } from "@/data/blog";
+import { useLang } from "@/lib/i18n";
+import { useEffect } from "react";
 
-/** Renders an article's blocks with the site's typography. */
-export default function ArticleBody({ post }: { post: Post }) {
+/** Renders an article's blocks with the site's typography (in the chosen language). */
+export default function ArticleBody({ post: original }: { post: Post }) {
+  const { lang, tr } = useLang();
+  const post = localizePost(original, lang);
+
+  // browser-tab title in the chosen language
+  useEffect(() => {
+    document.title = `${post.title} | Studio Base`;
+  }, [post.title]);
+
   // which paragraph gets the drop cap, and the number shown on each heading
   const firstP = post.body.findIndex((b) => b.type === "p");
   const sectionNo = post.body.map(
@@ -101,7 +113,7 @@ export default function ArticleBody({ post }: { post: Post }) {
         <section className="relative mt-16 overflow-hidden rounded-2xl border border-blue-500/40 bg-[#0a0904] p-7 shadow-[0_0_60px_-25px_rgba(59,130,246,0.6)] md:p-10">
           <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-500/15 blur-3xl" />
           <p className="relative flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-400">
-            <Sparkles size={14} /> Key takeaways
+            <Sparkles size={14} /> {tr("Key takeaways", "Puntos clave")}
           </p>
           <ol className="relative mt-6 space-y-4">
             {post.takeaways.map((t, j) => (

@@ -15,6 +15,7 @@ import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 import ParticleField from "@/components/ParticleField";
 import SpaceScene from "./SpaceScene";
+import { useLang, type Text } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -41,14 +42,18 @@ const MotionLink = motion.create(Link);
  * Products & Services text.
  */
 export default function ProductsCTA({
-  eyebrow = "LET'S BUILD TOGETHER",
+  eyebrow = { en: "LET'S BUILD TOGETHER", es: "CONSTRUYAMOS JUNTOS" },
   title,
-  description = "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
+  description = {
+    en: "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
+    es: "Trabaja con Studio Base y convierte tus ideas en soluciones tecnológicas sólidas que impulsan el crecimiento real de tu negocio.",
+  },
 }: {
-  eyebrow?: string;
+  eyebrow?: Text;
   title?: ReactNode;
-  description?: string;
+  description?: Text;
 } = {}) {
+  const { t, tr } = useLang();
   const ref = useRef<HTMLElement>(null);
 
   // The space scene moves slower than the page while you scroll (parallax)
@@ -96,7 +101,7 @@ export default function ProductsCTA({
             variants={fadeUp}
             className="text-[10px] tracking-[0.45em] text-zinc-300"
           >
-            {eyebrow}
+            {t(eyebrow)}
           </motion.p>
 
           <motion.h2
@@ -105,9 +110,10 @@ export default function ProductsCTA({
           >
             {title ?? (
               <>
-                Ready to Transform
+                {tr("Ready to Transform", "¿Listo para transformar")}
                 <br />
-                Your Business with <ShimmerText>Technology?</ShimmerText>
+                {tr("Your Business with ", "tu negocio con ")}
+                <ShimmerText>{tr("Technology?", "tecnología?")}</ShimmerText>
               </>
             )}
           </motion.h2>
@@ -116,7 +122,7 @@ export default function ProductsCTA({
             variants={fadeUp}
             className="mt-5 max-w-md text-sm leading-relaxed text-zinc-300"
           >
-            {description}
+            {t(description)}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
@@ -136,7 +142,7 @@ export default function ProductsCTA({
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
-              <span className="relative">Book a Consultation</span>
+              <span className="relative">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight
                 size={16}
                 className="relative transition-transform duration-300 group-hover:translate-x-1"
@@ -149,7 +155,7 @@ export default function ProductsCTA({
               whileTap={{ scale: 0.96 }}
               className="rounded-full border border-white/40 px-9 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-500 hover:text-blue-500"
             >
-              Contact Us
+              {tr("Contact Us", "Contáctanos")}
             </MotionLink>
           </motion.div>
         </div>

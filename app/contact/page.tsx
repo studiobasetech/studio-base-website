@@ -7,6 +7,7 @@ import CTA from "@/sections/CTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
+import { T } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -23,18 +24,32 @@ export default function ContactPage() {
       <SectionTransition><GlobalTeam /></SectionTransition>
       <SectionTransition>
         <CTA
-          eyebrow="LET'S CREATE REAL OPPORTUNITIES"
+          eyebrow={{ en: "LET'S CREATE REAL OPPORTUNITIES", es: "CREEMOS OPORTUNIDADES REALES" }}
           title={
-            <>
-              Ready to Turn
-              <br />
-              Your Ideas <ShimmerText>Into Reality?</ShimmerText>
-            </>
+            <T
+              en={
+                <>
+                  Ready to Turn
+                  <br />
+                  Your Ideas <ShimmerText>Into Reality?</ShimmerText>
+                </>
+              }
+              es={
+                <>
+                  ¿Listo para convertir
+                  <br />
+                  tus ideas <ShimmerText>en realidad?</ShimmerText>
+                </>
+              }
+            />
           }
-          description="Tell us about your project and let's explore how we can create a solution that drives real results."
-          primary={{ label: "Send Us a Message", href: "#contact-form" }}
+          description={{
+            en: "Tell us about your project and let's explore how we can create a solution that drives real results.",
+            es: "Cuéntanos sobre tu proyecto y exploremos juntos cómo crear una solución que genere resultados reales.",
+          }}
+          primary={{ label: { en: "Send Us a Message", es: "Envíanos un mensaje" }, href: "#contact-form" }}
           secondary={{
-            label: "Book a Consultation",
+            label: { en: "Book a Consultation", es: "Agenda una consulta" },
             href: `mailto:${contact.email}?subject=${encodeURIComponent("Consultation request")}`,
           }}
         />

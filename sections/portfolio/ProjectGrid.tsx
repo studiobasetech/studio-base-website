@@ -25,6 +25,7 @@ import Reveal from "@/components/Reveal";
 import { portfolioCategories, projects, type Project } from "@/data/portfolio";
 import { accents } from "@/sections/products-services/accents";
 import SectionIntro from "@/sections/products-services/SectionIntro";
+import { useLang, type Bi, type Lang, pick } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -38,10 +39,10 @@ const categoryIcons: Record<string, LucideIcon> = {
 
 // The four blocks on every project card
 const blocks = [
-  { key: "challenge", label: "Business Challenge", icon: Target },
-  { key: "solution", label: "Technology Solution", icon: Lightbulb },
-  { key: "features", label: "Key Features", icon: ListChecks },
-  { key: "results", label: "Results", icon: ChartNoAxesCombined },
+  { key: "challenge", label: { en: "Business Challenge", es: "Reto de negocio" }, icon: Target },
+  { key: "solution", label: { en: "Technology Solution", es: "Solución tecnológica" }, icon: Lightbulb },
+  { key: "features", label: { en: "Key Features", es: "Funciones clave" }, icon: ListChecks },
+  { key: "results", label: { en: "Results", es: "Resultados" }, icon: ChartNoAxesCombined },
 ] as const;
 
 const chipRow: Variants = {
@@ -55,14 +56,16 @@ const chipItem: Variants = {
 
 const MotionLink = motion.create(Link);
 
-function blockText(p: Project, key: (typeof blocks)[number]["key"]) {
-  const v = p[key];
-  return Array.isArray(v) ? v : [v];
+function blockText(p: Project, key: (typeof blocks)[number]["key"], lang: Lang): string[] {
+  const v: Bi | Bi[] = p[key];
+  return (Array.isArray(v) ? v : [v]).map((x) => pick(x, lang));
 }
 
 /* One project card */
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
   const a = accents[project.accent];
+  const { t, tr, lang } = useLang();
+  const title = t(project.title);
 
   return (
     <TiltCard
@@ -82,12 +85,12 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
       <button
         type="button"
         onClick={onOpen}
-        aria-label={`Open the ${project.title} case study`}
+        aria-label={tr(`Open the ${title} case study`, `Abrir el caso de éxito: ${title}`)}
         className="relative z-10 block aspect-[5/3] overflow-hidden"
       >
         <Image
           src={project.image}
-          alt={`${project.title} dashboard`}
+          alt={tr(`${title} dashboard`, `Panel de ${title}`)}
           fill
           sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -96,19 +99,19 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
         <span
           className={`absolute left-4 top-4 rounded-full border bg-black/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] backdrop-blur-sm ${a.border} ${a.text}`}
         >
-          {project.tag}
+          {t(project.tag)}
         </span>
       </button>
 
       {/* text */}
       <div className="relative z-10 flex flex-1 flex-col p-5 md:p-6">
-        <h3 className="text-lg font-semibold leading-snug text-white">{project.title}</h3>
-        <p className="mt-1 text-xs text-zinc-500">{project.client}</p>
+        <h3 className="text-lg font-semibold leading-snug text-white">{title}</h3>
+        <p className="mt-1 text-xs text-zinc-500">{t(project.client)}</p>
 
         <div className="mt-5 space-y-4">
           {blocks.map((b) => {
             const Icon = b.icon;
-            const lines = blockText(project, b.key);
+            const lines = blockText(project, b.key, lang);
             return (
               <div key={b.key} className="flex gap-3">
                 <span
@@ -117,7 +120,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
                   <Icon size={14} />
                 </span>
                 <div>
-                  <p className="text-xs font-semibold text-white">{b.label}</p>
+                  <p className="text-xs font-semibold text-white">{t(b.label)}</p>
                   {b.key === "challenge" || b.key === "solution" ? (
                     <p className="mt-1 text-xs leading-relaxed text-zinc-400">{lines[0]}</p>
                   ) : b.key === "features" ? (
@@ -143,7 +146,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
             onClick={onOpen}
             className={`inline-flex items-center gap-2 text-xs font-semibold ${a.text}`}
           >
-            View Case Study
+            {tr("View Case Study", "Ver caso de éxito")}
             <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
           </button>
           <span
@@ -160,6 +163,8 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
 /* Full case study in a modal */
 function CaseStudy({ project, onClose }: { project: Project; onClose: () => void }) {
   const a = accents[project.accent];
+  const { t, tr, lang } = useLang();
+  const title = t(project.title);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -184,7 +189,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-label={project.title}
+        aria-label={title}
         initial={{ opacity: 0, y: 60, scale: 0.96, filter: "blur(10px)" }}
         animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
         exit={{ opacity: 0, y: 40, scale: 0.97 }}
@@ -196,7 +201,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={tr("Close", "Cerrar")}
           className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur-sm transition-colors hover:border-white/60"
         >
           <X size={16} />
@@ -209,20 +214,20 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
             transition={{ duration: 1.4, ease: EASE }}
             className="absolute inset-0"
           >
-            <Image src={project.image} alt={`${project.title} dashboard`} fill sizes="900px" className="object-cover" />
+            <Image src={project.image} alt={tr(`${title} dashboard`, `Panel de ${title}`)} fill sizes="900px" className="object-cover" />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#07070a] via-[#07070a]/20 to-transparent" />
         </div>
 
         <div className="relative px-6 pb-8 md:px-10 md:pb-10">
-          <p className={`text-[10px] font-semibold uppercase tracking-[0.3em] ${a.text}`}>{project.tag}</p>
-          <h3 className="mt-3 text-2xl font-semibold text-white md:text-4xl">{project.title}</h3>
-          <p className="mt-2 text-sm text-zinc-400">{project.client}</p>
+          <p className={`text-[10px] font-semibold uppercase tracking-[0.3em] ${a.text}`}>{t(project.tag)}</p>
+          <h3 className="mt-3 text-2xl font-semibold text-white md:text-4xl">{title}</h3>
+          <p className="mt-2 text-sm text-zinc-400">{t(project.client)}</p>
 
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             {blocks.map((b, i) => {
               const Icon = b.icon;
-              const lines = blockText(project, b.key);
+              const lines = blockText(project, b.key, lang);
               return (
                 <motion.div
                   key={b.key}
@@ -233,7 +238,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
                 >
                   <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-white">
                     <Icon size={15} className={a.text} />
-                    {b.label}
+                    {t(b.label)}
                   </p>
                   {lines.length === 1 ? (
                     <p className="mt-3 text-sm leading-relaxed text-zinc-300">{lines[0]}</p>
@@ -260,7 +265,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
               className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-semibold ${a.button}`}
             >
               <LightSweep />
-              <span className="relative">Start a Similar Project</span>
+              <span className="relative">{tr("Start a Similar Project", "Inicia un proyecto similar")}</span>
               <ArrowRight size={15} className="relative transition-transform duration-300 group-hover:translate-x-1" />
             </MotionLink>
             <button
@@ -268,7 +273,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
               onClick={onClose}
               className="text-sm text-zinc-400 transition-colors hover:text-white"
             >
-              Back to projects
+              {tr("Back to projects", "Volver a los proyectos")}
             </button>
           </div>
         </div>
@@ -278,6 +283,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
 }
 
 export default function ProjectGrid() {
+  const { t, tr } = useLang();
   const [active, setActive] = useState("all");
   const [open, setOpen] = useState<Project | null>(null);
   const shown =
@@ -339,7 +345,7 @@ export default function ProjectGrid() {
                   <Icon size={20} style={{ filter: `drop-shadow(0 0 6px rgba(${a.rgb},0.7))` }} />
                 </motion.span>
                 <span className="relative whitespace-pre-line text-sm font-semibold leading-snug text-white">
-                  {c.label}
+                  {t(c.label)}
                 </span>
               </motion.button>
             );
@@ -347,24 +353,29 @@ export default function ProjectGrid() {
         </motion.div>
 
         <SectionIntro
-          eyebrow="FEATURED PROJECTS"
+          eyebrow={tr("FEATURED PROJECTS", "PROYECTOS DESTACADOS")}
           title={
             <>
-              Selected Work. <ShimmerText>Real Impact.</ShimmerText>
+              {tr("Selected Work.", "Trabajo selecto.")}{" "}
+              <ShimmerText>{tr("Real Impact.", "Impacto real.")}</ShimmerText>
             </>
           }
           side={
             <p>
-              From AI automation to custom digital platforms, our projects are
-              designed to solve real business challenges and deliver measurable
-              results.
+              {tr(
+                "From AI automation to custom digital platforms, our projects are designed to solve real business challenges and deliver measurable results.",
+                "De la automatización con IA a plataformas digitales a la medida, nuestros proyectos están diseñados para resolver retos reales de negocio y lograr resultados medibles.",
+              )}
             </p>
           }
         />
 
         {active === "all" && (
           <p className="-mt-4 mb-8 text-xs uppercase tracking-[0.25em] text-zinc-500">
-            Featured projects · choose a category above to see more
+            {tr(
+              "Featured projects · choose a category above to see more",
+              "Proyectos destacados · elige una categoría arriba para ver más",
+            )}
           </p>
         )}
 
@@ -375,7 +386,7 @@ export default function ProjectGrid() {
               onClick={() => setActive("all")}
               className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-1.5 text-xs text-zinc-300 transition-colors hover:border-white/40 hover:text-white"
             >
-              <X size={12} /> Show all projects
+              <X size={12} /> {tr("Show all projects", "Ver todos los proyectos")}
             </button>
           </Reveal>
         )}

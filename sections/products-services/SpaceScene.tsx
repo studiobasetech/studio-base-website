@@ -2,6 +2,7 @@
 
 import { motion, type MotionValue, useTransform } from "framer-motion";
 import StarField from "./StarField";
+import { useLang } from "@/lib/i18n";
 
 /**
  * Background for the Products & Services hero: deep space with a
@@ -131,6 +132,8 @@ function Planet() {
 }
 
 function Hud() {
+  const { tr } = useLang();
+
   return (
     <div className="absolute -inset-[16%]">
       {/* rotating dashed rings */}
@@ -173,14 +176,14 @@ function Hud() {
             transition={{ duration: 1.4, repeat: Infinity }}
             className="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.9)]"
           />
-          Systems online
+          {tr("Systems online", "Sistemas en línea")}
         </p>
-        <p className="mt-1 text-zinc-500">Orbit 01 · AI Core</p>
+        <p className="mt-1 text-zinc-500">{tr("Orbit 01 · AI Core", "Órbita 01 · Núcleo IA")}</p>
       </div>
 
       <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-500 sm:text-[10px]">
         <p className="text-blue-300/70">{COORDS}</p>
-        <p className="mt-1">Studio Base HQ</p>
+        <p className="mt-1">{tr("Studio Base HQ", "Sede Studio Base")}</p>
       </div>
     </div>
   );

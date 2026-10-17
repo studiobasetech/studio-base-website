@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Reveal from "@/components/Reveal";
 
 /**
@@ -5,6 +6,8 @@ import Reveal from "@/components/Reveal";
  * The top padding leaves room for the fixed Navbar.
  *
  *   <PageHeader eyebrow="OUR WORK" title="Selected" accent="Projects." />
+ *
+ * For English/Spanish, pass <T en="..." es="..." /> (from @/lib/i18n) as any prop.
  */
 export default function PageHeader({
   eyebrow,
@@ -12,10 +15,10 @@ export default function PageHeader({
   accent,
   description,
 }: {
-  eyebrow: string;
-  title: string;
-  accent?: string;
-  description?: string;
+  eyebrow: ReactNode;
+  title: ReactNode;
+  accent?: ReactNode;
+  description?: ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden px-6 pb-16 pt-36 lg:px-12 lg:pb-24 lg:pt-44">

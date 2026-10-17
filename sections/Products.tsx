@@ -9,21 +9,34 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useLang, type Bi } from "@/lib/i18n";
 
-const products = [
+const products: {
+  title: string;
+  subtitle: Bi;
+  description: Bi;
+  features: Bi[];
+  image: string;
+  accent: string;
+}[] = [
   {
     title: "HCRM AI",
-    subtitle: "AI-Powered Client & Workforce Management",
+    subtitle: {
+      en: "AI-Powered Client & Workforce Management",
+      es: "Gestión de clientes y equipos impulsada por IA",
+    },
 
-    description:
-      "Automate client management, communication, project tracking, and team operations with artificial intelligence.",
+    description: {
+      en: "Automate client management, communication, project tracking, and team operations with artificial intelligence.",
+      es: "Automatiza la gestión de clientes, la comunicación, el seguimiento de proyectos y las operaciones de tu equipo con inteligencia artificial.",
+    },
 
     features: [
-      "Client Management",
-      "Automated Communication",
-      "Lead Qualification",
-      "CRM Automation",
-      "Workflow Optimization",
+      { en: "Client Management", es: "Gestión de clientes" },
+      { en: "Automated Communication", es: "Comunicación automatizada" },
+      { en: "Lead Qualification", es: "Calificación de prospectos" },
+      { en: "CRM Automation", es: "Automatización de CRM" },
+      { en: "Workflow Optimization", es: "Optimización de flujos de trabajo" },
     ],
 
     image: "/images/hcrm-ai.png",
@@ -32,17 +45,22 @@ const products = [
 
   {
     title: "BaseLead AI",
-    subtitle: "AI-Powered Client Acquisition & Sales Intelligence",
+    subtitle: {
+      en: "AI-Powered Client Acquisition & Sales Intelligence",
+      es: "Captación de clientes e inteligencia comercial con IA",
+    },
 
-    description:
-      "Find and connect with potential clients using artificial intelligence, identify business opportunities, and amplify your sales process.",
+    description: {
+      en: "Find and connect with potential clients using artificial intelligence, identify business opportunities, and amplify your sales process.",
+      es: "Encuentra y conecta con clientes potenciales mediante inteligencia artificial, identifica oportunidades de negocio y potencia tu proceso de ventas.",
+    },
 
     features: [
-      "Find Potential Clients",
-      "Identify Business Opportunities",
-      "AI-Powered Outreach",
-      "Manage Your Pipeline",
-      "Sales Analytics & Insights",
+      { en: "Find Potential Clients", es: "Encuentra clientes potenciales" },
+      { en: "Identify Business Opportunities", es: "Identifica oportunidades de negocio" },
+      { en: "AI-Powered Outreach", es: "Prospección impulsada por IA" },
+      { en: "Manage Your Pipeline", es: "Gestiona tu pipeline" },
+      { en: "Sales Analytics & Insights", es: "Analítica e insights de ventas" },
     ],
 
     image: "/images/baselead-ai-gold.png",
@@ -94,6 +112,7 @@ function ProductCard({
   dimmed: boolean;
   onSelect: () => void;
 }) {
+  const { t, tr } = useLang();
   const style = styles[product.accent as keyof typeof styles];
 
   /* 3D tilt that follows the mouse */
@@ -188,10 +207,10 @@ function ProductCard({
         >
           {selected ? (
             <>
-              Close <X size={10} />
+              {tr("Close", "Cerrar")} <X size={10} />
             </>
           ) : (
-            "Click to expand"
+            tr("Click to expand", "Clic para ampliar")
           )}
         </span>
 
@@ -204,17 +223,17 @@ function ProductCard({
             </h3>
 
             <p className={`mt-2 text-xs font-medium ${style.text}`}>
-              {product.subtitle}
+              {t(product.subtitle)}
             </p>
 
             <p className="mt-4 text-xs leading-relaxed text-zinc-400">
-              {product.description}
+              {t(product.description)}
             </p>
 
             <ul className="mt-5 space-y-2">
               {product.features.map((feature, i) => (
                 <motion.li
-                  key={feature}
+                  key={feature.en}
                   animate={{ x: selected ? [0, 6, 0] : 0 }}
                   transition={{ delay: selected ? i * 0.06 : 0, duration: 0.4 }}
                   className="flex items-center gap-2 text-xs text-zinc-300"
@@ -230,7 +249,7 @@ function ProductCard({
                     `}
                   />
 
-                  {feature}
+                  {t(feature)}
                 </motion.li>
               ))}
             </ul>
@@ -249,7 +268,7 @@ function ProductCard({
                 ${style.text}
               `}
             >
-              Learn More
+              {tr("Learn More", "Conoce más")}
               <ArrowRight
                 size={14}
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -263,7 +282,7 @@ function ProductCard({
           <div className="relative -mx-6 -mb-6 h-64 overflow-hidden sm:my-[-1.5rem] sm:ml-0 sm:h-auto sm:min-h-[340px]">
             <motion.img
               src={product.image}
-              alt={`${product.title} dashboard`}
+              alt={tr(`${product.title} dashboard`, `Panel de ${product.title}`)}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, delay: index, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 h-[105%] w-full object-cover object-center transition-transform duration-700 group-hover/card:scale-110"
@@ -277,6 +296,7 @@ function ProductCard({
 }
 
 export default function Products() {
+  const { tr, lang } = useLang();
   const [selected, setSelected] = useState<number | null>(null);
 
   const total = products.length;
@@ -297,28 +317,33 @@ export default function Products() {
 
           <div>
             <p className="text-xs tracking-[0.4em] text-zinc-500">
-              OUR PROPRIETARY PRODUCTS
+              {tr("OUR PROPRIETARY PRODUCTS", "NUESTROS PRODUCTOS PROPIOS")}
             </p>
 
-            {/* Each line is nowrap so the title stays on exactly two lines */}
+            {/* Each line is nowrap so the title stays on exactly two lines
+                (Spanish is longer, so there it may wrap) */}
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-white">
-              <span className="block whitespace-nowrap">Innovative Tools</span>
+              <span className={`block ${lang === "es" ? "" : "whitespace-nowrap"}`}>
+                {tr("Innovative Tools", "Herramientas innovadoras")}
+              </span>
 
-              <span className="block whitespace-nowrap text-blue-500">
-                Built for Growth.
+              <span className={`block text-blue-500 ${lang === "es" ? "" : "whitespace-nowrap"}`}>
+                {tr("Built for Growth.", "creadas para crecer.")}
               </span>
             </h2>
 
             <p className="mt-5 text-sm leading-relaxed text-zinc-400">
-              Our AI-powered platforms are designed to help businesses find
-              opportunities, automate processes, and drive measurable results.
+              {tr(
+                "Our AI-powered platforms are designed to help businesses find opportunities, automate processes, and drive measurable results.",
+                "Nuestras plataformas impulsadas por IA están diseñadas para ayudar a las empresas a encontrar oportunidades, automatizar procesos y lograr resultados medibles.",
+              )}
             </p>
 
             <Link
               href="/products-services#our-products"
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-blue-500 px-7 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400"
             >
-              Explore Our Products
+              {tr("Explore Our Products", "Explora nuestros productos")}
               <ArrowRight size={14} />
             </Link>
           </div>
@@ -342,7 +367,7 @@ export default function Products() {
             {/* Carousel controls */}
             <div className="mt-6 flex items-center justify-center gap-4">
               <button
-                aria-label="Previous product"
+                aria-label={tr("Previous product", "Producto anterior")}
                 onClick={prev}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-white/40 hover:text-white"
               >
@@ -357,7 +382,7 @@ export default function Products() {
                   return (
                     <button
                       key={product.title}
-                      aria-label={`Select ${product.title}`}
+                      aria-label={`${tr("Select", "Seleccionar")} ${product.title}`}
                       onClick={() => toggle(i)}
                       className={`h-2 rounded-full transition-all duration-300 ${
                         selected === i
@@ -370,7 +395,7 @@ export default function Products() {
               </div>
 
               <button
-                aria-label="Next product"
+                aria-label={tr("Next product", "Siguiente producto")}
                 onClick={next}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-white/40 hover:text-white"
               >

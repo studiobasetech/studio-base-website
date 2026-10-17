@@ -8,6 +8,7 @@ import { LightSweep, TiltCard } from "@/components/Effects";
 import { techProducts } from "@/data/services";
 import { accents } from "./accents";
 import SectionIntro from "./SectionIntro";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -29,6 +30,8 @@ const listItem: Variants = {
 const MotionLink = motion.create(Link);
 
 export default function TechProducts() {
+  const { t, tr } = useLang();
+
   return (
     <section
       id="our-products"
@@ -48,12 +51,17 @@ export default function TechProducts() {
 
       <div className="relative mx-auto max-w-7xl">
         <SectionIntro
-          eyebrow="OUR TECHNOLOGY PRODUCTS"
-          title="Proprietary AI Solutions for Modern Businesses."
+          eyebrow={{ en: "OUR TECHNOLOGY PRODUCTS", es: "NUESTROS PRODUCTOS TECNOLÓGICOS" }}
+          title={tr(
+            "Proprietary AI Solutions for Modern Businesses.",
+            "Soluciones de IA propias para empresas modernas.",
+          )}
           side={
             <p>
-              Powerful AI platforms designed to automate operations, acquire
-              more clients, and drive business growth.
+              {tr(
+                "Powerful AI platforms designed to automate operations, acquire more clients, and drive business growth.",
+                "Potentes plataformas de IA diseñadas para automatizar operaciones, conseguir más clientes e impulsar el crecimiento de tu negocio.",
+              )}
             </p>
           }
         />
@@ -100,22 +108,22 @@ export default function TechProducts() {
                       </motion.span>
                       <div>
                         <h3 className="text-xl font-semibold text-white md:text-2xl">
-                          {product.title}
+                          {t(product.title)}
                         </h3>
                         <p className="mt-1 text-sm text-zinc-300">
-                          {product.subtitle}
+                          {t(product.subtitle)}
                         </p>
                       </div>
                     </div>
 
                     <p className="mt-5 text-xs leading-relaxed text-zinc-400 md:text-sm">
-                      {product.description}
+                      {t(product.description)}
                     </p>
 
                     {/* CORE CAPABILITIES (line draws in) */}
                     <div className="mt-6 flex items-center gap-3">
                       <p className={`text-[10px] font-semibold tracking-[0.3em] ${a.text}`}>
-                        CORE CAPABILITIES
+                        {tr("CORE CAPABILITIES", "CAPACIDADES PRINCIPALES")}
                       </p>
                       <motion.span
                         initial={{ scaleX: 0 }}
@@ -136,7 +144,7 @@ export default function TechProducts() {
                     >
                       {product.capabilities.map((c) => (
                         <motion.li
-                          key={c}
+                          key={c.en}
                           variants={listItem}
                           whileHover={{ x: 6 }}
                           className="flex items-center gap-2.5 text-xs text-zinc-200"
@@ -146,7 +154,7 @@ export default function TechProducts() {
                           >
                             <Check size={10} strokeWidth={3} />
                           </span>
-                          {c}
+                          {t(c)}
                         </motion.li>
                       ))}
                     </motion.ul>
@@ -158,7 +166,7 @@ export default function TechProducts() {
                       className={`group/btn relative mt-8 inline-flex w-fit items-center gap-2 overflow-hidden rounded-full px-6 py-2.5 text-xs font-semibold transition-colors ${a.button}`}
                     >
                       <LightSweep delay={3 + i} />
-                      <span className="relative">Learn More</span>
+                      <span className="relative">{tr("Learn More", "Conoce más")}</span>
                       <ArrowRight
                         size={14}
                         className="relative transition-transform duration-300 group-hover/btn:translate-x-1"
@@ -170,7 +178,7 @@ export default function TechProducts() {
                   <div className="relative h-64 overflow-hidden sm:h-auto">
                     <motion.img
                       src={product.image}
-                      alt={`${product.title} dashboard`}
+                      alt={tr(`${t(product.title)} dashboard`, `Panel de ${t(product.title)}`)}
                       animate={{ y: [0, -10, 0] }}
                       transition={{ duration: 6, delay: i, repeat: Infinity, ease: "easeInOut" }}
                       className="absolute inset-0 h-[105%] w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"

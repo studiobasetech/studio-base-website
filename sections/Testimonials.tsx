@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Lock, Quote, Star } from "lucide-react";
 import { ShimmerText, TiltCard } from "@/components/Effects";
 import { testimonials } from "@/data/testimonials";
 import { tones } from "@/sections/about/palette";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const AUTO_MS = 5500;
@@ -23,6 +24,7 @@ const subscribe = (cb: () => void) => {
 const getPerView = () => (window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1);
 
 export default function Testimonials() {
+  const { tr, t: tx } = useLang();
   const perView = useSyncExternalStore(subscribe, getPerView, () => 3);
   const max = Math.max(0, testimonials.length - perView);
   const [index, setIndex] = useState(0);
@@ -79,17 +81,21 @@ export default function Testimonials() {
           className="mx-auto max-w-3xl text-center"
         >
           <motion.p variants={fadeUp} className="text-[10px] tracking-[0.45em] text-zinc-400">
-            CLIENT TESTIMONIALS
+            {tr("CLIENT TESTIMONIALS", "TESTIMONIOS DE CLIENTES")}
           </motion.p>
           <motion.h2 variants={fadeUp} className="mt-4 text-3xl font-medium leading-tight text-white md:text-5xl">
-            Trusted by <ShimmerText>Innovative Companies</ShimmerText>
+            {tr("Trusted by", "La confianza de")}{" "}
+            <ShimmerText>{tr("Innovative Companies", "empresas innovadoras")}</ShimmerText>
           </motion.h2>
           <motion.p variants={fadeUp} className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
-            Businesses across different industries rely on Studio Base to build,
-            automate, and scale their technology.
+            {tr(
+              "Businesses across different industries rely on Studio Base to build, automate, and scale their technology.",
+              "Empresas de distintas industrias confían en Studio Base para construir, automatizar y escalar su tecnología.",
+            )}
           </motion.p>
           <motion.p variants={fadeUp} className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-            <Lock size={11} className="text-blue-400" /> Client identities kept confidential
+            <Lock size={11} className="text-blue-400" />{" "}
+            {tr("Client identities kept confidential", "Identidad de los clientes confidencial")}
           </motion.p>
         </motion.div>
 
@@ -145,7 +151,7 @@ export default function Testimonials() {
                         </div>
 
                         <p className="relative mt-5 flex-1 text-[15px] leading-relaxed text-zinc-200">
-                          &ldquo;{t.quote}&rdquo;
+                          &ldquo;{tx(t.quote)}&rdquo;
                         </p>
 
                         <div className="relative mt-6 flex items-center gap-4 border-t border-white/10 pt-5">
@@ -157,8 +163,8 @@ export default function Testimonials() {
                           </span>
                           <div className="min-w-0">
                             <p className="font-semibold text-white">{t.initials}</p>
-                            <p className="truncate text-xs text-zinc-400">
-                              {t.industry} <span className="text-zinc-600">·</span> <span className={c.text}>{t.service}</span>
+                            <p className="text-xs leading-snug text-zinc-400">
+                              {tx(t.industry)} <span className="text-zinc-600">·</span> <span className={c.text}>{tx(t.service)}</span>
                             </p>
                           </div>
                         </div>
@@ -174,7 +180,7 @@ export default function Testimonials() {
           <div className="mt-6 flex items-center justify-center gap-5">
             <button
               type="button"
-              aria-label="Previous review"
+              aria-label={tr("Previous review", "Reseña anterior")}
               onClick={() => go(-1)}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-blue-500 hover:text-blue-400"
             >
@@ -185,7 +191,7 @@ export default function Testimonials() {
                 <button
                   key={d}
                   type="button"
-                  aria-label={`Show reviews ${d + 1}`}
+                  aria-label={tr(`Show reviews ${d + 1}`, `Mostrar reseñas ${d + 1}`)}
                   onClick={() => setIndex(d)}
                   className="group relative h-2 overflow-hidden rounded-full bg-zinc-700 transition-all duration-300"
                   style={{ width: d === i ? 36 : 8 }}
@@ -204,7 +210,7 @@ export default function Testimonials() {
             </div>
             <button
               type="button"
-              aria-label="Next review"
+              aria-label={tr("Next review", "Siguiente reseña")}
               onClick={() => go(1)}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-blue-500 hover:text-blue-400"
             >

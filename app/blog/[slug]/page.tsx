@@ -8,6 +8,7 @@ import ArticleBody from "@/sections/blog/ArticleBody";
 import ArticleAside, { ShareButtons } from "@/sections/blog/ArticleAside";
 import PostCard from "@/sections/blog/PostCard";
 import Reveal from "@/components/Reveal";
+import { T } from "@/lib/i18n";
 
 // Every article is generated ahead of time (the site is a static export).
 export const dynamicParams = false;
@@ -71,7 +72,7 @@ export default async function ArticlePage({
                 className="group inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-blue-400"
               >
                 <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
-                All articles
+                <T en="All articles" es="Todos los artículos" />
               </Link>
             </div>
           </article>
@@ -86,8 +87,12 @@ export default async function ArticlePage({
       <section className="relative border-t border-white/10 bg-black px-6 py-20 lg:px-12">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10">
-            <p className="text-[10px] tracking-[0.45em] text-zinc-400">KEEP READING</p>
-            <h2 className="mt-3 text-2xl font-medium text-white md:text-3xl">Up next</h2>
+            <p className="text-[10px] tracking-[0.45em] text-zinc-400">
+              <T en="KEEP READING" es="SIGUE LEYENDO" />
+            </p>
+            <h2 className="mt-3 text-2xl font-medium text-white md:text-3xl">
+              <T en="Up next" es="A continuación" />
+            </h2>
           </Reveal>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (

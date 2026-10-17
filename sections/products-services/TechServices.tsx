@@ -21,6 +21,7 @@ import { consultationHref } from "@/data/site";
 import { techServices } from "@/data/services";
 import { accents } from "./accents";
 import SectionIntro from "./SectionIntro";
+import { useLang, type Lang } from "@/lib/i18n";
 
 const icons: Record<string, LucideIcon> = {
   ai: BrainCircuit,
@@ -33,26 +34,33 @@ const icons: Record<string, LucideIcon> = {
 };
 
 // "A, B, and C." -> ["A", "B", "C"]
-const toList = (text: string) =>
-  text
-    .replace(/\.$/, "")
-    .split(", ")
-    .map((s) => s.replace(/^and /, ""));
+// Spanish: "A, B y C." -> ["A", "B", "C"] (no comma before "y"/"e")
+const toList = (text: string, lang: Lang) => {
+  const parts = text.replace(/\.$/, "").split(", ");
+  if (lang === "es") {
+    const last = parts.pop() ?? "";
+    const m = last.match(/^(.*) [ye] (.+)$/);
+    return m ? [...parts, m[1], m[2]] : [...parts, last];
+  }
+  return parts.map((s) => s.replace(/^and /, ""));
+};
 
 export default function TechServices() {
   const [open, setOpen] = useState<number | null>(null);
+  const { t, tr, lang } = useLang();
 
   return (
     <section className="bg-black px-6 py-16 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <SectionIntro
-          eyebrow="OUR TECHNOLOGY SERVICES"
-          title="End-to-End Technology Solutions."
+          eyebrow={{ en: "OUR TECHNOLOGY SERVICES", es: "NUESTROS SERVICIOS TECNOLÓGICOS" }}
+          title={tr("End-to-End Technology Solutions.", "Soluciones tecnológicas integrales.")}
           side={
             <p>
-              From strategy to implementation, we provide comprehensive
-              technology solutions to help businesses innovate, operate
-              efficiently and scale with confidence.
+              {tr(
+                "From strategy to implementation, we provide comprehensive technology solutions to help businesses innovate, operate efficiently and scale with confidence.",
+                "De la estrategia a la implementación, ofrecemos soluciones tecnológicas completas para que las empresas innoven, operen con eficiencia y crezcan con confianza.",
+              )}
             </p>
           }
         />
@@ -64,7 +72,7 @@ export default function TechServices() {
             const isOpen = open === i;
 
             return (
-              <Reveal key={service.title} delay={(i % 4) * 0.1 + Math.floor(i / 4) * 0.15} y={50}>
+              <Reveal key={service.icon} delay={(i % 4) * 0.1 + Math.floor(i / 4) * 0.15} y={50}>
                 <TiltCard
                   rgb={a.rgb}
                   tilt={9}
@@ -97,7 +105,7 @@ export default function TechServices() {
                       />
                     </motion.span>
                     <h3 className="whitespace-pre-line text-sm font-semibold leading-snug text-white">
-                      {service.title}
+                      {t(service.title)}
                     </h3>
                   </div>
 
@@ -111,7 +119,7 @@ export default function TechServices() {
                         transition={{ duration: 0.25 }}
                         className="relative z-10 mt-4 space-y-1.5"
                       >
-                        {toList(service.description).map((item) => (
+                        {toList(t(service.description), lang).map((item) => (
                           <li
                             key={item}
                             className="flex items-center gap-2 text-xs text-zinc-200"
@@ -126,7 +134,7 @@ export default function TechServices() {
                             onClick={(e) => e.stopPropagation()}
                             className={`inline-flex items-center gap-1.5 text-xs font-semibold ${a.text}`}
                           >
-                            Talk to us <ArrowRight size={12} />
+                            {tr("Talk to us", "Habla con nosotros")} <ArrowRight size={12} />
                           </Link>
                         </li>
                       </motion.ul>
@@ -139,7 +147,7 @@ export default function TechServices() {
                         transition={{ duration: 0.25 }}
                         className="relative z-10 mt-4 text-xs leading-relaxed text-zinc-400"
                       >
-                        {service.description}
+                        {t(service.description)}
                       </motion.p>
                     )}
                   </AnimatePresence>

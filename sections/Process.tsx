@@ -10,44 +10,45 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { motion, useInView, type Variants } from "framer-motion";
+import { useLang } from "@/lib/i18n";
 
 const steps = [
   {
     number: "01",
-    title: "Discovery",
-    description: "We understand your goals and opportunities.",
+    title: { en: "Discovery", es: "Descubrimiento" },
+    description: { en: "We understand your goals and opportunities.", es: "Entendemos tus objetivos y oportunidades." },
     icon: Search,
     color: "text-blue-500",
     fill: "bg-blue-500",
   },
   {
     number: "02",
-    title: "Strategy",
-    description: "We design the right solution and roadmap.",
+    title: { en: "Strategy", es: "Estrategia" },
+    description: { en: "We design the right solution and roadmap.", es: "Diseñamos la solución y la hoja de ruta adecuadas." },
     icon: FileText,
     color: "text-purple-500",
     fill: "bg-purple-500",
   },
   {
     number: "03",
-    title: "Development",
-    description: "We build, test, and refine your solution.",
+    title: { en: "Development", es: "Desarrollo" },
+    description: { en: "We build, test, and refine your solution.", es: "Construimos, probamos y perfeccionamos tu solución." },
     icon: Code2,
     color: "text-yellow-400",
     fill: "bg-yellow-400",
   },
   {
     number: "04",
-    title: "Deployment",
-    description: "We launch and ensure optimal performance.",
+    title: { en: "Deployment", es: "Implementación" },
+    description: { en: "We launch and ensure optimal performance.", es: "Lanzamos y aseguramos un rendimiento óptimo." },
     icon: Rocket,
     color: "text-cyan-400",
     fill: "bg-cyan-400",
   },
   {
     number: "05",
-    title: "Growth",
-    description: "We provide ongoing support to help you scale.",
+    title: { en: "Growth", es: "Crecimiento" },
+    description: { en: "We provide ongoing support to help you scale.", es: "Te brindamos soporte continuo para que sigas escalando." },
     icon: BarChart3,
     color: "text-blue-500",
     fill: "bg-blue-500",
@@ -93,6 +94,7 @@ const CYCLE_MS = 2200;
 const FINISHED = steps.length;
 
 export default function Process() {
+  const { t, tr } = useLang();
   const stepsRef = useRef<HTMLDivElement>(null);
   const inView = useInView(stepsRef, { once: true, amount: 0.4 });
 
@@ -130,16 +132,16 @@ export default function Process() {
               variants={headerItem}
               className="mb-4 text-xs tracking-[0.35em] text-zinc-400"
             >
-              OUR PROCESS
+              {tr("OUR PROCESS", "NUESTRO PROCESO")}
             </motion.p>
 
             <motion.h2
               variants={headerItem}
               className="text-4xl font-medium leading-tight md:text-5xl"
             >
-              From Strategy
+              {tr("From Strategy", "De la estrategia")}
               <br />
-              to Real Results.
+              {tr("to Real Results.", "a resultados reales.")}
             </motion.h2>
           </div>
 
@@ -147,9 +149,10 @@ export default function Process() {
             variants={headerItem}
             className="max-w-md text-sm leading-relaxed text-zinc-400 lg:pb-2"
           >
-            We follow a structured and collaborative process to ensure every
-            project is aligned with your goals, delivered efficiently, and built
-            for long-term success.
+            {tr(
+              "We follow a structured and collaborative process to ensure every project is aligned with your goals, delivered efficiently, and built for long-term success.",
+              "Seguimos un proceso estructurado y colaborativo para que cada proyecto esté alineado con tus objetivos, se entregue de forma eficiente y esté hecho para el éxito a largo plazo.",
+            )}
           </motion.p>
         </motion.div>
 
@@ -254,14 +257,14 @@ export default function Process() {
                     </motion.div>
                   </div>
 
-                  <h3 className="text-base font-medium">{step.title}</h3>
+                  <h3 className="text-base font-medium">{t(step.title)}</h3>
 
                   <p
                     className={`mt-2 max-w-[160px] text-xs leading-relaxed transition-colors duration-300 ${
                       isActive ? "text-zinc-200" : "text-zinc-400"
                     }`}
                   >
-                    {step.description}
+                    {t(step.description)}
                   </p>
 
                   {/* Connector line with arrow (desktop only) */}

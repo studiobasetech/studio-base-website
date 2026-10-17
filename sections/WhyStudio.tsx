@@ -9,35 +9,46 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
+import { useLang } from "@/lib/i18n";
 
 const values = [
   {
     icon: Lightbulb,
-    title: "Innovative Technology",
-    description:
-      "Cutting-edge solutions designed to create real business impact.",
+    title: { en: "Innovative Technology", es: "Tecnología innovadora" },
+    description: {
+      en: "Cutting-edge solutions designed to create real business impact.",
+      es: "Soluciones de vanguardia diseñadas para generar un impacto real en tu negocio.",
+    },
     accent: "blue",
     rgb: "59,130,246",
   },
   {
     icon: Users,
-    title: "Expert Team",
-    description:
-      "A network of specialized professionals delivering excellence.",
+    title: { en: "Expert Team", es: "Equipo experto" },
+    description: {
+      en: "A network of specialized professionals delivering excellence.",
+      es: "Una red de profesionales especializados que entregan excelencia.",
+    },
     accent: "purple",
     rgb: "168,85,247",
   },
   {
     icon: Target,
-    title: "Focused on Results",
-    description: "Measurable outcomes and solutions built around growth.",
+    title: { en: "Focused on Results", es: "Enfocados en resultados" },
+    description: {
+      en: "Measurable outcomes and solutions built around growth.",
+      es: "Resultados medibles y soluciones pensadas para crecer.",
+    },
     accent: "cyan",
     rgb: "34,211,238",
   },
   {
     icon: HeartHandshake,
-    title: "Committed to Your Success",
-    description: "We build long-term partnerships with our clients.",
+    title: { en: "Committed to Your Success", es: "Comprometidos con tu éxito" },
+    description: {
+      en: "We build long-term partnerships with our clients.",
+      es: "Construimos relaciones a largo plazo con nuestros clientes.",
+    },
     accent: "pink",
     rgb: "236,72,153",
   },
@@ -106,6 +117,7 @@ const cardItem: Variants = {
 type Value = (typeof values)[number];
 
 function ValueCard({ item, index }: { item: Value; index: number }) {
+  const { t } = useLang();
   const Icon = item.icon;
   const style = styles[item.accent as keyof typeof styles];
 
@@ -229,11 +241,11 @@ function ValueCard({ item, index }: { item: Value; index: number }) {
             ${style.title}
           `}
         >
-          {item.title}
+          {t(item.title)}
         </h3>
 
         <p className="mt-3 text-xs leading-relaxed text-zinc-500 transition duration-300 group-hover:text-zinc-400">
-          {item.description}
+          {t(item.description)}
         </p>
       </div>
     </motion.div>
@@ -241,6 +253,7 @@ function ValueCard({ item, index }: { item: Value; index: number }) {
 }
 
 export default function WhyStudio() {
+  const { tr, lang } = useLang();
   return (
     <section className="bg-black px-6 py-24 lg:px-12">
       <div className="mx-auto max-w-7xl">
@@ -257,14 +270,14 @@ export default function WhyStudio() {
               variants={copyItem}
               className="text-xs tracking-[0.4em] text-zinc-500"
             >
-              WHY STUDIO BASE
+              {tr("WHY STUDIO BASE", "POR QUÉ STUDIO BASE")}
             </motion.p>
 
             <motion.h2
               variants={copyItem}
               className="mt-5 text-4xl font-semibold leading-tight text-white md:text-6xl"
             >
-              More Than a
+              {tr("More Than a", "Más que un")}
               <br />
               <motion.span
                 animate={{ backgroundPosition: ["0% 50%", "100% 50%"] }}
@@ -276,20 +289,31 @@ export default function WhyStudio() {
                 }}
                 className="inline-block bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 bg-[length:200%_100%] bg-clip-text text-transparent"
               >
-                Technology Provider.
+                {tr("Technology Provider.", "proveedor de tecnología.")}
               </motion.span>
-              <br />A Strategic Partner
-              <br />
-              for Growth.
+              {lang === "es" ? (
+                <>
+                  <br />Un socio estratégico
+                  <br />
+                  para crecer.
+                </>
+              ) : (
+                <>
+                  <br />A Strategic Partner
+                  <br />
+                  for Growth.
+                </>
+              )}
             </motion.h2>
 
             <motion.p
               variants={copyItem}
               className="mt-6 max-w-xl text-base leading-relaxed text-zinc-400"
             >
-              We combine technology, strategy, and innovation to help
-              businesses transform ideas into scalable digital solutions that
-              create measurable results.
+              {tr(
+                "We combine technology, strategy, and innovation to help businesses transform ideas into scalable digital solutions that create measurable results.",
+                "Combinamos tecnología, estrategia e innovación para ayudar a las empresas a transformar sus ideas en soluciones digitales escalables que generan resultados medibles.",
+              )}
             </motion.p>
           </motion.div>
 
@@ -303,7 +327,7 @@ export default function WhyStudio() {
             className="grid grid-cols-2 gap-6"
           >
             {values.map((item, index) => (
-              <ValueCard key={item.title} item={item} index={index} />
+              <ValueCard key={item.title.en} item={item} index={index} />
             ))}
           </motion.div>
         </div>

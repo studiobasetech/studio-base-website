@@ -24,36 +24,59 @@ import {
 } from "lucide-react";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
+import { useLang, type Bi } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Options for "What are you interested in?"
-const interests = [
-  "AI Solutions & Automation",
-  "Software Engineering",
-  "Mobile Applications",
-  "Digital Platforms",
-  "HCRM AI",
-  "BaseLead AI",
-  "Book a consultation",
-  "Join the Studio Base network",
-  "Other",
+// Options for "What are you interested in?" (the English text is what
+// goes into the email to the Studio Base inbox; visitors see their language)
+const interests: Bi[] = [
+  { en: "AI Solutions & Automation", es: "Soluciones de IA y automatización" },
+  { en: "Software Engineering", es: "Ingeniería de software" },
+  { en: "Mobile Applications", es: "Aplicaciones móviles" },
+  { en: "Digital Platforms", es: "Plataformas digitales" },
+  { en: "HCRM AI", es: "HCRM AI" },
+  { en: "BaseLead AI", es: "BaseLead AI" },
+  { en: "Book a consultation", es: "Agendar una consulta" },
+  { en: "Join the Studio Base network", es: "Unirme a la red de Studio Base" },
+  { en: "Other", es: "Otro" },
 ];
 
 // Project type checkboxes (each with its own accent colour)
-const projectTypes: { label: string; icon: LucideIcon; text: string; on: string; rgb: string }[] = [
-  { label: "Website\nDevelopment", icon: Code2, text: "text-blue-400", on: "border-blue-500 bg-blue-500/10", rgb: "59,130,246" },
-  { label: "Mobile\nApplication", icon: Smartphone, text: "text-purple-400", on: "border-purple-500 bg-purple-500/10", rgb: "168,85,247" },
-  { label: "Custom\nSoftware", icon: Boxes, text: "text-cyan-400", on: "border-cyan-400 bg-cyan-400/10", rgb: "34,211,238" },
-  { label: "AI Automation", icon: BrainCircuit, text: "text-yellow-300", on: "border-yellow-400 bg-yellow-400/10", rgb: "250,204,21" },
-  { label: "Other", icon: Ellipsis, text: "text-pink-400", on: "border-pink-500 bg-pink-500/10", rgb: "236,72,153" },
+const projectTypes: { label: Bi; icon: LucideIcon; text: string; on: string; rgb: string }[] = [
+  { label: { en: "Website\nDevelopment", es: "Desarrollo\nde sitios web" }, icon: Code2, text: "text-blue-400", on: "border-blue-500 bg-blue-500/10", rgb: "59,130,246" },
+  { label: { en: "Mobile\nApplication", es: "Aplicación\nmóvil" }, icon: Smartphone, text: "text-purple-400", on: "border-purple-500 bg-purple-500/10", rgb: "168,85,247" },
+  { label: { en: "Custom\nSoftware", es: "Software\na la medida" }, icon: Boxes, text: "text-cyan-400", on: "border-cyan-400 bg-cyan-400/10", rgb: "34,211,238" },
+  { label: { en: "AI Automation", es: "Automatización\ncon IA" }, icon: BrainCircuit, text: "text-yellow-300", on: "border-yellow-400 bg-yellow-400/10", rgb: "250,204,21" },
+  { label: { en: "Other", es: "Otro" }, icon: Ellipsis, text: "text-pink-400", on: "border-pink-500 bg-pink-500/10", rgb: "236,72,153" },
 ];
 
 // Right-hand column
-const promises = [
-  { icon: Users, title: "CLIENTS WORLDWIDE", text: "We work with businesses across different industries and countries." },
-  { icon: Zap, title: "RESPONSIVE TEAM", text: "We typically reply within 24 hours." },
-  { icon: Heart, title: "EXCITING OPPORTUNITIES", text: "Whether you’re a client or a talented professional, we’re always open to new conversations." },
+const promises: { id: string; icon: LucideIcon; title: Bi; text: Bi }[] = [
+  {
+    id: "clients",
+    icon: Users,
+    title: { en: "CLIENTS WORLDWIDE", es: "CLIENTES EN TODO EL MUNDO" },
+    text: {
+      en: "We work with businesses across different industries and countries.",
+      es: "Trabajamos con empresas de distintas industrias y países.",
+    },
+  },
+  {
+    id: "responsive",
+    icon: Zap,
+    title: { en: "RESPONSIVE TEAM", es: "RESPUESTA RÁPIDA" },
+    text: { en: "We typically reply within 24 hours.", es: "Normalmente respondemos en menos de 24 horas." },
+  },
+  {
+    id: "opportunities",
+    icon: Heart,
+    title: { en: "EXCITING OPPORTUNITIES", es: "OPORTUNIDADES EMOCIONANTES" },
+    text: {
+      en: "Whether you’re a client or a talented professional, we’re always open to new conversations.",
+      es: "Ya seas cliente o un profesional talentoso, siempre estamos abiertos a nuevas conversaciones.",
+    },
+  },
 ];
 
 const list: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } };
@@ -78,6 +101,7 @@ const inputCls =
   "w-full bg-transparent py-4 text-sm text-white placeholder:text-zinc-400 focus:outline-none";
 
 export default function ContactForm() {
+  const { t: tx, tr, lang } = useLang();
   const [form, setForm] = useState({ name: "", email: "", company: "", interest: "", message: "" });
   const [types, setTypes] = useState<string[]>([]);
   const [tried, setTried] = useState(false);
@@ -110,6 +134,7 @@ export default function ContactForm() {
       form.company && `Company: ${form.company}`,
       `Interested in: ${form.interest}`,
       types.length > 0 && `Project type: ${types.map((t) => t.replace("\n", " ")).join(", ")}`,
+      lang === "es" && "Language: Spanish",
       "",
       form.message,
     ].filter((l) => l !== false && l !== "") as string[];
@@ -143,9 +168,9 @@ export default function ContactForm() {
             className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl"
           />
 
-          <p className="relative text-[10px] tracking-[0.45em] text-zinc-400">SEND US A MESSAGE</p>
+          <p className="relative text-[10px] tracking-[0.45em] text-zinc-400">{tr("SEND US A MESSAGE", "ENVÍANOS UN MENSAJE")}</p>
           <h2 className="relative mt-3 text-2xl font-medium text-white md:text-4xl">
-            Tell us about <ShimmerText>your project.</ShimmerText>
+            {tr("Tell us about", "Cuéntanos sobre")} <ShimmerText>{tr("your project.", "tu proyecto.")}</ShimmerText>
           </h2>
 
           <AnimatePresence mode="wait">
@@ -166,11 +191,12 @@ export default function ContactForm() {
                 >
                   <Check size={26} strokeWidth={3} />
                 </motion.span>
-                <h3 className="mt-5 text-xl font-semibold text-white">Almost there!</h3>
+                <h3 className="mt-5 text-xl font-semibold text-white">{tr("Almost there!", "¡Ya casi!")}</h3>
                 <p className="mt-2 max-w-sm text-sm text-zinc-400">
-                  Your email app has opened with your message ready to go. Just
-                  press send and we&apos;ll get back to you soon. If it
-                  didn&apos;t open, write to{" "}
+                  {tr(
+                    "Your email app has opened with your message ready to go. Just press send and we'll get back to you soon. If it didn't open, write to",
+                    "Tu aplicación de correo se abrió con tu mensaje listo. Solo presiona enviar y te responderemos pronto. Si no se abrió, escríbenos a",
+                  )}{" "}
                   <a href={`mailto:${contact.email}`} className="text-blue-400 underline-offset-4 hover:underline">
                     {contact.email}
                   </a>
@@ -181,7 +207,7 @@ export default function ContactForm() {
                   onClick={() => setSent(false)}
                   className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
                 >
-                  Edit message
+                  {tr("Edit message", "Editar mensaje")}
                 </button>
               </motion.div>
             ) : (
@@ -198,26 +224,30 @@ export default function ContactForm() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field icon={User} error={tried && missing.name}>
-                    <input className={inputCls} placeholder="Full Name *" autoComplete="name" value={form.name} onChange={set("name")} />
+                    <input className={inputCls} placeholder={tr("Full Name *", "Nombre completo *")}
+                      aria-label={tr("Full name (required)", "Nombre completo (obligatorio)")} autoComplete="name" value={form.name} onChange={set("name")} />
                   </Field>
                   <Field icon={Mail} error={tried && missing.email}>
-                    <input className={inputCls} type="email" placeholder="Email Address *" autoComplete="email" value={form.email} onChange={set("email")} />
+                    <input className={inputCls} type="email" placeholder={tr("Email Address *", "Correo electrónico *")}
+                      aria-label={tr("Email address (required)", "Correo electrónico (obligatorio)")} autoComplete="email" value={form.email} onChange={set("email")} />
                   </Field>
                   <Field icon={Building2}>
-                    <input className={inputCls} placeholder="Company (Optional)" autoComplete="organization" value={form.company} onChange={set("company")} />
+                    <input className={inputCls} placeholder={tr("Company (Optional)", "Empresa (opcional)")}
+                      aria-label={tr("Company (optional)", "Empresa (opcional)")} autoComplete="organization" value={form.company} onChange={set("company")} />
                   </Field>
                   <Field icon={Target} error={tried && missing.interest}>
                     <select
                       className={`${inputCls} cursor-pointer appearance-none pr-6 ${form.interest ? "" : "text-zinc-400"}`}
                       value={form.interest}
                       onChange={set("interest")}
+                      aria-label={tr("What are you interested in? (required)", "¿Qué te interesa? (obligatorio)")}
                     >
                       <option value="" disabled>
-                        What are you interested in? *
+                        {tr("What are you interested in? *", "¿Qué te interesa? *")}
                       </option>
                       {interests.map((o) => (
-                        <option key={o} value={o} className="bg-zinc-900 text-white">
-                          {o}
+                        <option key={o.en} value={o.en} className="bg-zinc-900 text-white">
+                          {tx(o)}
                         </option>
                       ))}
                     </select>
@@ -230,40 +260,49 @@ export default function ContactForm() {
                   <textarea
                     rows={4}
                     className={`${inputCls} resize-y`}
-                    placeholder="Tell us about your project or question * — share a few details about your goals, timeline, or any questions we can help with."
+                    placeholder={tr(
+                      "Tell us about your project or question * — share a few details about your goals, timeline, or any questions we can help with.",
+                      "Cuéntanos sobre tu proyecto o pregunta * — tus objetivos, tiempos o cualquier duda en la que podamos ayudarte.",
+                    )}
+                    aria-label={tr("Your message (required)", "Tu mensaje (obligatorio)")}
                     value={form.message}
                     onChange={set("message")}
                   />
                 </motion.label>
 
                 {tried && !valid && (
-                  <p className="text-xs text-pink-400">Please fill in the fields marked with * (and a valid email).</p>
+                  <p className="text-xs text-pink-400">
+                    {tr(
+                      "Please fill in the fields marked with * (and a valid email).",
+                      "Completa los campos marcados con * (y un correo electrónico válido).",
+                    )}
+                  </p>
                 )}
 
                 {/* PROJECT TYPE */}
                 <motion.p variants={item} className="pt-4 text-[10px] tracking-[0.35em] text-zinc-400">
-                  PROJECT TYPE (OPTIONAL)
+                  {tr("PROJECT TYPE (OPTIONAL)", "TIPO DE PROYECTO (OPCIONAL)")}
                 </motion.p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {projectTypes.map((t) => {
                     const Icon = t.icon;
-                    const on = types.includes(t.label);
+                    const on = types.includes(t.label.en);
                     return (
                       <motion.button
-                        key={t.label}
+                        key={t.label.en}
                         type="button"
                         variants={item}
                         whileHover={{ y: -4 }}
                         whileTap={{ scale: 0.97 }}
-                        onClick={() => toggleType(t.label)}
+                        onClick={() => toggleType(t.label.en)}
                         aria-pressed={on}
-                        className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-colors duration-300 ${
+                        className={`flex min-w-0 items-center gap-2 rounded-xl border px-3 py-3.5 text-left transition-colors duration-300 sm:gap-3 sm:px-4 ${
                           on ? t.on : "border-white/10 bg-white/[0.02] hover:border-white/30"
                         }`}
                         style={on ? { boxShadow: `0 0 26px -8px rgba(${t.rgb},0.8)` } : undefined}
                       >
                         <Icon size={20} className={`shrink-0 ${t.text}`} />
-                        <span className="flex-1 whitespace-pre-line text-xs font-medium leading-snug text-white">{t.label}</span>
+                        <span className="min-w-0 flex-1 whitespace-pre-line text-xs font-medium leading-snug text-white">{tx(t.label)}</span>
                         <span
                           className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-colors ${
                             on ? "border-transparent bg-white text-black" : "border-white/30"
@@ -286,13 +325,13 @@ export default function ContactForm() {
                     className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-blue-500 px-10 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
                   >
                     <LightSweep />
-                    <span className="relative">Send Message</span>
+                    <span className="relative">{tr("Send Message", "Enviar mensaje")}</span>
                     <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
                   </motion.button>
                   <p className="flex items-center gap-3 text-xs text-zinc-400">
                     <Lock size={18} className="text-blue-400" />
-                    Your information is safe
-                    <br className="hidden sm:block" /> and will never be shared.
+                    {tr("Your information is safe", "Tu información está segura")}
+                    <br className="hidden sm:block" /> {tr("and will never be shared.", "y nunca será compartida.")}
                   </p>
                 </motion.div>
               </motion.form>
@@ -311,7 +350,7 @@ export default function ContactForm() {
           {promises.map((p, i) => {
             const Icon = p.icon;
             return (
-              <motion.li key={p.title} variants={item} whileHover={{ x: 6 }} className="group flex gap-5 py-7">
+              <motion.li key={p.id} variants={item} whileHover={{ x: 6 }} className="group flex gap-5 py-7">
                 <motion.span
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 3, delay: i * 0.4, repeat: Infinity, ease: "easeInOut" }}
@@ -321,8 +360,8 @@ export default function ContactForm() {
                   <Icon size={34} strokeWidth={1.4} className="relative text-blue-400" style={{ filter: "drop-shadow(0 0 8px rgba(59,130,246,0.7))" }} />
                 </motion.span>
                 <div>
-                  <p className="text-xs font-semibold tracking-[0.2em] text-white transition-colors group-hover:text-blue-400">{p.title}</p>
-                  <p className="mt-2 max-w-xs text-sm leading-relaxed text-zinc-400">{p.text}</p>
+                  <p className="text-xs font-semibold tracking-[0.2em] text-white transition-colors group-hover:text-blue-400">{tx(p.title)}</p>
+                  <p className="mt-2 max-w-xs text-sm leading-relaxed text-zinc-400">{tx(p.text)}</p>
                 </div>
               </motion.li>
             );

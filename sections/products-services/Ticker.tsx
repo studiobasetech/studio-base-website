@@ -2,21 +2,23 @@
 
 import { motion } from "framer-motion";
 import { Sparkle } from "lucide-react";
+import { useLang, type Bi } from "@/lib/i18n";
 
 // Words that scroll across the strip. Edit freely.
-const words = [
-  "Artificial Intelligence",
-  "Automation",
-  "Software Engineering",
-  "Mobile Apps",
-  "Web Platforms",
-  "Cloud",
-  "Analytics",
-  "AI Consulting",
+const words: Bi[] = [
+  { en: "Artificial Intelligence", es: "Inteligencia artificial" },
+  { en: "Automation", es: "Automatización" },
+  { en: "Software Engineering", es: "Ingeniería de software" },
+  { en: "Mobile Apps", es: "Aplicaciones móviles" },
+  { en: "Web Platforms", es: "Plataformas web" },
+  { en: "Cloud", es: "Nube" },
+  { en: "Analytics", es: "Analítica" },
+  { en: "AI Consulting", es: "Consultoría en IA" },
 ];
 
 /** Endless scrolling strip of service names. */
 export default function Ticker() {
+  const { t } = useLang();
   const row = [...words, ...words];
 
   return (
@@ -32,7 +34,7 @@ export default function Ticker() {
               key={i}
               className="flex items-center gap-8 whitespace-nowrap text-sm font-medium uppercase tracking-[0.3em] text-zinc-300"
             >
-              {w}
+              {t(w)}
               <Sparkle size={12} className="text-blue-500" />
             </span>
           ))}

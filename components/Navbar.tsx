@@ -15,6 +15,8 @@ import {
 } from "framer-motion";
 
 import { consultationHref, navLinks as links } from "@/data/site";
+import { useLang } from "@/lib/i18n";
+import LanguageToggle from "@/components/LanguageToggle";
 
 const MotionLink = motion.create(Link);
 
@@ -32,6 +34,7 @@ const menuItem: Variants = {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { t, tr } = useLang();
 
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -90,7 +93,9 @@ export default function Navbar() {
             transition-all
             duration-500
             lg:grid-cols-[1fr_auto_1fr]
-            lg:px-12
+            lg:gap-x-3
+            lg:px-8
+            xl:px-12
             ${
               scrolled
                 ? "bg-black/70 py-2 shadow-[0_10px_40px_-20px_rgba(59,130,246,0.35)] backdrop-blur-xl"
@@ -99,7 +104,7 @@ export default function Navbar() {
           `}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center justify-self-start">
+          <Link href="/" className="flex shrink-0 items-center justify-self-start">
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
@@ -128,7 +133,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onMouseEnter={() => setHovered(link.href)}
-                  className="relative rounded-full px-3 py-1.5 text-[13px] font-medium xl:px-4 xl:text-sm"
+                  className="relative whitespace-nowrap rounded-full px-2.5 py-1.5 text-[13px] font-medium xl:px-4 xl:text-sm"
                 >
                   {highlighted && (
                     <motion.span
@@ -143,20 +148,21 @@ export default function Navbar() {
                       highlighted ? "text-blue-500" : "text-zinc-300"
                     }`}
                   >
-                    {link.label}
+                    {t(link.label)}
                   </span>
                 </Link>
               );
             })}
           </div>
 
-          {/* CTA button */}
-          <div className="hidden justify-self-end lg:block">
+          {/* Language switch + CTA button */}
+          <div className="hidden items-center gap-2 justify-self-end lg:flex xl:gap-3">
+            <LanguageToggle />
             <MotionLink
               href={consultationHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
-              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-blue-500 px-5 py-2 text-sm font-medium text-blue-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
+              className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-blue-500 px-4 py-2 text-[13px] font-medium xl:px-5 xl:text-sm text-blue-500 transition-colors duration-300 hover:bg-blue-500 hover:text-white"
             >
               {/* Light sweep */}
               <motion.span
@@ -171,7 +177,7 @@ export default function Navbar() {
                 }}
               />
 
-              <span className="relative">Book a Consultation</span>
+              <span className="relative whitespace-nowrap">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight
                 size={16}
                 className="relative transition-transform duration-300 group-hover:translate-x-1"
@@ -179,14 +185,17 @@ export default function Navbar() {
             </MotionLink>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="justify-self-end text-white lg:hidden"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          {/* Mobile: language switch + menu button */}
+          <div className="flex items-center gap-3 justify-self-end lg:hidden">
+            <LanguageToggle layoutId="lang-pill-mobile" />
+            <button
+              aria-label={open ? tr("Close menu", "Cerrar menú") : tr("Open menu", "Abrir menú")}
+              className="text-white"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
 
           {/* Bottom edge: faint line, moving light, scroll progress */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px overflow-hidden bg-white/10">
@@ -237,7 +246,7 @@ export default function Navbar() {
                         isActive(link.href) ? "text-blue-500" : "text-white"
                       }`}
                     >
-                      {link.label}
+                      {t(link.label)}
                     </span>
                   </Link>
                 </motion.div>
@@ -249,7 +258,7 @@ export default function Navbar() {
                 variants={menuItem}
                 className="mt-8 flex items-center justify-center gap-2 rounded-full bg-blue-500 px-6 py-4 font-semibold text-white"
               >
-                Book a Consultation
+                {tr("Book a Consultation", "Agenda una consulta")}
                 <ArrowRight size={18} />
               </MotionLink>
             </motion.div>

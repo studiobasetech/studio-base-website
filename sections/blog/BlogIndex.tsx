@@ -7,7 +7,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Clock } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { LightSweep } from "@/components/Effects";
-import { categories, formatDate, posts, readingTime } from "@/data/blog";
+import { categories, categoryLabel, formatDate, localizePost, posts, readingTime } from "@/data/blog";
+import { useLang } from "@/lib/i18n";
 import PostCard from "./PostCard";
 
 const MotionLink = motion.create(Link);
@@ -26,7 +27,8 @@ const FILTER_COLORS = [
 
 /** Latest article, shown large at the top of the blog. */
 function FeaturedPost() {
-  const post = posts[0];
+  const { lang, tr } = useLang();
+  const post = localizePost(posts[0], lang);
 
   return (
     <Reveal>
@@ -50,28 +52,28 @@ function FeaturedPost() {
               transition={{ duration: 1.4, repeat: Infinity }}
               className="h-1.5 w-1.5 rounded-full bg-black"
             />
-            Latest
+            {tr("Latest", "Lo más nuevo")}
           </span>
         </div>
 
         <div className="relative flex flex-col justify-center p-6 md:p-10">
           <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-blue-400">
-            {post.category}
+            {categoryLabel(post.category, lang)}
           </p>
           <h2 className="mt-4 text-2xl font-semibold leading-tight text-white transition-colors duration-300 group-hover:text-blue-300 md:text-4xl">
             {post.title}
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-zinc-400 md:text-base">{post.excerpt}</p>
           <div className="mt-6 flex items-center gap-3 text-xs text-zinc-500">
-            <span>{formatDate(post.date)}</span>
+            <span>{formatDate(post.date, lang)}</span>
             <span className="h-1 w-1 rounded-full bg-zinc-600" />
             <span className="flex items-center gap-1">
-              <Clock size={12} /> {readingTime(post)} min read
+              <Clock size={12} /> {readingTime(post)} {tr("min read", "min de lectura")}
             </span>
           </div>
           <span className="relative mt-8 inline-flex w-fit items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-6 py-2.5 text-sm font-semibold text-white">
             <LightSweep />
-            <span className="relative">Read article</span>
+            <span className="relative">{tr("Read article", "Leer artículo")}</span>
             <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
           </span>
         </div>
@@ -81,6 +83,7 @@ function FeaturedPost() {
 }
 
 export default function BlogIndex() {
+  const { lang, tr } = useLang();
   const [active, setActive] = useState("All");
   const rest = posts.slice(1);
   const shown = active === "All" ? rest : posts.filter((p) => p.category === active);
@@ -93,9 +96,9 @@ export default function BlogIndex() {
         {/* category filters */}
         <Reveal className="mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[10px] tracking-[0.45em] text-zinc-400">ALL ARTICLES</p>
+            <p className="text-[10px] tracking-[0.45em] text-zinc-400">{tr("ALL ARTICLES", "TODOS LOS ARTÍCULOS")}</p>
             <h2 className="mt-3 text-2xl font-medium text-white md:text-3xl">
-              Explore by topic
+              {tr("Explore by topic", "Explora por tema")}
             </h2>
           </div>
 
@@ -119,7 +122,9 @@ export default function BlogIndex() {
                       className={`absolute inset-0 rounded-full transition-colors duration-300 ${col.pill}`}
                     />
                   )}
-                  <span className="relative">{c}</span>
+                  <span className="relative">
+                    {c === "All" ? tr("All", "Todos") : categoryLabel(c, lang)}
+                  </span>
                 </button>
               );
             })}
@@ -146,7 +151,9 @@ export default function BlogIndex() {
         </motion.div>
 
         {shown.length === 0 && (
-          <p className="mt-10 text-sm text-zinc-500">No other articles in this topic yet.</p>
+          <p className="mt-10 text-sm text-zinc-500">
+            {tr("No other articles in this topic yet.", "Todavía no hay más artículos sobre este tema.")}
+          </p>
         )}
 
         <div className="mt-16 flex justify-center">
@@ -156,7 +163,7 @@ export default function BlogIndex() {
             whileTap={{ scale: 0.96 }}
             className="rounded-full border border-white/20 px-7 py-3 text-sm font-medium text-white transition-colors hover:border-blue-500 hover:text-blue-400"
           >
-            Have a topic you’d like us to write about?
+            {tr("Have a topic you’d like us to write about?", "¿Hay algún tema sobre el que te gustaría que escribiéramos?")}
           </MotionLink>
         </div>
       </div>

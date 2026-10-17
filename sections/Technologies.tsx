@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 
 // Edit this list to match the tools you actually work with.
 const technologies = [
@@ -41,6 +42,7 @@ const SPEED = 40; // pixels per second (higher = faster)
 const ARROW_STEP = 320; // pixels moved per arrow click
 
 export default function Technologies() {
+  const { tr } = useLang();
   const trackRef = useRef<HTMLDivElement>(null);
   const offset = useRef(0); // current scroll position in px
   const pending = useRef(0); // distance still to travel after an arrow click
@@ -93,7 +95,7 @@ export default function Technologies() {
         {/* TITLE */}
 
         <p className="mb-8 text-xs tracking-[0.4em] text-zinc-500">
-          TRUSTED TECHNOLOGIES
+          {tr("TRUSTED TECHNOLOGIES", "TECNOLOGÍAS DE CONFIANZA")}
         </p>
 
         {/* CAROUSEL */}
@@ -104,7 +106,7 @@ export default function Technologies() {
           <div className="absolute inset-y-0 left-0 z-10 flex items-center bg-gradient-to-r from-black via-black/90 to-transparent pr-10">
             <button
               type="button"
-              aria-label="Previous technologies"
+              aria-label={tr("Previous technologies", "Tecnologías anteriores")}
               onClick={() => move(-1)}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black text-zinc-300 transition hover:border-white/40 hover:text-white"
             >
@@ -143,7 +145,7 @@ export default function Technologies() {
           <div className="absolute inset-y-0 right-0 z-10 flex items-center bg-gradient-to-l from-black via-black/90 to-transparent pl-10">
             <button
               type="button"
-              aria-label="Next technologies"
+              aria-label={tr("Next technologies", "Siguientes tecnologías")}
               onClick={() => move(1)}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black text-zinc-300 transition hover:border-white/40 hover:text-white"
             >

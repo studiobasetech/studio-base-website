@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import ParticleField from "@/components/ParticleField";
 import { ShimmerText } from "@/components/Effects";
 import StarField from "@/sections/products-services/StarField";
+import { useLang, type Bi } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -18,12 +19,20 @@ const fadeUp: Variants = {
 };
 
 // Words that slowly cycle in the background ticker line
-const topics = ["AI", "Automation", "Data", "Cloud", "Web"];
+const topics: Bi[] = [
+  { en: "AI", es: "IA" },
+  { en: "Automation", es: "Automatización" },
+  { en: "Data", es: "Datos" },
+  { en: "Cloud", es: "Nube" },
+  { en: "Web", es: "Web" },
+];
 
 // Same hover colours as the blog cards (purple left out on purpose: no purple in the hero)
 const topicColors = ["text-blue-400", "text-cyan-300", "text-yellow-300", "text-pink-400", "text-orange-300"];
 
 export default function BlogHero() {
+  const { t, tr, lang } = useLang();
+
   return (
     <section className="relative overflow-hidden bg-black px-6 pb-16 pt-32 lg:px-12 lg:pb-20 lg:pt-40">
       {/* background: stars, perspective grid, glows, constellation */}
@@ -87,16 +96,25 @@ export default function BlogHero() {
           variants={fadeUp}
           className="mt-4 max-w-4xl text-4xl font-medium leading-tight text-white md:text-6xl lg:text-7xl"
         >
-          Ideas for a <ShimmerText>Smarter Future.</ShimmerText>
+          {lang === "es" ? (
+            <>
+              Ideas para un <ShimmerText>futuro más inteligente.</ShimmerText>
+            </>
+          ) : (
+            <>
+              Ideas for a <ShimmerText>Smarter Future.</ShimmerText>
+            </>
+          )}
         </motion.h1>
 
         <motion.p
           variants={fadeUp}
           className="mt-6 max-w-2xl text-sm leading-relaxed text-zinc-300 md:text-base"
         >
-          Practical thinking on artificial intelligence, automation,
-          data, cloud and the web, written for people who build and run
-          modern businesses.
+          {tr(
+            "Practical thinking on artificial intelligence, automation, data, cloud and the web, written for people who build and run modern businesses.",
+            "Reflexiones prácticas sobre inteligencia artificial, automatización, datos, nube y web, escritas para quienes construyen y dirigen negocios modernos.",
+          )}
         </motion.p>
 
         {/* stats + topic line */}
@@ -105,14 +123,14 @@ export default function BlogHero() {
           className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-4 text-xs font-medium uppercase tracking-[0.2em]"
         >
           <span className="flex flex-wrap gap-x-3 gap-y-1">
-            {topics.map((t, i) => (
+            {topics.map((topic, i) => (
               <motion.span
-                key={t}
+                key={topic.en}
                 animate={{ opacity: [0.45, 1, 0.45] }}
                 transition={{ duration: 3, delay: i * 0.4, repeat: Infinity }}
                 className={topicColors[i % topicColors.length]}
               >
-                {t}
+                {t(topic)}
                 {i < topics.length - 1 && <span className="ml-3 text-zinc-600">/</span>}
               </motion.span>
             ))}

@@ -3,10 +3,17 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Link2 } from "lucide-react";
-import { headingId, type Post } from "@/data/blog";
+import { getPost, headingId, localizePost, type Post } from "@/data/blog";
+import { useLang } from "@/lib/i18n";
 
-/** Share buttons: copy link, LinkedIn, X. */
-export function ShareButtons({ title, slug }: { title: string; slug: string }) {
+/**
+ * Share buttons: copy link, LinkedIn, X. The shared title follows the
+ * chosen language (looked up from the slug); `title` is the fallback.
+ */
+export function ShareButtons({ title: fallbackTitle, slug }: { title: string; slug: string }) {
+  const { lang, tr } = useLang();
+  const found = getPost(slug);
+  const title = found ? localizePost(found, lang).title : fallbackTitle;
   const [copied, setCopied] = useState(false);
   const url = `https://studiobase.tech/blog/${slug}/`;
 
@@ -26,11 +33,11 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
 
   return (
     <div className="flex items-center gap-2">
-      <button type="button" onClick={copy} aria-label="Copy link" className={btn}>
+      <button type="button" onClick={copy} aria-label={tr("Copy link", "Copiar enlace")} className={btn}>
         {copied ? <Check size={16} className="text-blue-400" /> : <Link2 size={16} />}
       </button>
       <a
-        aria-label="Share on LinkedIn"
+        aria-label={tr("Share on LinkedIn", "Compartir en LinkedIn")}
         target="_blank"
         rel="noopener noreferrer"
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`}
@@ -39,7 +46,7 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
         <span className="text-sm font-semibold">in</span>
       </a>
       <a
-        aria-label="Share on X"
+        aria-label={tr("Share on X", "Compartir en X")}
         target="_blank"
         rel="noopener noreferrer"
         href={`https://twitter.com/intent/tweet?url=${enc(url)}&text=${enc(title)}`}
@@ -47,13 +54,15 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
       >
         <span className="text-sm">𝕏</span>
       </a>
-      {copied && <span className="text-xs text-blue-400">Link copied</span>}
+      {copied && <span className="text-xs text-blue-400">{tr("Link copied", "Enlace copiado")}</span>}
     </div>
   );
 }
 
 /** Sticky sidebar: reading progress, table of contents, share. */
-export default function ArticleAside({ post }: { post: Post }) {
+export default function ArticleAside({ post: original }: { post: Post }) {
+  const { lang, tr } = useLang();
+  const post = localizePost(original, lang);
   const headings = post.body.flatMap((b) => (b.type === "h2" ? [b.text] : []));
   const [active, setActive] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
@@ -83,14 +92,14 @@ export default function ArticleAside({ post }: { post: Post }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post.slug]);
+  }, [post.slug, lang]);
 
   return (
     <div className="sticky top-28 space-y-8">
       {/* progress */}
       <div>
         <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
-          <span>Reading</span>
+          <span>{tr("Reading", "Lectura")}</span>
           <span className="text-blue-400">{Math.round(progress * 100)}%</span>
         </div>
         <div className="mt-2 h-px bg-white/10">
@@ -102,8 +111,10 @@ export default function ArticleAside({ post }: { post: Post }) {
       </div>
 
       {/* contents */}
-      <nav aria-label="Contents">
-        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">In this article</p>
+      <nav aria-label={tr("Contents", "Contenido")}>
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+          {tr("In this article", "En este artículo")}
+        </p>
         <ol className="mt-4 space-y-1 border-l border-white/10">
           {headings.map((h, i) => {
             const id = headingId(h);
@@ -130,7 +141,7 @@ export default function ArticleAside({ post }: { post: Post }) {
       </nav>
 
       <div>
-        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">Share</p>
+        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">{tr("Share", "Compartir")}</p>
         <ShareButtons title={post.title} slug={post.slug} />
       </div>
     </div>

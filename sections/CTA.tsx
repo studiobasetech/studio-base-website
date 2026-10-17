@@ -1,26 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 import ParticleField from "@/components/ParticleField";
 import { ArrowRight } from "lucide-react";
 import { consultationHref } from "@/data/site";
+import { useLang, type Text } from "@/lib/i18n";
 
 /**
  * Closing call to action with the mountain portal image. Text and
  * buttons can be changed per page; defaults are the Home text.
  */
 export default function CTA({
-  eyebrow = "LET'S BUILD TOGETHER",
+  eyebrow = { en: "LET'S BUILD TOGETHER", es: "CONSTRUYAMOS JUNTOS" },
   title,
-  description = "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
-  primary = { label: "Book a Consultation", href: consultationHref },
-  secondary = { label: "Contact Us", href: "/contact" },
+  description = {
+    en: "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
+    es: "Trabaja con Studio Base y convierte tus ideas en soluciones tecnológicas sólidas que impulsan el crecimiento real de tu negocio.",
+  },
+  primary = { label: { en: "Book a Consultation", es: "Agenda una consulta" }, href: consultationHref },
+  secondary = { label: { en: "Contact Us", es: "Contáctanos" }, href: "/contact" },
 }: {
-  eyebrow?: string;
+  eyebrow?: Text;
   title?: ReactNode;
-  description?: string;
-  primary?: { label: string; href: string };
-  secondary?: { label: string; href: string };
+  description?: Text;
+  primary?: { label: Text; href: string };
+  secondary?: { label: Text; href: string };
 } = {}) {
+  const { t, tr } = useLang();
 
   return (
 
@@ -107,7 +114,7 @@ export default function CTA({
               tracking-[0.45em]
               text-zinc-400
             ">
-              {eyebrow}
+              {t(eyebrow)}
             </p>
 
 
@@ -125,11 +132,11 @@ export default function CTA({
 
                 <>
 
-                  Turn Your Ideas
+                  {tr("Turn Your Ideas", "Convierte tus ideas")}
 
                   <br />
 
-                  <span className="text-blue-500">Into Real Solutions.</span>
+                  <span className="text-blue-500">{tr("Into Real Solutions.", "en soluciones reales.")}</span>
 
                 </>
 
@@ -146,7 +153,7 @@ export default function CTA({
               leading-relaxed
               text-zinc-400
             ">
-              {description}
+              {t(description)}
             </p>
 
 
@@ -174,7 +181,7 @@ export default function CTA({
                 transition
                 hover:bg-blue-400
               ">
-                {primary.label}
+                {t(primary.label)}
 
                 <ArrowRight size={14}/>
 
@@ -195,7 +202,7 @@ export default function CTA({
                 hover:border-blue-500
                 hover:text-blue-500
               ">
-                {secondary.label}
+                {t(secondary.label)}
               </Link>
 
 

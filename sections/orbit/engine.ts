@@ -18,10 +18,15 @@ export type HudState = {
   boss: number | null; // boss health 0..1 or null
   rescued: number;
 };
+export type GameLang = "en" | "es";
+/** Text drawn on the canvas: same in both languages, or translated. */
+type GText = string | { en: string; es: string };
 type Callbacks = {
   onHud: (h: HudState) => void;
   onPhase: (p: Phase) => void;
   onOver: (score: number) => void;
+  /** Read on every frame, so switching language mid-game updates the canvas text. */
+  getLang?: () => GameLang;
 };
 
 type Kind = "rock" | "ufo" | "comet" | "jelly" | "sat" | "boss";
@@ -35,20 +40,20 @@ type Enemy = {
 type Shot = { x: number; y: number; vx: number; vy: number; enemy: boolean };
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; color: string; size: number };
 type Ring = { x: number; y: number; r: number; max: number; life: number; color: string };
-type Popup = { x: number; y: number; text: string; life: number; color: string; big?: boolean };
+type Popup = { x: number; y: number; text: GText; life: number; color: string; big?: boolean };
 type PickKind = "core" | "plasma" | "astro";
 type Pickup = { x: number; y: number; vx: number; vy: number; kind: PickKind; t: number };
 type Star = { x: number; y: number; z: number };
 type Hole = { x: number; y: number; t: number; dur: number } | null;
 
 const WAVES = [
-  "ASTEROID BELT",
-  "UFO PATROL",
-  "COMET STORM",
-  "NEBULA DRIFTERS",
-  "SATELLITE GRAVEYARD",
-  "MOTHERSHIP INBOUND",
-  "DEEP SPACE",
+  { en: "ASTEROID BELT", es: "CINTURÓN DE ASTEROIDES" },
+  { en: "UFO PATROL", es: "PATRULLA OVNI" },
+  { en: "COMET STORM", es: "TORMENTA DE COMETAS" },
+  { en: "NEBULA DRIFTERS", es: "ERRANTES DE LA NEBULOSA" },
+  { en: "SATELLITE GRAVEYARD", es: "CEMENTERIO DE SATÉLITES" },
+  { en: "MOTHERSHIP INBOUND", es: "NAVE NODRIZA EN CAMINO" },
+  { en: "DEEP SPACE", es: "ESPACIO PROFUNDO" },
 ];
 const POINTS: Record<Kind, number> = { rock: 60, ufo: 250, comet: 200, jelly: 180, sat: 150, boss: 3000 };
 
@@ -66,6 +71,9 @@ const pick = <T,>(arr: [T, number][]): T => {
 export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("no canvas");
+
+  /** Resolve canvas text in the current language (checked at draw time). */
+  const txt = (t: GText) => (typeof t === "string" ? t : t[cb.getLang?.() ?? "en"]);
 
   const s = {
     w: 960, h: 540, dpr: 1,
@@ -85,7 +93,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
     score: 0, lives: 3, time: 0, count: 0, wave: 0, rescued: 0,
     fireCd: 0, spawnCd: 0, pickupCd: 6, astroCd: 10, holeCd: 30,
     triple: 0, shield: 0, hurt: 0, shake: 0, flash: 0,
-    mult: 1, comboT: 0, gridOff: 0, banner: 0, bannerText: "",
+    mult: 1, comboT: 0, gridOff: 0, banner: 0, bannerText: "" as GText,
     visible: true, hudT: 0,
   };
 
@@ -99,7 +107,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
     }
   };
   const ring = (x: number, y: number, max: number, color: string) => s.rings.push({ x, y, r: 4, max, life: 1, color });
-  const popup = (x: number, y: number, text: string, color: string, big = false) =>
+  const popup = (x: number, y: number, text: GText, color: string, big = false) =>
     s.popups.push({ x, y, text, life: big ? 1.8 : 1, color, big });
 
   const make = (kind: Kind, x: number, y: number, extra: Partial<Enemy> = {}): Enemy => {
@@ -226,7 +234,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
       ring(e.x, e.y, 380, "96,165,250");
       s.flash = 0.5;
       s.banner = 2.4;
-      s.bannerText = "MOTHERSHIP DESTROYED";
+      s.bannerText = { en: "MOTHERSHIP DESTROYED", es: "NAVE NODRIZA DESTRUIDA" };
     }
     s.shake = Math.min(e.kind === "boss" ? 20 : 9, s.shake + e.r / 9);
     if (e.kind === "rock" && e.r > 25) {
@@ -302,7 +310,10 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
       if (wave !== s.wave) {
         s.wave = wave;
         s.banner = 2.4;
-        s.bannerText = `WAVE ${wave} · ${WAVES[(wave - 1) % WAVES.length]}`;
+        s.bannerText = {
+          en: `WAVE ${wave} · ${WAVES[(wave - 1) % WAVES.length].en}`,
+          es: `OLEADA ${wave} · ${WAVES[(wave - 1) % WAVES.length].es}`,
+        };
         if (wave % 3 === 0 && !s.enemies.some((e) => e.kind === "boss")) {
           s.enemies.push(make("boss", w / 2, -90));
         }
@@ -357,7 +368,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
         s.holeCd = rand(30, 40);
         s.hole = { x: rand(w * 0.25, w * 0.75), y: rand(h * 0.25, h * 0.45), t: 0, dur: 7 };
         s.banner = 2;
-        s.bannerText = "⚠ GRAVITY ANOMALY DETECTED";
+        s.bannerText = { en: "⚠ GRAVITY ANOMALY DETECTED", es: "⚠ ANOMALÍA GRAVITACIONAL DETECTADA" };
       }
       if (s.hole) {
         s.hole.t += dt;
@@ -455,18 +466,18 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
           if (p.kind === "core") {
             s.score += 150;
             s.shield = 3.5;
-            popup(p.x, p.y - 10, "SHIELD +150", col);
+            popup(p.x, p.y - 10, { en: "SHIELD +150", es: "ESCUDO +150" }, col);
           } else if (p.kind === "plasma") {
             s.triple = 8;
-            popup(p.x, p.y - 10, "TRIPLE SHOT", col);
+            popup(p.x, p.y - 10, { en: "TRIPLE SHOT", es: "DISPARO TRIPLE" }, col);
           } else {
             s.score += 300;
             s.rescued += 1;
             if (s.lives < 3 && s.rescued % 3 === 0) {
               s.lives += 1;
-              popup(p.x, p.y - 26, "+1 HULL", "96,165,250");
+              popup(p.x, p.y - 26, { en: "+1 HULL", es: "+1 CASCO" }, "96,165,250");
             }
-            popup(p.x, p.y - 10, "ASTRONAUT RESCUED +300", "191,219,254");
+            popup(p.x, p.y - 10, { en: "ASTRONAUT RESCUED +300", es: "ASTRONAUTA RESCATADO +300" }, "191,219,254");
           }
           p.y = h + 999;
         }
@@ -1110,7 +1121,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
     for (const p of s.popups) {
       ctx.font = p.big ? "800 22px ui-monospace, Menlo, monospace" : "700 12px ui-monospace, Menlo, monospace";
       ctx.fillStyle = `rgba(${p.color},${Math.min(1, p.life * 1.5)})`;
-      ctx.fillText(p.text, p.x, p.y);
+      ctx.fillText(txt(p.text), p.x, p.y);
     }
     ctx.restore();
 
@@ -1136,8 +1147,12 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
       ctx.font = "700 18px ui-monospace, SFMono-Regular, Menlo, monospace";
       ctx.shadowColor = "rgba(59,130,246,1)";
       ctx.shadowBlur = 18;
-      ctx.fillStyle = s.bannerText.startsWith("⚠") ? "#f0abfc" : "#e0ecff";
-      ctx.fillText(s.bannerText, w / 2, h * 0.3);
+      const banner = txt(s.bannerText);
+      // longer (e.g. Spanish) banners shrink to fit narrow screens
+      const fit = ctx.measureText(banner).width;
+      if (fit > bw - 16) ctx.font = `700 ${Math.max(11, Math.floor((18 * (bw - 16)) / fit))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      ctx.fillStyle = banner.startsWith("⚠") ? "#f0abfc" : "#e0ecff";
+      ctx.fillText(banner, w / 2, h * 0.3);
       ctx.restore();
     }
 
@@ -1152,7 +1167,7 @@ export function createGame(canvas: HTMLCanvasElement, cb: Callbacks) {
       ctx.shadowColor = "rgba(59,130,246,1)";
       ctx.shadowBlur = 30;
       ctx.fillStyle = "#e0ecff";
-      ctx.fillText(n > 0 ? String(n) : "GO", w / 2, h * 0.42);
+      ctx.fillText(n > 0 ? String(n) : txt({ en: "GO", es: "¡YA!" }), w / 2, h * 0.42);
       ctx.restore();
     }
   };

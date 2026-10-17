@@ -3,18 +3,20 @@
  * Edit it here once and the Navbar, Footer and Contact page all update.
  */
 
-export const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Products & Services", href: "/products-services" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "About Studio Base", href: "/about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+import type { Bi } from "@/lib/i18n";
+
+export const navLinks: { label: Bi; href: string }[] = [
+  { label: { en: "Home", es: "Inicio" }, href: "/" },
+  { label: { en: "Products & Services", es: "Productos y Servicios" }, href: "/products-services" },
+  { label: { en: "Portfolio", es: "Portafolio" }, href: "/portfolio" },
+  { label: { en: "About Studio Base", es: "Sobre Studio Base" }, href: "/about" },
+  { label: { en: "Blog", es: "Blog" }, href: "/blog" },
+  { label: { en: "Contact", es: "Contacto" }, href: "/contact" },
 ];
 
 export const contact = {
   email: "info@studiobase.tech",
-  location: "Austin, TX",
+  location: "Austin, TX", // same in both languages
 };
 
 // Replace "#" with your real profile URLs.

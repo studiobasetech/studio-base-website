@@ -16,46 +16,59 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useLang, type Bi } from "@/lib/i18n";
 
-const services = [
+const services: {
+  icon: typeof BrainCircuit;
+  title: Bi;
+  description: Bi;
+  features: Bi[];
+  color: string;
+}[] = [
   {
     icon: BrainCircuit,
-    title: "AI Solutions\n& Automation",
-    description:
-      "Custom AI agents and automation systems that streamline operations, reduce manual work, and increase productivity.",
+    title: { en: "AI Solutions\n& Automation", es: "Soluciones de IA\ny automatización" },
+    description: {
+      en: "Custom AI agents and automation systems that streamline operations, reduce manual work, and increase productivity.",
+      es: "Agentes de IA y sistemas de automatización a la medida que agilizan las operaciones, reducen el trabajo manual y aumentan la productividad.",
+    },
     features: [
-      "AI Agents & Assistants",
-      "Process Automation",
-      "Data Analysis & Insights",
-      "Workflow Optimization",
+      { en: "AI Agents & Assistants", es: "Agentes y asistentes de IA" },
+      { en: "Process Automation", es: "Automatización de procesos" },
+      { en: "Data Analysis & Insights", es: "Análisis de datos e insights" },
+      { en: "Workflow Optimization", es: "Optimización de flujos de trabajo" },
     ],
     color: "blue",
   },
 
   {
     icon: Code2,
-    title: "Software\nEngineering",
-    description:
-      "Scalable web platforms, SaaS products, and custom software built for your business needs.",
+    title: { en: "Software\nEngineering", es: "Ingeniería\nde software" },
+    description: {
+      en: "Scalable web platforms, SaaS products, and custom software built for your business needs.",
+      es: "Plataformas web escalables, productos SaaS y software a la medida, creados para las necesidades de tu negocio.",
+    },
     features: [
-      "Web Applications",
-      "SaaS Development",
-      "API Integrations",
-      "Custom Software",
+      { en: "Web Applications", es: "Aplicaciones web" },
+      { en: "SaaS Development", es: "Desarrollo SaaS" },
+      { en: "API Integrations", es: "Integraciones de API" },
+      { en: "Custom Software", es: "Software a la medida" },
     ],
     color: "purple",
   },
 
   {
     icon: Smartphone,
-    title: "Mobile Application\nDevelopment",
-    description:
-      "High-performance iOS and Android applications with modern architecture.",
+    title: { en: "Mobile Application\nDevelopment", es: "Desarrollo de\naplicaciones móviles" },
+    description: {
+      en: "High-performance iOS and Android applications with modern architecture.",
+      es: "Aplicaciones para iOS y Android de alto rendimiento, con arquitectura moderna.",
+    },
     features: [
-      "iOS & Android Apps",
-      "Cross-Platform Solutions",
-      "App Design & Development",
-      "Maintenance & Support",
+      { en: "iOS & Android Apps", es: "Apps para iOS y Android" },
+      { en: "Cross-Platform Solutions", es: "Soluciones multiplataforma" },
+      { en: "App Design & Development", es: "Diseño y desarrollo de apps" },
+      { en: "Maintenance & Support", es: "Mantenimiento y soporte" },
     ],
     color: "yellow",
   },
@@ -63,14 +76,16 @@ const services = [
 
   {
     icon: Lightbulb,
-    title: "Technology\nConsulting",
-    description:
-      "Strategic guidance to help your business choose and scale the right technology.",
+    title: { en: "Technology\nConsulting", es: "Consultoría\ntecnológica" },
+    description: {
+      en: "Strategic guidance to help your business choose and scale the right technology.",
+      es: "Asesoría estratégica para que tu negocio elija y escale la tecnología adecuada.",
+    },
     features: [
-      "Technology Strategy",
-      "Architecture Planning",
-      "Process Optimization",
-      "Team Guidance",
+      { en: "Technology Strategy", es: "Estrategia tecnológica" },
+      { en: "Architecture Planning", es: "Planeación de arquitectura" },
+      { en: "Process Optimization", es: "Optimización de procesos" },
+      { en: "Team Guidance", es: "Acompañamiento a equipos" },
     ],
     color: "pink",
   },
@@ -188,6 +203,7 @@ function ServiceCard({
   dimmed: boolean;
   onSelect: () => void;
 }) {
+  const { t } = useLang();
   const key = service.color as ColorKey;
   const Icon = service.icon;
 
@@ -331,13 +347,13 @@ function ServiceCard({
               ${selected ? titleOn[key] : `text-white ${titleHover[key]}`}
             `}
           >
-            {service.title}
+            {t(service.title)}
           </h3>
 
           {/* DESCRIPTION */}
 
           <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-            {service.description}
+            {t(service.description)}
           </p>
 
           {/* FEATURES */}
@@ -345,7 +361,7 @@ function ServiceCard({
           <ul className="mt-5 space-y-2.5">
             {service.features.map((feature, i) => (
               <motion.li
-                key={feature}
+                key={feature.en}
                 animate={{ x: selected ? [0, 6, 0] : 0 }}
                 transition={{ delay: selected ? i * 0.06 : 0, duration: 0.4 }}
                 className="flex items-center gap-2.5 text-xs font-medium text-zinc-300"
@@ -366,7 +382,7 @@ function ServiceCard({
                   <span className="h-1 w-1 rounded-full bg-black/40" />
                 </span>
 
-                <span>{feature}</span>
+                <span>{t(feature)}</span>
               </motion.li>
             ))}
           </ul>
@@ -407,6 +423,7 @@ function ServiceCard({
 }
 
 export default function Services() {
+  const { t, tr, lang } = useLang();
   const [selected, setSelected] = useState<number | null>(null);
 
   const total = services.length;
@@ -425,13 +442,24 @@ export default function Services() {
         {/* HEADER */}
 
         <div className="mb-8">
-          <p className="text-xs tracking-[0.4em] text-zinc-500">OUR SERVICES</p>
+          <p className="text-xs tracking-[0.4em] text-zinc-500">{tr("OUR SERVICES", "NUESTROS SERVICIOS")}</p>
 
           <h2 className="mt-4 max-w-5xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:whitespace-nowrap md:text-5xl">
-            End-to-End{" "}
-            <span className="text-blue-500">Technology Solutions</span>
-            <br />
-            for Modern Businesses.
+            {lang === "es" ? (
+              <>
+                <span className="text-blue-500">Soluciones tecnológicas</span>{" "}
+                integrales
+                <br />
+                para empresas modernas.
+              </>
+            ) : (
+              <>
+                End-to-End{" "}
+                <span className="text-blue-500">Technology Solutions</span>
+                <br />
+                for Modern Businesses.
+              </>
+            )}
           </h2>
         </div>
 
@@ -440,7 +468,7 @@ export default function Services() {
         <div className="flex flex-col gap-3 py-4 lg:flex-row">
           {services.map((service, i) => (
             <ServiceCard
-              key={service.title}
+              key={service.title.en}
               service={service}
               index={i}
               selected={selected === i}
@@ -454,7 +482,7 @@ export default function Services() {
 
         <div className="mt-6 flex items-center justify-center gap-4">
           <button
-            aria-label="Previous service"
+            aria-label={tr("Previous service", "Servicio anterior")}
             onClick={prev}
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-white/40 hover:text-white"
           >
@@ -464,8 +492,8 @@ export default function Services() {
           <div className="flex items-center gap-2">
             {services.map((service, i) => (
               <button
-                key={service.title}
-                aria-label={`Select ${service.title.replace("\n", " ")}`}
+                key={service.title.en}
+                aria-label={`${tr("Select", "Seleccionar")} ${t(service.title).replace("\n", " ")}`}
                 onClick={() => toggle(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   selected === i
@@ -477,7 +505,7 @@ export default function Services() {
           </div>
 
           <button
-            aria-label="Next service"
+            aria-label={tr("Next service", "Siguiente servicio")}
             onClick={next}
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition hover:border-white/40 hover:text-white"
           >

@@ -1,15 +1,26 @@
+"use client";
+
 import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
 import { contact, navLinks, socials } from "@/data/site";
+import { useLang, type Bi } from "@/lib/i18n";
 
 // Careers opens an email; FAQ goes to Contact until those pages exist.
-const resources = [
-  { label: "Case Studies", href: "/portfolio" },
-  { label: "Careers", href: `mailto:${contact.email}?subject=Careers%20at%20Studio%20Base` },
-  { label: "FAQ", href: "/contact" },
+const resources: { label: Bi; href: Bi }[] = [
+  { label: { en: "Case Studies", es: "Casos de éxito" }, href: { en: "/portfolio", es: "/portfolio" } },
+  {
+    label: { en: "Careers", es: "Empleos" },
+    href: {
+      en: `mailto:${contact.email}?subject=Careers%20at%20Studio%20Base`,
+      es: `mailto:${contact.email}?subject=Empleos%20en%20Studio%20Base`,
+    },
+  },
+  { label: { en: "FAQ", es: "Preguntas frecuentes" }, href: { en: "/contact", es: "/contact" } },
 ];
 
 export default function Footer() {
+  const { t, tr } = useLang();
+
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-black px-6 py-16 lg:px-12">
       {/* Constellation effect: dots connect to each other and to the mouse */}
@@ -28,8 +39,10 @@ export default function Footer() {
             </Link>
 
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-500">
-              A technology and creative company building digital
-              infrastructure for forward-thinking businesses.
+              {tr(
+                "A technology and creative company building digital infrastructure for forward-thinking businesses.",
+                "Una empresa de tecnología y creatividad que construye infraestructura digital para negocios con visión de futuro.",
+              )}
             </p>
 
             <div className="mt-6 flex gap-5 text-sm text-zinc-400">
@@ -57,7 +70,7 @@ export default function Footer() {
 
           {/* NAVIGATION */}
           <div>
-            <h3 className="text-sm font-semibold text-white">Navigation</h3>
+            <h3 className="text-sm font-semibold text-white">{tr("Navigation", "Navegación")}</h3>
             <ul className="mt-5 space-y-3">
               {navLinks.map((item) => (
                 <li key={item.href}>
@@ -65,7 +78,7 @@ export default function Footer() {
                     href={item.href}
                     className="text-sm text-zinc-500 transition hover:text-blue-500"
                   >
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               ))}
@@ -74,15 +87,15 @@ export default function Footer() {
 
           {/* RESOURCES */}
           <div>
-            <h3 className="text-sm font-semibold text-white">Resources</h3>
+            <h3 className="text-sm font-semibold text-white">{tr("Resources", "Recursos")}</h3>
             <ul className="mt-5 space-y-3">
               {resources.map((item) => (
-                <li key={item.label}>
+                <li key={item.label.en}>
                   <Link
-                    href={item.href}
+                    href={t(item.href)}
                     className="text-sm text-zinc-500 transition hover:text-blue-500"
                   >
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               ))}
@@ -91,7 +104,7 @@ export default function Footer() {
 
           {/* CONTACT */}
           <div>
-            <h3 className="text-sm font-semibold text-white">Contact</h3>
+            <h3 className="text-sm font-semibold text-white">{tr("Contact", "Contacto")}</h3>
             <a
               href={`mailto:${contact.email}`}
               className="mt-5 block text-sm text-zinc-500 transition hover:text-blue-500"
@@ -104,10 +117,10 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 md:flex-row md:justify-between">
-          <p>© {new Date().getFullYear()} Studio Base. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Studio Base. {tr("All rights reserved.", "Todos los derechos reservados.")}</p>
           <div className="flex gap-5">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
+            <span>{tr("Privacy Policy", "Política de privacidad")}</span>
+            <span>{tr("Terms of Service", "Términos del servicio")}</span>
           </div>
         </div>
       </div>

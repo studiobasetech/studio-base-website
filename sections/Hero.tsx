@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { consultationHref } from "@/data/site";
+import { useLang } from "@/lib/i18n";
 import {
   motion,
   useMotionValue,
@@ -21,10 +22,16 @@ const MotionLink = motion.create(Link);
 /* ------------------------------------------------------------------ */
 
 // Headline split into two lines; the second line is blue.
-const headlineLines = [
-  { words: ["Technology", "Solutions"], accent: false },
-  { words: ["for", "a", "Smarter", "Future."], accent: true },
-];
+const headlineLines = {
+  en: [
+    { words: ["Technology", "Solutions"], accent: false },
+    { words: ["for", "a", "Smarter", "Future."], accent: true },
+  ],
+  es: [
+    { words: ["Soluciones", "tecnológicas"], accent: false },
+    { words: ["para", "un", "futuro", "más", "inteligente."], accent: true },
+  ],
+};
 
 /* ------------------------------------------------------------------ */
 /*  Animation variants                                                 */
@@ -189,6 +196,7 @@ function ParticleField() {
 /* ------------------------------------------------------------------ */
 
 export default function Hero() {
+  const { tr, lang } = useLang();
   const mx = useMotionValue(0); // mouse in px (spotlight)
   const my = useMotionValue(0);
   const nx = useMotionValue(0); // mouse from -0.5 to 0.5 (parallax)
@@ -282,15 +290,15 @@ export default function Hero() {
             variants={fadeUp}
             className="mb-4 text-sm tracking-[0.4em] text-blue-500"
           >
-            TECHNOLOGY. STRATEGY. REAL IMPACT.
+            {tr("TECHNOLOGY. STRATEGY. REAL IMPACT.", "TECNOLOGÍA. ESTRATEGIA. IMPACTO REAL.")}
           </motion.p>
 
           <motion.h1
             variants={container}
             className="text-5xl font-semibold leading-tight md:text-7xl"
           >
-            {headlineLines.map((line, li) => (
-              <span key={li} className="block">
+            {headlineLines[lang].map((line, li) => (
+              <span key={`${lang}-${li}`} className="block">
                 {line.words.map((w, wi) => (
                   <motion.span
                     key={wi}
@@ -324,9 +332,10 @@ export default function Hero() {
             variants={fadeUp}
             className="mt-6 max-w-lg leading-relaxed text-zinc-300"
           >
-            Studio Base develops AI-powered products, custom software
-            solutions, and digital infrastructure that help
-            businesses automate, scale, and grow.
+            {tr(
+              "Studio Base develops AI-powered products, custom software solutions, and digital infrastructure that help businesses automate, scale, and grow.",
+              "Studio Base desarrolla productos impulsados por IA, software a la medida e infraestructura digital que ayudan a las empresas a automatizar, escalar y crecer.",
+            )}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
@@ -357,7 +366,7 @@ export default function Hero() {
                   ease: "easeInOut",
                 }}
               />
-              <span className="relative">Book a Consultation →</span>
+              <span className="relative">{tr("Book a Consultation →", "Agenda una consulta →")}</span>
             </MotionLink>
 
             <MotionLink
@@ -366,7 +375,7 @@ export default function Hero() {
               whileTap={{ scale: 0.96 }}
               className="rounded-full border border-zinc-600 px-8 py-3 transition-colors hover:border-blue-500 hover:text-blue-500"
             >
-              Explore Our Services
+              {tr("Explore Our Services", "Explora nuestros servicios")}
             </MotionLink>
           </motion.div>
         </motion.div>

@@ -1,6 +1,7 @@
 import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
+import { HtmlLang } from "@/lib/i18n";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -42,6 +43,7 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     locale: "en_US",
+    alternateLocale: ["es_US"],
   },
   twitter: {
     card: "summary_large_image",
@@ -67,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-black text-white">
+        <HtmlLang />
         <CustomCursor />
         <Navbar />
         <main className="flex-1">{children}</main>

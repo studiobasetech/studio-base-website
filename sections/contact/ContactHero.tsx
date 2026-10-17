@@ -4,14 +4,22 @@ import { motion, useMotionValue, useSpring, useTransform, type Variants } from "
 import { ShimmerText } from "@/components/Effects";
 import ParticleField from "@/components/ParticleField";
 import StarField from "@/sections/products-services/StarField";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const headlineLines = [
-  { words: ["Let’s", "Build"], accent: false },
-  { words: ["What’s", "Next,"], accent: false },
-  { words: ["Together."], accent: true },
-];
+const headlineLines = {
+  en: [
+    { words: ["Let’s", "Build"], accent: false },
+    { words: ["What’s", "Next,"], accent: false },
+    { words: ["Together."], accent: true },
+  ],
+  es: [
+    { words: ["Construyamos"], accent: false },
+    { words: ["lo", "que", "sigue,"], accent: false },
+    { words: ["juntos."], accent: true },
+  ],
+};
 
 const container: Variants = {
   hidden: {},
@@ -32,6 +40,7 @@ const word: Variants = {
  * stars, the constellation effect and a slow mouse parallax.
  */
 export default function ContactHero() {
+  const { tr, lang } = useLang();
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
   const px = useSpring(nx, { stiffness: 50, damping: 20 });
@@ -90,13 +99,13 @@ export default function ContactHero() {
       >
         <div>
           <motion.p variants={fadeUp} className="text-[10px] tracking-[0.45em] text-zinc-300">
-            CONTACT US
+            {tr("CONTACT US", "CONTÁCTANOS")}
           </motion.p>
           <motion.h1
             variants={container}
             className="mt-4 text-4xl font-medium leading-[1.05] text-white md:text-6xl lg:text-7xl"
           >
-            {headlineLines.map((line, li) => (
+            {headlineLines[lang].map((line, li) => (
               <span key={li} className="block">
                 {line.words.map((w, wi) => (
                   <motion.span key={wi} variants={word} className="inline-block" style={{ marginRight: "0.25em" }}>
@@ -117,11 +126,10 @@ export default function ContactHero() {
             className="absolute left-0 top-0 hidden h-full w-px origin-top bg-gradient-to-b from-blue-500 via-white/20 to-transparent lg:block"
           />
           <p className="text-sm leading-relaxed text-zinc-300 md:text-base">
-            Whether you are planning a new digital product, exploring how
-            AI and automation can strengthen your operations, or interested
-            in joining our network of specialists, we would be glad to hear
-            from you. Share a few details and our team will respond promptly
-            with clear next steps.
+            {tr(
+              "Whether you are planning a new digital product, exploring how AI and automation can strengthen your operations, or interested in joining our network of specialists, we would be glad to hear from you. Share a few details and our team will respond promptly with clear next steps.",
+              "Ya sea que estés planeando un nuevo producto digital, explorando cómo la IA y la automatización pueden fortalecer tus operaciones o te interese unirte a nuestra red de especialistas, nos encantará saber de ti. Compártenos algunos detalles y nuestro equipo te responderá pronto con los siguientes pasos claros.",
+            )}
           </p>
         </motion.div>
       </motion.div>

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ArrowLeft, Clock } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
-import { formatDate, readingTime, type Post } from "@/data/blog";
+import { categoryLabel, formatDate, localizePost, readingTime, type Post } from "@/data/blog";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -23,7 +24,9 @@ const fadeUp: Variants = {
  * Article opening: title on black, then the illustration in full colour
  * as a large rounded image that zooms gently as you scroll.
  */
-export default function ArticleHero({ post }: { post: Post }) {
+export default function ArticleHero({ post: original }: { post: Post }) {
+  const { lang, tr } = useLang();
+  const post = localizePost(original, lang);
   const imageRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: imageRef, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 1], [1.12, 1]);
@@ -54,7 +57,7 @@ export default function ArticleHero({ post }: { post: Post }) {
           variants={fadeUp}
           className="mt-8 inline-block rounded-full border border-blue-500/50 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-blue-400"
         >
-          {post.category}
+          {categoryLabel(post.category, lang)}
         </motion.p>
 
         <motion.h1
@@ -72,10 +75,10 @@ export default function ArticleHero({ post }: { post: Post }) {
           variants={fadeUp}
           className="mt-8 flex flex-wrap items-center gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400"
         >
-          <span>{formatDate(post.date)}</span>
+          <span>{formatDate(post.date, lang)}</span>
           <span className="h-px w-8 bg-blue-500/60" />
           <span className="flex items-center gap-1.5">
-            <Clock size={12} /> {readingTime(post)} min read
+            <Clock size={12} /> {readingTime(post)} {tr("min read", "min de lectura")}
           </span>
         </motion.div>
       </motion.div>

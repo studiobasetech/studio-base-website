@@ -7,6 +7,7 @@ import { ArrowRight, Cpu, Gauge, Play, RotateCcw, Shield, Trophy, Zap } from "lu
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 import { createGame, type HudState, type Phase } from "./orbit/engine";
+import { useLang } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  ORBIT DEFENSE — Home "Interactive Lab". The game itself lives in   */
@@ -42,6 +43,12 @@ function Corner({ className }: { className: string }) {
 }
 
 export default function OrbitGame() {
+  const { tr, lang } = useLang();
+  // the game engine reads this on every frame, so canvas text follows the language switch
+  const langRef = useRef(lang);
+  useEffect(() => {
+    langRef.current = lang;
+  }, [lang]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const game = useRef<ReturnType<typeof createGame> | null>(null);
@@ -57,6 +64,7 @@ export default function OrbitGame() {
     const gm = createGame(c, {
       onHud: setHud,
       onPhase: setPhase,
+      getLang: () => langRef.current,
       onOver: (score) => {
         const prev = readBest();
         if (score > prev) saveBest(score);
@@ -126,23 +134,25 @@ export default function OrbitGame() {
           className="mx-auto max-w-3xl text-center"
         >
           <motion.p variants={fadeUp} className="text-[10px] tracking-[0.45em] text-zinc-400">
-            INTERACTIVE LAB
+            {tr("INTERACTIVE LAB", "LABORATORIO INTERACTIVO")}
           </motion.p>
           <motion.h2 variants={fadeUp} className="mt-4 text-3xl font-medium leading-tight text-white md:text-5xl">
-            Built to Engage. <ShimmerText>Play the Mission.</ShimmerText>
+            {tr("Built to Engage.", "Diseñado para atraparte.")}{" "}
+            <ShimmerText>{tr("Play the Mission.", "Juega la misión.")}</ShimmerText>
           </motion.h2>
           <motion.p variants={fadeUp} className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
-            A real-time game engineered by our team and running entirely in your
-            browser. The same craft, performance and attention to detail we
-            bring to every platform we build.
+            {tr(
+              "A real-time game engineered by our team and running entirely in your browser. The same craft, performance and attention to detail we bring to every platform we build.",
+              "Un juego en tiempo real creado por nuestro equipo que funciona por completo en tu navegador. El mismo oficio, rendimiento y atención al detalle que ponemos en cada plataforma que construimos.",
+            )}
           </motion.p>
           <motion.div variants={fadeUp} className="mt-6 flex flex-wrap justify-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
             {[
-              { icon: Gauge, t: "60 FPS engine" },
-              { icon: Cpu, t: "Zero downloads" },
-              { icon: Zap, t: "Any device" },
-            ].map(({ icon: Icon, t }) => (
-              <span key={t} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">
+              { icon: Gauge, t: tr("60 FPS engine", "Motor a 60 FPS") },
+              { icon: Cpu, t: tr("Zero downloads", "Sin descargas") },
+              { icon: Zap, t: tr("Any device", "Cualquier dispositivo") },
+            ].map(({ icon: Icon, t }, k) => (
+              <span key={k} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">
                 <Icon size={12} className="text-blue-400" /> {t}
               </span>
             ))}
@@ -169,21 +179,22 @@ export default function OrbitGame() {
           <div className="relative overflow-hidden rounded-[21px] bg-[#02040b] shadow-[0_0_120px_-30px_rgba(59,130,246,0.8)]">
             {/* console top bar */}
             <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.02] px-5 py-3">
-              <span className="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-zinc-400">
+              <span className="flex items-center gap-3 whitespace-nowrap font-mono text-[10px] tracking-[0.3em] text-zinc-400">
                 <span className="flex gap-1.5">
                   <span className="h-2 w-2 rounded-full bg-pink-500/80" />
                   <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
                   <span className="h-2 w-2 rounded-full bg-blue-500/80" />
                 </span>
-                ORBIT DEFENSE · SB-01
+                {tr("ORBIT DEFENSE", "DEFENSA ORBITAL")}
+                <span className="-ml-3 hidden sm:inline">&nbsp;· SB-01</span>
               </span>
-              <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] text-zinc-500">
+              <span className="flex items-center gap-2 whitespace-nowrap font-mono text-[10px] tracking-[0.25em] text-zinc-500">
                 <motion.span
                   animate={{ opacity: [1, 0.25, 1] }}
                   transition={{ duration: 1.2, repeat: Infinity }}
                   className={`h-1.5 w-1.5 rounded-full ${live ? "bg-green-400 shadow-[0_0_8px_#4ade80]" : "bg-blue-400 shadow-[0_0_8px_#60a5fa]"}`}
                 />
-                {live ? "MISSION LIVE" : "SYSTEMS ONLINE"}
+                {live ? tr("MISSION LIVE", "EN VIVO") : tr("SYSTEMS ONLINE", "EN LÍNEA")}
               </span>
             </div>
 
@@ -191,7 +202,7 @@ export default function OrbitGame() {
               <canvas
                 ref={canvasRef}
                 tabIndex={0}
-                aria-label="Orbit Defense game"
+                aria-label={tr("Orbit Defense game", "Juego Defensa Orbital")}
                 onPointerMove={onPointer}
                 onPointerDown={onPointer}
                 className={`absolute inset-0 h-full w-full outline-none ${live ? "cursor-crosshair touch-none" : ""}`}
@@ -211,12 +222,12 @@ export default function OrbitGame() {
               {live && (
                 <>
                   <div className="pointer-events-none absolute left-8 top-7 rounded-lg border border-blue-400/25 bg-black/40 px-4 py-2 backdrop-blur-md">
-                    <p className="font-mono text-[9px] tracking-[0.3em] text-blue-300/80">SCORE</p>
+                    <p className="font-mono text-[9px] tracking-[0.3em] text-blue-300/80">{tr("SCORE", "PUNTOS")}</p>
                     <p className="font-mono text-2xl font-semibold tabular-nums text-white">{String(hud.score).padStart(6, "0")}</p>
                   </div>
                   <div className="pointer-events-none absolute right-8 top-7 flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2 rounded-lg border border-blue-400/25 bg-black/40 px-3 py-2 backdrop-blur-md">
-                      <span className="font-mono text-[9px] tracking-[0.3em] text-blue-300/80">HULL</span>
+                      <span className="font-mono text-[9px] tracking-[0.3em] text-blue-300/80">{tr("HULL", "CASCO")}</span>
                       {[0, 1, 2].map((i) => (
                         <span
                           key={i}
@@ -225,7 +236,7 @@ export default function OrbitGame() {
                       ))}
                     </div>
                     <div className="flex gap-2 font-mono text-[10px] tracking-[0.2em]">
-                      <span className="rounded-md border border-white/10 bg-black/40 px-2 py-1 text-zinc-300 backdrop-blur-md">WAVE {hud.wave}</span>
+                      <span className="rounded-md border border-white/10 bg-black/40 px-2 py-1 text-zinc-300 backdrop-blur-md">{tr("WAVE", "OLEADA")} {hud.wave}</span>
                       {hud.mult > 1 && (
                         <motion.span
                           key={hud.mult}
@@ -240,7 +251,7 @@ export default function OrbitGame() {
                   </div>
                   {hud.boss !== null && (
                     <div className="pointer-events-none absolute left-1/2 top-7 w-[min(60%,420px)] -translate-x-1/2">
-                      <p className="mb-1 text-center font-mono text-[9px] tracking-[0.35em] text-purple-200">MOTHERSHIP</p>
+                      <p className="mb-1 text-center font-mono text-[9px] tracking-[0.35em] text-purple-200">{tr("MOTHERSHIP", "NAVE NODRIZA")}</p>
                       <div className="h-2 overflow-hidden rounded-full border border-purple-400/40 bg-black/50">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 shadow-[0_0_12px_#a855f7] transition-[width] duration-200"
@@ -252,17 +263,17 @@ export default function OrbitGame() {
                   <div className="pointer-events-none absolute bottom-7 left-8 flex gap-2 font-mono text-[10px] tracking-[0.2em]">
                     {hud.rescued > 0 && (
                       <span className="rounded-md border border-white/20 bg-black/40 px-2 py-1 text-zinc-200 backdrop-blur-md">
-                        CREW RESCUED {hud.rescued}
+                        {tr("CREW RESCUED", "TRIPULANTES RESCATADOS")} {hud.rescued}
                       </span>
                     )}
                     {hud.shield && (
                       <span className="flex items-center gap-1.5 rounded-md border border-yellow-400/40 bg-black/40 px-2 py-1 text-yellow-200 backdrop-blur-md">
-                        <Shield size={11} /> SHIELD
+                        <Shield size={11} /> {tr("SHIELD", "ESCUDO")}
                       </span>
                     )}
                     {hud.triple > 0 && (
                       <span className="rounded-md border border-purple-400/40 bg-black/40 px-2 py-1 text-purple-200 backdrop-blur-md">
-                        TRIPLE SHOT {hud.triple.toFixed(1)}s
+                        {tr("TRIPLE SHOT", "DISPARO TRIPLE")} {hud.triple.toFixed(1)}s
                       </span>
                     )}
                   </div>
@@ -285,21 +296,32 @@ export default function OrbitGame() {
                         transition={{ duration: 2, repeat: Infinity }}
                         className="font-mono text-[10px] tracking-[0.5em] text-blue-300"
                       >
-                        ▸ READY FOR LAUNCH
+                        {tr("▸ READY FOR LAUNCH", "▸ LISTOS PARA EL DESPEGUE")}
                       </motion.p>
                       <h3 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">
-                        ORBIT <ShimmerText>DEFENSE</ShimmerText>
+                        {lang === "es" ? (
+                          <>
+                            DEFENSA <ShimmerText>ORBITAL</ShimmerText>
+                          </>
+                        ) : (
+                          <>
+                            ORBIT <ShimmerText>DEFENSE</ShimmerText>
+                          </>
+                        )}
                       </h3>
                       <p className="mt-3 max-w-md text-sm text-zinc-400">
-                        Blast asteroids, UFOs, comets and space jellyfish, rescue stranded astronauts, survive the black hole and take down the Mothership.
+                        {tr(
+                          "Blast asteroids, UFOs, comets and space jellyfish, rescue stranded astronauts, survive the black hole and take down the Mothership.",
+                          "Destruye asteroides, ovnis, cometas y medusas espaciales, rescata a los astronautas a la deriva, sobrevive al agujero negro y derriba la nave nodriza.",
+                        )}
                       </p>
                       <div className="mt-6 hidden max-w-lg grid-cols-3 gap-3 text-left sm:grid">
                         {[
-                          { k: "STEER", v: "Mouse · touch · ← →" },
-                          { k: "RESCUE", v: "Catch drifting astronauts +300" },
-                          { k: "POWER", v: "Yellow shield · purple triple shot" },
-                        ].map((x) => (
-                          <div key={x.k} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-sm">
+                          { k: tr("STEER", "CONTROL"), v: tr("Mouse · touch · ← →", "Mouse · táctil · ← →") },
+                          { k: tr("RESCUE", "RESCATE"), v: tr("Catch drifting astronauts +300", "Atrapa astronautas a la deriva +300") },
+                          { k: tr("POWER", "PODER"), v: tr("Yellow shield · purple triple shot", "Escudo amarillo · disparo triple morado") },
+                        ].map((x, k) => (
+                          <div key={k} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-sm">
                             <p className="font-mono text-[9px] tracking-[0.3em] text-blue-300/80">{x.k}</p>
                             <p className="mt-1 text-[11px] text-zinc-300">{x.v}</p>
                           </div>
@@ -308,7 +330,7 @@ export default function OrbitGame() {
                     </>
                   ) : (
                     <>
-                      <p className="font-mono text-[10px] tracking-[0.5em] text-pink-300">MISSION REPORT</p>
+                      <p className="font-mono text-[10px] tracking-[0.5em] text-pink-300">{tr("MISSION REPORT", "INFORME DE MISIÓN")}</p>
                       <motion.h3
                         initial={{ scale: 0.6, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -319,10 +341,12 @@ export default function OrbitGame() {
                       </motion.h3>
                       <p className="mt-2 flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-zinc-400">
                         <Trophy size={13} className="text-yellow-300" />
-                        {final >= best && final > 0 ? "New personal best" : `Best ${best}`}
+                        {final >= best && final > 0
+                          ? tr("New personal best", "Nuevo récord personal")
+                          : tr(`Best ${best}`, `Récord ${best}`)}
                       </p>
                       <p className="mt-6 max-w-sm text-sm text-zinc-300">
-                        Imagine what we could build for your business.
+                        {tr("Imagine what we could build for your business.", "Imagina lo que podríamos construir para tu negocio.")}
                       </p>
                     </>
                   )}
@@ -339,14 +363,14 @@ export default function OrbitGame() {
                     >
                       <LightSweep />
                       {phase === "ready" ? <Play size={16} className="relative" /> : <RotateCcw size={16} className="relative" />}
-                      <span className="relative">{phase === "ready" ? "Start Mission" : "Play Again"}</span>
+                      <span className="relative">{phase === "ready" ? tr("Start Mission", "Iniciar misión") : tr("Play Again", "Jugar de nuevo")}</span>
                     </motion.button>
                     {phase === "over" && (
                       <Link
                         href={consultationHref}
                         className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:border-blue-400 hover:text-blue-300"
                       >
-                        Book a Consultation
+                        {tr("Book a Consultation", "Agenda una consulta")}
                         <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
                       </Link>
                     )}
@@ -359,7 +383,7 @@ export default function OrbitGame() {
 
         {best > 0 && (
           <p className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] tracking-[0.25em] text-zinc-500">
-            <Trophy size={12} className="text-yellow-300/80" /> YOUR BEST: <span className="text-zinc-200">{best}</span>
+            <Trophy size={12} className="text-yellow-300/80" /> {tr("YOUR BEST:", "TU RÉCORD:")} <span className="text-zinc-200">{best}</span>
           </p>
         )}
       </div>

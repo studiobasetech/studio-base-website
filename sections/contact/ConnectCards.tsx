@@ -4,51 +4,58 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowRight, CalendarDays, FileText, Mail, Users, type LucideIcon } from "lucide-react";
 import { TiltCard } from "@/components/Effects";
 import { contact } from "@/data/site";
+import { useLang, type Bi, type Text } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 type Card = {
-  title: string;
-  text: string;
+  id: string;
+  title: Bi;
+  text: Bi;
   icon: LucideIcon;
-  href: string;
-  cta: string;
+  /** Page link, or a mailto with an optional (translated) subject. */
+  href: string | { subject?: Bi };
+  cta: Text;
   rgb: string;
   text_: string;
   border: string;
   glow: string;
 };
 
-const mail = (subject: string) => `mailto:${contact.email}?subject=${encodeURIComponent(subject)}`;
+const mail = (subject?: string) =>
+  subject ? `mailto:${contact.email}?subject=${encodeURIComponent(subject)}` : `mailto:${contact.email}`;
 
 const cards: Card[] = [
   {
-    title: "Book a Consultation",
-    text: "Schedule a call with our team to discuss your project.",
+    id: "consultation",
+    title: { en: "Book a Consultation", es: "Agenda una consulta" },
+    text: { en: "Schedule a call with our team to discuss your project.", es: "Programa una llamada con nuestro equipo para hablar de tu proyecto." },
     icon: CalendarDays,
     href: "#contact-form",
-    cta: "Send a request",
+    cta: { en: "Send a request", es: "Envía una solicitud" },
     rgb: "59,130,246",
     text_: "text-blue-400",
     border: "border-blue-500/50 hover:border-blue-500",
     glow: "bg-blue-500/25",
   },
   {
-    title: "Join Our Network",
-    text: "Are you a talented professional? Let’s connect.",
+    id: "network",
+    title: { en: "Join Our Network", es: "Únete a nuestra red" },
+    text: { en: "Are you a talented professional? Let’s connect.", es: "¿Eres un profesional talentoso? Conectemos." },
     icon: Users,
-    href: mail("Joining the Studio Base network"),
-    cta: "Introduce yourself",
+    href: { subject: { en: "Joining the Studio Base network", es: "Quiero unirme a la red de Studio Base" } },
+    cta: { en: "Introduce yourself", es: "Preséntate" },
     rgb: "168,85,247",
     text_: "text-purple-400",
     border: "border-purple-500/50 hover:border-purple-500",
     glow: "bg-purple-500/25",
   },
   {
-    title: "Email Us",
-    text: "Send us a message any time.",
+    id: "email",
+    title: { en: "Email Us", es: "Escríbenos" },
+    text: { en: "Send us a message any time.", es: "Envíanos un mensaje cuando quieras." },
     icon: Mail,
-    href: `mailto:${contact.email}`,
+    href: {},
     cta: contact.email,
     rgb: "250,204,21",
     text_: "text-yellow-300",
@@ -56,11 +63,12 @@ const cards: Card[] = [
     glow: "bg-yellow-400/25",
   },
   {
-    title: "General Inquiries",
-    text: "Partnerships, press or other questions.",
+    id: "general",
+    title: { en: "General Inquiries", es: "Consultas generales" },
+    text: { en: "Partnerships, press or other questions.", es: "Alianzas, prensa u otras preguntas." },
     icon: FileText,
-    href: mail("General inquiry"),
-    cta: "Ask a question",
+    href: { subject: { en: "General inquiry", es: "Consulta general" } },
+    cta: { en: "Ask a question", es: "Haz una pregunta" },
     rgb: "236,72,153",
     text_: "text-pink-400",
     border: "border-pink-500/50 hover:border-pink-500",
@@ -75,6 +83,8 @@ const cardV: Variants = {
 };
 
 export default function ConnectCards() {
+  const { t, tr } = useLang();
+
   return (
     <section className="relative bg-black px-6 py-16 lg:px-12">
       <div className="mx-auto max-w-7xl">
@@ -86,7 +96,7 @@ export default function ConnectCards() {
           className="flex items-center gap-3 text-[10px] tracking-[0.45em] text-zinc-400"
         >
           <span className="h-px w-8 bg-blue-500" />
-          OTHER WAYS TO CONNECT
+          {tr("OTHER WAYS TO CONNECT", "OTRAS FORMAS DE CONTACTARNOS")}
         </motion.p>
 
         <motion.div
@@ -98,15 +108,16 @@ export default function ConnectCards() {
         >
           {cards.map((c, i) => {
             const Icon = c.icon;
+            const href = typeof c.href === "string" ? c.href : mail(c.href.subject && t(c.href.subject));
             return (
-              <motion.div key={c.title} variants={cardV} className="h-full">
+              <motion.div key={c.id} variants={cardV} className="h-full">
                 <TiltCard
                   tilt={6}
                   rgb={c.rgb}
                   className={`group h-full overflow-hidden rounded-xl border bg-[#07070a] transition-colors duration-500 ${c.border}`}
                   style={{ boxShadow: `0 0 40px -22px rgba(${c.rgb},0.7)` }}
                 >
-                  <a href={c.href} className="relative z-10 flex h-full flex-col p-6">
+                  <a href={href} className="relative z-10 flex h-full flex-col p-6">
                     <span
                       className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100 ${c.glow}`}
                     />
@@ -117,10 +128,10 @@ export default function ConnectCards() {
                     >
                       <Icon size={30} strokeWidth={1.5} className={c.text_} style={{ filter: `drop-shadow(0 0 8px rgba(${c.rgb},0.7))` }} />
                     </motion.span>
-                    <h3 className="mt-5 text-base font-semibold text-white">{c.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">{c.text}</p>
+                    <h3 className="mt-5 text-base font-semibold text-white">{t(c.title)}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">{t(c.text)}</p>
                     <span className={`mt-auto flex items-center gap-2 pt-6 text-xs font-semibold ${c.text_}`}>
-                      <span className="truncate">{c.cta}</span>
+                      <span className="truncate">{t(c.cta)}</span>
                       <ArrowRight size={14} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
                     </span>
                   </a>

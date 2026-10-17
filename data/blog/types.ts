@@ -24,3 +24,9 @@ export type Post = {
   takeaways: string[]; // "Key takeaways" box at the end
   body: Block[];
 };
+
+/**
+ * Spanish version of an article (data/blog/es/post-XX.ts). Only the text
+ * is translated; the slug (URL), date, category and image stay the same.
+ */
+export type PostTranslation = Pick<Post, "title" | "excerpt" | "imageAlt" | "takeaways" | "body">;

@@ -7,6 +7,7 @@ import Technologies from "@/sections/Technologies";
 import ProductsCTA from "@/sections/products-services/ProductsCTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
+import { T } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -24,13 +25,25 @@ export default function PortfolioPage() {
       <SectionTransition><Technologies /></SectionTransition>
       <SectionTransition>
         <ProductsCTA
-          eyebrow="LET'S BUILD YOUR SUCCESS STORY"
+          eyebrow={{ en: "LET'S BUILD YOUR SUCCESS STORY", es: "CONSTRUYAMOS TU HISTORIA DE ÉXITO" }}
           title={
-            <>
-              Have a <ShimmerText>Project</ShimmerText> in Mind?
-            </>
+            <T
+              en={
+                <>
+                  Have a <ShimmerText>Project</ShimmerText> in Mind?
+                </>
+              }
+              es={
+                <>
+                  ¿Tienes un <ShimmerText>proyecto</ShimmerText> en mente?
+                </>
+              }
+            />
           }
-          description="Partner with Studio Base and our network of specialized experts to develop innovative technology solutions that drive real results."
+          description={{
+            en: "Partner with Studio Base and our network of specialized experts to develop innovative technology solutions that drive real results.",
+            es: "Trabaja con Studio Base y nuestra red de expertos especializados para desarrollar soluciones tecnológicas innovadoras que generan resultados reales.",
+          }}
         />
       </SectionTransition>
     </>

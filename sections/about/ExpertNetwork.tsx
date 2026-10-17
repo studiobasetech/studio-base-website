@@ -19,10 +19,10 @@ import { ShimmerText, TiltCard } from "@/components/Effects";
 import { expertCategories } from "@/data/about";
 import { contact } from "@/data/site";
 import { tones, type Tone } from "./palette";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const icons: Record<string, LucideIcon> = { brain: BrainCircuit, code: Code2, phone: Smartphone, shield: ShieldCheck, pen: PenTool, sales: Handshake };
-const joinHref = `mailto:${contact.email}?subject=${encodeURIComponent("Joining the Studio Base network")}`;
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
@@ -114,6 +114,10 @@ function NetworkVisual() {
 }
 
 export default function ExpertNetwork() {
+  const { t: tx, tr } = useLang();
+  const joinHref = `mailto:${contact.email}?subject=${encodeURIComponent(
+    tr("Joining the Studio Base network", "Quiero unirme a la red de Studio Base"),
+  )}`;
   const [active, setActive] = useState("all");
   const [query, setQuery] = useState("");
 
@@ -122,8 +126,12 @@ export default function ExpertNetwork() {
     () => expertCategories.flatMap((c) => Array.from({ length: c.slots }, (_, k) => ({ ...c, key: `${c.id}-${k}` }))),
     [],
   );
-  const q = query.trim().toLowerCase();
-  const shown = cards.filter((c) => (active === "all" || c.id === active) && (!q || c.label.toLowerCase().includes(q)));
+  // search both languages, ignoring accents ("movil" finds "móviles")
+  const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const q = norm(query.trim());
+  const shown = cards.filter(
+    (c) => (active === "all" || c.id === active) && (!q || norm(c.label.en).includes(q) || norm(c.label.es).includes(q)),
+  );
 
   return (
     <section id="our-network" className="relative scroll-mt-20 overflow-hidden bg-black px-6 py-16 lg:px-12">
@@ -140,22 +148,18 @@ export default function ExpertNetwork() {
           >
             <motion.p variants={fadeUp} className="flex items-center gap-3 text-[10px] tracking-[0.45em] text-zinc-400">
               <span className="h-px w-8 bg-blue-500" />
-              OUR TECHNOLOGY NETWORK
+              {tr("OUR TECHNOLOGY NETWORK", "NUESTRA RED TECNOLÓGICA")}
             </motion.p>
             <motion.h2 variants={fadeUp} className="mt-4 text-3xl font-medium leading-tight text-white md:text-5xl">
-              A Network of
+              {tr("A Network of", "Una red de")}
               <br />
-              <ShimmerText>Specialized Experts.</ShimmerText>
+              <ShimmerText>{tr("Specialized Experts.", "expertos especializados.")}</ShimmerText>
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-5 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">
-              Studio Base operates through a flexible network of specialized
-              technology professionals who are selected based on each
-              project&apos;s requirements, technical complexity, and business
-              objectives. We collaborate with experienced AI engineers,
-              full-stack and mobile developers,
-              UI/UX designers and technology sales executives, allowing
-              us to assemble the right team for every project and deliver
-              end-to-end solutions with specialized talent.
+              {tr(
+                "Studio Base operates through a flexible network of specialized technology professionals who are selected based on each project's requirements, technical complexity, and business objectives. We collaborate with experienced AI engineers, full-stack and mobile developers, UI/UX designers and technology sales executives, allowing us to assemble the right team for every project and deliver end-to-end solutions with specialized talent.",
+                "Studio Base trabaja con una red flexible de profesionales de tecnología especializados, seleccionados según los requisitos, la complejidad técnica y los objetivos de negocio de cada proyecto. Colaboramos con ingenieros de IA, desarrolladores full-stack y móviles, diseñadores UI/UX y ejecutivos de ventas de tecnología con experiencia, lo que nos permite armar el equipo ideal para cada proyecto y entregar soluciones integrales con talento especializado.",
+              )}
             </motion.p>
           </motion.div>
 
@@ -184,19 +188,22 @@ export default function ExpertNetwork() {
                   <Users size={20} />
                 </span>
                 <p className="text-sm font-semibold leading-snug text-white">
-                  Become Part
+                  {tr("Become Part", "Forma parte")}
                   <br />
-                  of Our Team <Heart size={13} className="ml-1 inline text-yellow-300" />
+                  {tr("of Our Team", "de nuestro equipo")} <Heart size={13} className="ml-1 inline text-yellow-300" />
                 </p>
               </div>
               <p className="mt-3 text-xs leading-relaxed text-zinc-400">
-                We&apos;re always looking for talented professionals to join our network and work on exciting projects.
+                {tr(
+                  "We're always looking for talented professionals to join our network and work on exciting projects.",
+                  "Siempre buscamos profesionales talentosos que se unan a nuestra red y trabajen en proyectos emocionantes.",
+                )}
               </p>
               <a
                 href={joinHref}
                 className="group mt-4 inline-flex items-center gap-2 rounded-full border border-yellow-400/70 px-4 py-2 text-xs font-semibold text-yellow-200 transition-colors hover:bg-yellow-400 hover:text-black"
               >
-                Join Our Network
+                {tr("Join Our Network", "Únete a nuestra red")}
                 <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </motion.div>
@@ -205,7 +212,7 @@ export default function ExpertNetwork() {
 
         {/* FILTERS */}
         <div className="-mx-6 mt-14 flex gap-2 overflow-x-auto px-6 pb-2 lg:mx-0 lg:flex-wrap lg:px-0">
-          {[{ id: "all", label: "All Experts", icon: "all", tone: "blue" as Tone }, ...expertCategories].map((c) => {
+          {[{ id: "all", label: { en: "All Experts", es: "Todos los expertos" }, icon: "all", tone: "blue" as Tone }, ...expertCategories].map((c) => {
             const t = tones[c.tone];
             const Icon = c.icon === "all" ? Users : icons[c.icon];
             const on = active === c.id;
@@ -232,7 +239,7 @@ export default function ExpertNetwork() {
                 <span className={`relative flex h-6 w-6 items-center justify-center rounded-md ${on ? "bg-black/20" : t.iconBox} border-0`}>
                   <Icon size={14} className={on ? "" : t.text} />
                 </span>
-                <span className="relative">{c.label}</span>
+                <span className="relative">{tx(c.label)}</span>
               </motion.button>
             );
           })}
@@ -241,9 +248,12 @@ export default function ExpertNetwork() {
         {/* TITLE + SEARCH */}
         <div className="mt-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h3 className="text-2xl font-medium text-white md:text-3xl">Our Technical Network</h3>
+            <h3 className="text-2xl font-medium text-white md:text-3xl">{tr("Our Technical Network", "Nuestra red técnica")}</h3>
             <p className="mt-2 text-sm text-zinc-400">
-              Meet the expertise in our network. Each expert is selected based on project requirements.
+              {tr(
+                "Meet the expertise in our network. Each expert is selected based on project requirements.",
+                "Conoce las especialidades de nuestra red. Cada experto se selecciona según los requisitos del proyecto.",
+              )}
             </p>
           </div>
           <label className="group flex w-full items-center gap-3 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2.5 transition-colors focus-within:border-blue-500 focus-within:shadow-[0_0_24px_-8px_rgba(59,130,246,0.8)] md:w-72">
@@ -251,7 +261,8 @@ export default function ExpertNetwork() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by expertise…"
+              placeholder={tr("Search by expertise…", "Buscar por especialidad…")}
+              aria-label={tr("Search by expertise", "Buscar por especialidad")}
               className="w-full bg-transparent text-sm text-white placeholder:text-zinc-500 focus:outline-none"
             />
           </label>
@@ -290,7 +301,7 @@ export default function ExpertNetwork() {
                       </span>
                     </div>
                     <div className="relative px-4 pb-4">
-                      <p className={`text-xs font-semibold ${t.text}`}>{c.label}</p>
+                      <p className={`text-xs font-semibold ${t.text}`}>{tx(c.label)}</p>
                       <span className={`mt-3 block h-px w-full origin-left scale-x-50 bg-gradient-to-r from-current to-transparent transition-transform duration-500 group-hover:scale-x-100 ${t.text}`} />
                     </div>
                   </TiltCard>
@@ -299,7 +310,7 @@ export default function ExpertNetwork() {
             })}
           </AnimatePresence>
         </motion.div>
-        {shown.length === 0 && <p className="mt-8 text-sm text-zinc-500">No expertise matches your search.</p>}
+        {shown.length === 0 && <p className="mt-8 text-sm text-zinc-500">{tr("No expertise matches your search.", "Ninguna especialidad coincide con tu búsqueda.")}</p>}
       </div>
     </section>
   );

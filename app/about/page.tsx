@@ -6,6 +6,7 @@ import CTA from "@/sections/CTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
+import { T } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "About Studio Base",
@@ -21,20 +22,34 @@ export default function AboutPage() {
       <SectionTransition><ExpertNetwork /></SectionTransition>
       <SectionTransition>
         <CTA
-          eyebrow="LET'S BUILD TOGETHER"
+          eyebrow={{ en: "LET'S BUILD TOGETHER", es: "CONSTRUYAMOS JUNTOS" }}
           title={
-            <>
-              Great Ideas
-              <br />
-              Deserve the <ShimmerText>Right People.</ShimmerText>
-            </>
+            <T
+              en={
+                <>
+                  Great Ideas
+                  <br />
+                  Deserve the <ShimmerText>Right People.</ShimmerText>
+                </>
+              }
+              es={
+                <>
+                  Las grandes ideas
+                  <br />
+                  merecen a las <ShimmerText>personas correctas.</ShimmerText>
+                </>
+              }
+            />
           }
-          description="If you're a talented professional who is passionate about technology and creating real impact, we'd love to have you in our network."
+          description={{
+            en: "If you're a talented professional who is passionate about technology and creating real impact, we'd love to have you in our network.",
+            es: "Si eres un profesional talentoso, apasionado por la tecnología y por generar un impacto real, nos encantaría que formaras parte de nuestra red.",
+          }}
           primary={{
-            label: "Become Part of Our Team",
+            label: { en: "Become Part of Our Team", es: "Únete a nuestro equipo" },
             href: `mailto:${contact.email}?subject=${encodeURIComponent("Joining the Studio Base network")}`,
           }}
-          secondary={{ label: "Book a Consultation", href: "/contact#contact-form" }}
+          secondary={{ label: { en: "Book a Consultation", es: "Agenda una consulta" }, href: "/contact#contact-form" }}
         />
       </SectionTransition>
     </>

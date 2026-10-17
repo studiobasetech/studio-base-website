@@ -7,13 +7,20 @@ import { LightSweep, ShimmerText } from "@/components/Effects";
 import ParticleField from "@/components/ParticleField";
 import StarField from "@/sections/products-services/StarField";
 import { consultationHref } from "@/data/site";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const headline = [
-  { words: ["CRAFTING", "EXCELLENCE"], accent: false },
-  { words: ["BEYOND", "DIGITAL."], accent: true },
-];
+const headline = {
+  en: [
+    { words: ["CRAFTING", "EXCELLENCE"], accent: false },
+    { words: ["BEYOND", "DIGITAL."], accent: true },
+  ],
+  es: [
+    { words: ["CREANDO", "EXCELENCIA"], accent: false },
+    { words: ["MÁS", "ALLÁ", "DE", "LO", "DIGITAL."], accent: true },
+  ],
+};
 
 const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } } };
 const fadeUp: Variants = {
@@ -32,6 +39,7 @@ const MotionLink = motion.create(Link);
  * glowing platform with orbit rings, light beams and a grid floor.
  */
 export default function AboutHero() {
+  const { tr, lang } = useLang();
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
   const px = useSpring(nx, { stiffness: 50, damping: 20 });
@@ -59,10 +67,10 @@ export default function AboutHero() {
         {/* TEXT */}
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.p variants={fadeUp} className="text-[10px] tracking-[0.45em] text-zinc-300">
-            ABOUT STUDIO BASE
+            {tr("ABOUT STUDIO BASE", "SOBRE STUDIO BASE")}
           </motion.p>
           <motion.h1 variants={container} className="mt-4 text-4xl font-medium leading-[1.05] text-white md:text-6xl">
-            {headline.map((line, li) => (
+            {headline[lang].map((line, li) => (
               <span key={li} className="block">
                 {line.words.map((w, wi) => (
                   <motion.span key={wi} variants={word} className="inline-block" style={{ marginRight: "0.25em" }}>
@@ -73,18 +81,16 @@ export default function AboutHero() {
             ))}
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base">
-            Studio Base is a technology company dedicated to turning ideas into
-            meaningful digital experiences. We specialize in artificial
-            intelligence, software engineering, and digital
-            transformation, helping businesses design, build, and scale
-            solutions that create real impact.
+            {tr(
+              "Studio Base is a technology company dedicated to turning ideas into meaningful digital experiences. We specialize in artificial intelligence, software engineering, and digital transformation, helping businesses design, build, and scale solutions that create real impact.",
+              "Studio Base es una empresa de tecnología dedicada a convertir ideas en experiencias digitales con propósito. Nos especializamos en inteligencia artificial, ingeniería de software y transformación digital, y ayudamos a las empresas a diseñar, construir y escalar soluciones que generan un impacto real.",
+            )}
           </motion.p>
           <motion.p variants={fadeUp} className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">
-            We combine technology, strategy, and creativity to solve complex
-            problems, streamline operations, and unlock new opportunities. Our
-            focus is on building innovative, secure, and scalable digital
-            infrastructure that empowers businesses to grow and thrive in a
-            rapidly changing world.
+            {tr(
+              "We combine technology, strategy, and creativity to solve complex problems, streamline operations, and unlock new opportunities. Our focus is on building innovative, secure, and scalable digital infrastructure that empowers businesses to grow and thrive in a rapidly changing world.",
+              "Combinamos tecnología, estrategia y creatividad para resolver problemas complejos, optimizar operaciones y abrir nuevas oportunidades. Nos enfocamos en construir infraestructura digital innovadora, segura y escalable que impulsa a las empresas a crecer y prosperar en un mundo que cambia rápidamente.",
+            )}
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
             <MotionLink
@@ -96,7 +102,7 @@ export default function AboutHero() {
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
-              <span className="relative">Book a Consultation</span>
+              <span className="relative">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
             </MotionLink>
             <MotionLink
@@ -105,7 +111,7 @@ export default function AboutHero() {
               whileTap={{ scale: 0.96 }}
               className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-400 hover:text-blue-300"
             >
-              Learn More
+              {tr("Learn More", "Conoce más")}
               <ArrowDown size={15} className="transition-transform duration-300 group-hover:translate-y-0.5" />
             </MotionLink>
           </motion.div>
@@ -207,13 +213,13 @@ export default function AboutHero() {
 
           {/* HUD labels */}
           {[
-            { t: "AI", pos: "left-[4%] top-[14%]" },
-            { t: "SOFTWARE", pos: "right-[0%] top-[24%]" },
-            { t: "MOBILE", pos: "left-[0%] top-[52%]" },
-            { t: "DESIGN", pos: "right-[4%] top-[58%]" },
+            { id: "ai", t: tr("AI", "IA"), pos: "left-[4%] top-[14%]" },
+            { id: "software", t: "SOFTWARE", pos: "right-[0%] top-[24%]" },
+            { id: "mobile", t: tr("MOBILE", "MÓVIL"), pos: "left-[0%] top-[52%]" },
+            { id: "design", t: tr("DESIGN", "DISEÑO"), pos: "right-[4%] top-[58%]" },
           ].map((l, i) => (
             <motion.span
-              key={l.t}
+              key={l.id}
               initial={{ opacity: 0, x: i % 2 ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 1.2 + i * 0.15, ease: EASE }}

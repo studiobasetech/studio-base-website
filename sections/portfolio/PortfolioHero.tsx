@@ -14,12 +14,13 @@ import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 import ParticleField from "@/components/ParticleField";
 import StarField from "@/sections/products-services/StarField";
+import { useLang, type Bi } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const headlineLines = [
-  { words: ["Real", "Solutions."], accent: false },
-  { words: ["Measurable", "Results."], accent: true },
+  { words: { en: ["Real", "Solutions."], es: ["Soluciones", "reales."] }, accent: false },
+  { words: { en: ["Measurable", "Results."], es: ["Resultados", "medibles."] }, accent: true },
 ];
 
 const container: Variants = {
@@ -38,11 +39,11 @@ const word: Variants = {
 };
 
 // Floating result chips around the laptop
-const chips = [
-  { value: "3x", label: "Qualified leads", pos: "left-0 top-[8%] sm:-left-4", delay: 1.2 },
-  { value: "100K+", label: "App downloads", pos: "right-0 top-[2%] lg:-right-2", delay: 1.4 },
-  { value: "−70%", label: "Manual work", pos: "left-[4%] bottom-[6%]", delay: 1.6 },
-  { value: "4.8★", label: "App rating", pos: "right-[2%] bottom-[12%]", delay: 1.8 },
+const chips: { value: string; label: Bi; pos: string; delay: number }[] = [
+  { value: "3x", label: { en: "Qualified leads", es: "Prospectos calificados" }, pos: "left-0 top-[8%] sm:-left-4", delay: 1.2 },
+  { value: "100K+", label: { en: "App downloads", es: "Descargas de la app" }, pos: "right-0 top-[2%] lg:-right-2", delay: 1.4 },
+  { value: "−70%", label: { en: "Manual work", es: "Trabajo manual" }, pos: "left-[4%] bottom-[6%]", delay: 1.6 },
+  { value: "4.8★", label: { en: "App rating", es: "Calificación de la app" }, pos: "right-[2%] bottom-[12%]", delay: 1.8 },
 ];
 
 const MotionLink = motion.create(Link);
@@ -87,6 +88,7 @@ function Planet({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
 function Laptop({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }) {
   const rotateY = useTransform(nx, [-0.5, 0.5], [-20, -8]);
   const rotateX = useTransform(ny, [-0.5, 0.5], [10, 2]);
+  const { tr } = useLang();
 
   return (
     <motion.div
@@ -107,7 +109,10 @@ function Laptop({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/portfolio/laptop-screen-blue.jpg"
-                alt="Global impact dashboard showing active projects, countries, ROI and uptime"
+                alt={tr(
+                  "Global impact dashboard showing active projects, countries, ROI and uptime",
+                  "Panel de impacto global con proyectos activos, países, ROI y disponibilidad",
+                )}
                 className="h-full w-full object-cover"
               />
               {/* glare that sweeps across the screen */}
@@ -133,6 +138,7 @@ function Laptop({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }
 }
 
 export default function PortfolioHero() {
+  const { t, tr, lang } = useLang();
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
   const px = useSpring(nx, { stiffness: 50, damping: 20 });
@@ -157,7 +163,7 @@ export default function PortfolioHero() {
         {/* TEXT */}
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-2xl">
           <motion.p variants={fadeUp} className="text-[10px] tracking-[0.45em] text-zinc-300">
-            OUR PORTFOLIO
+            {tr("OUR PORTFOLIO", "NUESTRO PORTAFOLIO")}
           </motion.p>
 
           <motion.h1
@@ -166,7 +172,7 @@ export default function PortfolioHero() {
           >
             {headlineLines.map((line, li) => (
               <span key={li} className="block">
-                {line.words.map((w, wi) => (
+                {line.words[lang].map((w, wi) => (
                   <motion.span
                     key={wi}
                     variants={word}
@@ -184,10 +190,10 @@ export default function PortfolioHero() {
             variants={fadeUp}
             className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base"
           >
-            Explore a selection of projects delivered through Studio Base&apos;s
-            specialized technology network. We develop AI-powered solutions,
-            custom software, and scalable digital platforms that help businesses
-            automate, scale, and grow.
+            {tr(
+              "Explore a selection of projects delivered through Studio Base's specialized technology network. We develop AI-powered solutions, custom software, and scalable digital platforms that help businesses automate, scale, and grow.",
+              "Explora una selección de proyectos realizados a través de la red tecnológica especializada de Studio Base. Desarrollamos soluciones con IA, software a la medida y plataformas digitales escalables que ayudan a las empresas a automatizar, escalar y crecer.",
+            )}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-4">
@@ -202,7 +208,7 @@ export default function PortfolioHero() {
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
-              <span className="relative">Book a Consultation</span>
+              <span className="relative">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
             </MotionLink>
 
@@ -212,7 +218,7 @@ export default function PortfolioHero() {
               whileTap={{ scale: 0.96 }}
               className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-500 hover:text-blue-500"
             >
-              Discuss a Project
+              {tr("Discuss a Project", "Hablemos de tu proyecto")}
               <MessageCircle size={15} className="transition-transform duration-300 group-hover:rotate-12" />
             </MotionLink>
           </motion.div>
@@ -224,7 +230,7 @@ export default function PortfolioHero() {
 
           {chips.map((c) => (
             <motion.div
-              key={c.label}
+              key={c.value}
               initial={{ opacity: 0, scale: 0.8, filter: "blur(8px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               transition={{ duration: 0.8, delay: c.delay, ease: EASE }}
@@ -236,7 +242,7 @@ export default function PortfolioHero() {
                 className="rounded-xl border border-blue-500/30 bg-black/60 px-4 py-2.5 shadow-[0_0_30px_-10px_rgba(59,130,246,0.6)] backdrop-blur-md"
               >
                 <p className="text-lg font-semibold leading-none text-blue-400">{c.value}</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-zinc-400">{c.label}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-zinc-400">{t(c.label)}</p>
               </motion.div>
             </motion.div>
           ))}

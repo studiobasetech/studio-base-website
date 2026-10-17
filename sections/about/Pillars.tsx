@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { TiltCard } from "@/components/Effects";
 import { pillars, values } from "@/data/about";
+import { useLang } from "@/lib/i18n";
 import { tones } from "./palette";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -31,6 +32,8 @@ const card: Variants = {
 
 /** Mission / Vision / Approach cards + the five values. */
 export default function Pillars() {
+  const { t: tx, tr } = useLang();
+
   return (
     <section id="who-we-are" className="relative scroll-mt-20 overflow-hidden bg-black px-6 py-16 lg:px-12">
       <div className="relative mx-auto max-w-7xl">
@@ -70,14 +73,14 @@ export default function Pillars() {
                     </motion.span>
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className="text-xl font-semibold text-white">{p.title}</h3>
+                        <h3 className="text-xl font-semibold text-white">{tx(p.title)}</h3>
                         <span
                           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-transform duration-500 group-hover:-rotate-45 ${t.border} ${t.text}`}
                         >
                           <ArrowRight size={13} />
                         </span>
                       </div>
-                      <p className="mt-3 text-sm leading-relaxed text-zinc-400">{p.text}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-zinc-400">{tx(p.text)}</p>
                     </div>
                   </div>
                 </TiltCard>
@@ -95,7 +98,7 @@ export default function Pillars() {
           className="mt-16 flex items-center gap-3 text-[10px] tracking-[0.45em] text-zinc-400"
         >
           <span className="h-px w-8 bg-blue-500" />
-          OUR VALUES
+          {tr("OUR VALUES", "NUESTROS VALORES")}
         </motion.p>
         <motion.div
           variants={grid}
@@ -108,7 +111,7 @@ export default function Pillars() {
             const t = tones[v.tone];
             const Icon = valueIcons[v.icon];
             return (
-              <motion.div key={v.title} variants={card} whileHover={{ y: -8 }} className="group relative px-4 text-center">
+              <motion.div key={v.icon} variants={card} whileHover={{ y: -8 }} className="group relative px-4 text-center">
                 {i > 0 && (
                   <motion.span
                     initial={{ scaleY: 0 }}
@@ -129,9 +132,9 @@ export default function Pillars() {
                   </motion.span>
                 </span>
                 <h3 className={`mt-4 text-xs font-semibold tracking-[0.2em] text-white transition-colors duration-300 ${t.groupText}`}>
-                  {v.title}
+                  {tx(v.title)}
                 </h3>
-                <p className="mx-auto mt-2 max-w-[180px] text-xs leading-relaxed text-zinc-400">{v.text}</p>
+                <p className="mx-auto mt-2 max-w-[180px] text-xs leading-relaxed text-zinc-400">{tx(v.text)}</p>
               </motion.div>
             );
           })}

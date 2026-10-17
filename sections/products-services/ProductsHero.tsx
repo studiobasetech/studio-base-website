@@ -7,14 +7,21 @@ import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
 import ParticleField from "@/components/ParticleField";
 import GalaxyScene from "./GalaxyScene";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Headline, split into words so each one blurs in
-const headlineLines = [
-  { words: ["Technology", "Solutions"], accent: false },
-  { words: ["&", "Digital", "Transformation"], accent: true },
-];
+const headlineLines = {
+  en: [
+    { words: ["Technology", "Solutions"], accent: false },
+    { words: ["&", "Digital", "Transformation"], accent: true },
+  ],
+  es: [
+    { words: ["Soluciones", "tecnológicas"], accent: false },
+    { words: ["y", "transformación", "digital"], accent: true },
+  ],
+};
 
 const container: Variants = {
   hidden: {},
@@ -44,6 +51,8 @@ const word: Variants = {
 const MotionLink = motion.create(Link);
 
 export default function ProductsHero() {
+  const { tr, lang } = useLang();
+
   /* Mouse position (-0.5 to 0.5) drives the parallax of the galaxy scene */
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
@@ -80,14 +89,14 @@ export default function ProductsHero() {
             variants={fadeUp}
             className="text-[10px] tracking-[0.45em] text-zinc-300"
           >
-            PRODUCTS & SERVICES
+            {tr("PRODUCTS & SERVICES", "PRODUCTOS Y SERVICIOS")}
           </motion.p>
 
           <motion.h1
             variants={container}
             className="mt-4 text-4xl font-medium leading-tight text-white md:text-6xl"
           >
-            {headlineLines.map((line, li) => (
+            {headlineLines[lang].map((line, li) => (
               <span key={li} className="block">
                 {line.words.map((w, wi) => (
                   <motion.span
@@ -107,11 +116,10 @@ export default function ProductsHero() {
             variants={fadeUp}
             className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base"
           >
-            Studio Base is a technology company specialized in artificial
-            intelligence, software engineering, and digital
-            transformation solutions. We help organizations automate
-            operations, develop scalable technology solutions, strengthen
-            digital infrastructure, and create innovative digital products.
+            {tr(
+              "Studio Base is a technology company specialized in artificial intelligence, software engineering, and digital transformation solutions. We help organizations automate operations, develop scalable technology solutions, strengthen digital infrastructure, and create innovative digital products.",
+              "Studio Base es una empresa de tecnología especializada en inteligencia artificial, ingeniería de software y soluciones de transformación digital. Ayudamos a las organizaciones a automatizar sus operaciones, desarrollar soluciones tecnológicas escalables, fortalecer su infraestructura digital y crear productos digitales innovadores.",
+            )}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8">
@@ -131,7 +139,7 @@ export default function ProductsHero() {
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-blue-500 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
             >
               <LightSweep />
-              <span className="relative">Book a Consultation</span>
+              <span className="relative">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight
                 size={16}
                 className="relative transition-transform duration-300 group-hover:translate-x-1"

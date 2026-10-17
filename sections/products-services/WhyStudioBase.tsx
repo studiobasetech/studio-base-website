@@ -13,6 +13,7 @@ import { ShimmerText } from "@/components/Effects";
 import { reasons } from "@/data/services";
 import { accents } from "./accents";
 import SectionIntro from "./SectionIntro";
+import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -47,30 +48,35 @@ const card: Variants = {
 };
 
 export default function WhyStudioBase() {
+  const { t, tr } = useLang();
+
   return (
     <section className="relative overflow-hidden bg-black px-6 py-16 lg:px-12">
       <div className="relative mx-auto max-w-7xl">
         <SectionIntro
-          eyebrow="WHY STUDIO BASE"
+          eyebrow={{ en: "WHY STUDIO BASE", es: "¿POR QUÉ STUDIO BASE?" }}
           title={
             <>
-              More Than a Technology Provider.
+              {tr("More Than a Technology Provider.", "Más que un proveedor de tecnología.")}
               <br />
-              <ShimmerText>A Strategic Partner for Growth.</ShimmerText>
+              <ShimmerText>
+                {tr("A Strategic Partner for Growth.", "Un socio estratégico para crecer.")}
+              </ShimmerText>
             </>
           }
           side={
             <>
               <p>
-                Studio Base combines proprietary artificial intelligence
-                products with advanced software engineering
-                expertise to help businesses operate smarter, faster, and more
-                efficiently.
+                {tr(
+                  "Studio Base combines proprietary artificial intelligence products with advanced software engineering expertise to help businesses operate smarter, faster, and more efficiently.",
+                  "Studio Base combina productos propios de inteligencia artificial con amplia experiencia en ingeniería de software para que las empresas operen de forma más inteligente, rápida y eficiente.",
+                )}
               </p>
               <p>
-                We don&apos;t just build software. We create intelligent
-                technology solutions that help companies automate, scale, and
-                grow.
+                {tr(
+                  "We don't just build software. We create intelligent technology solutions that help companies automate, scale, and grow.",
+                  "No solo desarrollamos software. Creamos soluciones tecnológicas inteligentes que ayudan a las empresas a automatizarse, escalar y crecer.",
+                )}
               </p>
             </>
           }
@@ -89,7 +95,7 @@ export default function WhyStudioBase() {
 
             return (
               <motion.div
-                key={r.title}
+                key={r.icon}
                 variants={card}
                 whileHover={{ y: -8 }}
                 className="group relative px-4 text-center"
@@ -138,12 +144,12 @@ export default function WhyStudioBase() {
                     </motion.span>
                   </span>
                   <h3 className="whitespace-pre-line text-left text-sm font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-blue-500">
-                    {r.title}
+                    {t(r.title)}
                   </h3>
                 </div>
 
                 <p className="mx-auto mt-4 max-w-[200px] text-xs leading-relaxed text-zinc-400">
-                  {r.description}
+                  {t(r.description)}
                 </p>
               </motion.div>
             );

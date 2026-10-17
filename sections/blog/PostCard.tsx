@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { TiltCard } from "@/components/Effects";
-import { formatDate, readingTime, type Post } from "@/data/blog";
+import { categoryLabel, formatDate, localizePost, readingTime, type Post } from "@/data/blog";
+import { useLang } from "@/lib/i18n";
 
 /*
  * Hover colours, the same set as the "End-to-End Technology Solutions"
@@ -55,7 +56,9 @@ const ACCENTS = [
 ];
 
 /** Article card used in the blog grid and in "Up next". */
-export default function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
+export default function PostCard({ post: original, index = 0 }: { post: Post; index?: number }) {
+  const { lang } = useLang();
+  const post = localizePost(original, lang);
   const a = ACCENTS[index % ACCENTS.length];
 
   return (
@@ -90,7 +93,7 @@ export default function PostCard({ post, index = 0 }: { post: Post; index?: numb
           <span
             className={`absolute bottom-3 left-4 rounded-full border bg-black/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] backdrop-blur-sm ${a.chip}`}
           >
-            {post.category}
+            {categoryLabel(post.category, lang)}
           </span>
         </div>
 
@@ -103,7 +106,7 @@ export default function PostCard({ post, index = 0 }: { post: Post; index?: numb
 
           <div className="mt-auto flex items-center justify-between pt-6 text-xs text-zinc-500">
             <span className="flex items-center gap-3">
-              <span>{formatDate(post.date)}</span>
+              <span>{formatDate(post.date, lang)}</span>
               <span className="h-1 w-1 rounded-full bg-zinc-600" />
               <span className="flex items-center gap-1">
                 <Clock size={12} /> {readingTime(post)} min
