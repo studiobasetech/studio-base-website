@@ -102,16 +102,16 @@ export default function GalaxyScene({
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden bg-black">
-      {/* STAGE: top part on phones, the whole hero on desktop */}
+      {/* STAGE: the whole hero (behind the text on phones too) */}
       <div
-        className="absolute inset-x-0 top-0 h-[440px] sm:h-[520px] lg:inset-0 lg:h-auto"
+        className="absolute inset-0"
         style={{ containerType: "size" }}
       >
         {/* Image box: always covers the stage, keeps the 16:9 shape so the
             HUD stays locked on the galaxy core */}
         <motion.div
           style={{ x: imgX, y: imgY, width: "max(128cqw, 199cqh)", aspectRatio: "16 / 9" }}
-          className="absolute left-[34%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[44%] lg:left-1/2"
+          className="absolute left-[62%] top-[58%] -translate-x-1/2 -translate-y-1/2 sm:left-[56%] lg:left-1/2 lg:top-1/2"
         >
           <motion.div
             initial={{ opacity: 0, scale: 1.15, filter: "blur(10px)" }}
@@ -161,7 +161,7 @@ export default function GalaxyScene({
       </div>
 
       {/* readability: darken behind the text */}
-      <div className="absolute inset-x-0 bottom-0 top-[340px] bg-gradient-to-b from-transparent via-black/85 to-black sm:top-[420px] lg:hidden" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/80 lg:hidden" />
       <div className="absolute inset-0 hidden bg-gradient-to-r from-black/90 via-black/40 to-transparent lg:block" />
       <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/80 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent" />

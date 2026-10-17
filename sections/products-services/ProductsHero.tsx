@@ -59,7 +59,7 @@ export default function ProductsHero() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-black px-6 pb-16 pt-[380px] sm:pt-[480px] lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-24 lg:pt-32"
+      className="relative overflow-hidden bg-black px-6 min-h-[640px] pb-20 pt-32 sm:pt-36 lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-24 lg:pt-32"
     >
       {/* Galaxy scene: rendered galaxy + live stars, constellation and HUD */}
       <GalaxyScene nx={px} ny={py} />
