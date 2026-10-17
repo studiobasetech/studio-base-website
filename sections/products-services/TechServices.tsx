@@ -12,7 +12,6 @@ import {
   Lightbulb,
   MonitorSmartphone,
   Plus,
-  ShieldCheck,
   Smartphone,
   type LucideIcon,
 } from "lucide-react";
@@ -28,7 +27,6 @@ const icons: Record<string, LucideIcon> = {
   software: Box,
   apps: Smartphone,
   web: MonitorSmartphone,
-  security: ShieldCheck,
   cloud: CloudUpload,
   analytics: ChartColumnIncreasing,
   strategy: Lightbulb,
@@ -59,7 +57,7 @@ export default function TechServices() {
           }
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-8 lg:[&>*]:col-span-2 lg:[&>*:nth-child(5)]:col-start-2">
           {techServices.map((service, i) => {
             const a = accents[service.accent];
             const Icon = icons[service.icon] ?? BrainCircuit;

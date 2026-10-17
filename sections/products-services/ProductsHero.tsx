@@ -108,7 +108,7 @@ export default function ProductsHero() {
             className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base"
           >
             Studio Base is a technology company specialized in artificial
-            intelligence, software engineering, cybersecurity, and digital
+            intelligence, software engineering, and digital
             transformation solutions. We help organizations automate
             operations, develop scalable technology solutions, strengthen
             digital infrastructure, and create innovative digital products.

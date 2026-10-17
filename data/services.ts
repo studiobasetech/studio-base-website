@@ -88,13 +88,6 @@ export const techServices = [
     accent: "cyan" as Accent,
   },
   {
-    icon: "security",
-    title: "Cybersecurity\nSolutions",
-    description:
-      "Security assessments, vulnerability analysis, penetration testing, application security, data protection, and monitoring.",
-    accent: "yellow" as Accent,
-  },
-  {
     icon: "cloud",
     title: "Software Deployment\n& Cloud Integration",
     description:
@@ -138,7 +131,7 @@ export const reasons = [
     icon: "expertise",
     title: "Trusted\nExpertise",
     description:
-      "A network of specialized experts in AI, software, and cybersecurity.",
+      "A network of specialized experts in AI, software, mobile, and design.",
     accent: "yellow" as Accent,
   },
   {

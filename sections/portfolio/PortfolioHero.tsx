@@ -42,7 +42,7 @@ const chips = [
   { value: "3x", label: "Qualified leads", pos: "left-0 top-[8%] sm:-left-4", delay: 1.2 },
   { value: "100K+", label: "App downloads", pos: "right-0 top-[2%] lg:-right-2", delay: 1.4 },
   { value: "−70%", label: "Manual work", pos: "left-[4%] bottom-[6%]", delay: 1.6 },
-  { value: "0", label: "Major incidents", pos: "right-[2%] bottom-[12%]", delay: 1.8 },
+  { value: "4.8★", label: "App rating", pos: "right-[2%] bottom-[12%]", delay: 1.8 },
 ];
 
 const MotionLink = motion.create(Link);
@@ -186,7 +186,7 @@ export default function PortfolioHero() {
           >
             Explore a selection of projects delivered through Studio Base&apos;s
             specialized technology network. We develop AI-powered solutions,
-            custom software, and secure digital platforms that help businesses
+            custom software, and scalable digital platforms that help businesses
             automate, scale, and grow.
           </motion.p>
 

@@ -10,7 +10,7 @@ import { contact } from "@/data/site";
 export const metadata: Metadata = {
   title: "About Studio Base",
   description:
-    "Studio Base is a technology company specialized in AI, software engineering, cybersecurity and digital transformation, working through a network of specialized experts.",
+    "Studio Base is a technology company specialized in AI, software engineering and digital transformation, working through a network of specialized experts.",
 };
 
 export default function AboutPage() {

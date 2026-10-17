@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://studiobase.tech";
 const SITE_TITLE = "Studio Base - Technology Solutions & Digital Transformation";
 const SITE_DESCRIPTION =
-  "Studio Base is a technology company specialized in artificial intelligence, software engineering, cybersecurity and digital transformation, helping businesses automate, scale and grow.";
+  "Studio Base is a technology company specialized in artificial intelligence, software engineering and digital transformation, helping businesses automate, scale and grow.";
 
 /*
  * Browser tab title, Google result and link previews (WhatsApp, iMessage,

@@ -50,7 +50,6 @@ export const expertCategories: {
   { id: "ai", label: "AI Engineers", icon: "brain", tone: "purple", slots: 2 },
   { id: "fullstack", label: "Full-Stack Developers", icon: "code", tone: "yellow", slots: 2 },
   { id: "mobile", label: "Mobile Developers", icon: "phone", tone: "cyan", slots: 2 },
-  { id: "security", label: "Cybersecurity Engineers", icon: "shield", tone: "blue", slots: 2 },
   { id: "design", label: "UI/UX Designers", icon: "pen", tone: "pink", slots: 1 },
   { id: "sales", label: "Sales Executives", icon: "sales", tone: "green", slots: 5 },
 ];

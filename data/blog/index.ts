@@ -8,15 +8,12 @@ import p01 from "./post-01";
 import p02 from "./post-02";
 import p03 from "./post-03";
 import p04 from "./post-04";
-import p05 from "./post-05";
 import p06 from "./post-06";
 import p07 from "./post-07";
 import p08 from "./post-08";
 import p09 from "./post-09";
 import p11 from "./post-11";
 import p12 from "./post-12";
-import p13 from "./post-13";
-import p14 from "./post-14";
 import p15 from "./post-15";
 import p16 from "./post-16";
 import p17 from "./post-17";
@@ -26,8 +23,8 @@ import p19 from "./post-19";
 export type { Block, Post };
 
 export const posts: Post[] = [
-  p01, p02, p03, p04, p05, p06, p07, p08, p09,
-  p11, p12, p13, p14, p15, p16, p17, p18, p19,
+  p01, p02, p03, p04, p06, p07, p08, p09,
+  p11, p12, p15, p16, p17, p18, p19,
 ].sort(
   (a, b) => b.date.localeCompare(a.date),
 );

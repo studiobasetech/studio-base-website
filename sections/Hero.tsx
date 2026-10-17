@@ -325,7 +325,7 @@ export default function Hero() {
             className="mt-6 max-w-lg leading-relaxed text-zinc-300"
           >
             Studio Base develops AI-powered products, custom software
-            solutions, cybersecurity, and digital infrastructure that help
+            solutions, and digital infrastructure that help
             businesses automate, scale, and grow.
           </motion.p>
 

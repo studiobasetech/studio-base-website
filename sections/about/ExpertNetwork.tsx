@@ -152,7 +152,7 @@ export default function ExpertNetwork() {
               technology professionals who are selected based on each
               project&apos;s requirements, technical complexity, and business
               objectives. We collaborate with experienced AI engineers,
-              full-stack and mobile developers, cybersecurity engineers,
+              full-stack and mobile developers,
               UI/UX designers and technology sales executives, allowing
               us to assemble the right team for every project and deliver
               end-to-end solutions with specialized talent.

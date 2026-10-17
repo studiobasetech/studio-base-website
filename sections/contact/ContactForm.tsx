@@ -15,7 +15,6 @@ import {
   Lock,
   Mail,
   MessageSquare,
-  ShieldCheck,
   Smartphone,
   Target,
   User,
@@ -34,7 +33,6 @@ const interests = [
   "Software Engineering",
   "Mobile Applications",
   "Digital Platforms",
-  "Cybersecurity",
   "HCRM AI",
   "BaseLead AI",
   "Book a consultation",
@@ -48,8 +46,7 @@ const projectTypes: { label: string; icon: LucideIcon; text: string; on: string;
   { label: "Mobile\nApplication", icon: Smartphone, text: "text-purple-400", on: "border-purple-500 bg-purple-500/10", rgb: "168,85,247" },
   { label: "Custom\nSoftware", icon: Boxes, text: "text-cyan-400", on: "border-cyan-400 bg-cyan-400/10", rgb: "34,211,238" },
   { label: "AI Automation", icon: BrainCircuit, text: "text-yellow-300", on: "border-yellow-400 bg-yellow-400/10", rgb: "250,204,21" },
-  { label: "Cybersecurity", icon: ShieldCheck, text: "text-pink-400", on: "border-pink-500 bg-pink-500/10", rgb: "236,72,153" },
-  { label: "Other", icon: Ellipsis, text: "text-blue-400", on: "border-blue-500 bg-blue-500/10", rgb: "59,130,246" },
+  { label: "Other", icon: Ellipsis, text: "text-pink-400", on: "border-pink-500 bg-pink-500/10", rgb: "236,72,153" },
 ];
 
 // Right-hand column

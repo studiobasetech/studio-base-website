@@ -11,7 +11,7 @@ import { ShimmerText } from "@/components/Effects";
 export const metadata: Metadata = {
   title: "Portfolio",
   description:
-    "Selected Studio Base projects: AI sales automation, custom software, mobile apps, e-commerce platforms, cybersecurity and AI lead generation, with real business results.",
+    "Selected Studio Base projects: AI sales automation, custom software, mobile apps, e-commerce platforms and AI lead generation, with real business results.",
 };
 
 export default function PortfolioPage() {

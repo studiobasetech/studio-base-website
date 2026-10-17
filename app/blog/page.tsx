@@ -5,7 +5,7 @@ import BlogIndex from "@/sections/blog/BlogIndex";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Practical thinking on artificial intelligence, automation, security, data, cloud and the web for people who build and run modern businesses.",
+    "Practical thinking on artificial intelligence, automation, data, cloud and the web for people who build and run modern businesses.",
 };
 
 export default function BlogPage() {

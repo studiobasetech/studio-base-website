@@ -10,7 +10,6 @@ const words = [
   "Software Engineering",
   "Mobile Apps",
   "Web Platforms",
-  "Cybersecurity",
   "Cloud",
   "Analytics",
   "AI Consulting",

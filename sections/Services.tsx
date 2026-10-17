@@ -5,7 +5,6 @@ import {
   BrainCircuit,
   Code2,
   Smartphone,
-  ShieldCheck,
   Lightbulb,
   Plus,
   ChevronLeft,
@@ -61,19 +60,6 @@ const services = [
     color: "yellow",
   },
 
-  {
-    icon: ShieldCheck,
-    title: "Cybersecurity\nSolutions",
-    description:
-      "Security assessments and protection strategies to keep your infrastructure secure.",
-    features: [
-      "Security Assessments",
-      "Penetration Testing",
-      "Infrastructure Security",
-      "Compliance Support",
-    ],
-    color: "cyan",
-  },
 
   {
     icon: Lightbulb,

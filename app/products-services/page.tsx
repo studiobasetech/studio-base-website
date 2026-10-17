@@ -10,7 +10,7 @@ import SectionTransition from "@/components/SectionTransition";
 export const metadata: Metadata = {
   title: "Products & Services",
   description:
-    "AI products (HCRM AI, BaseLead AI) and end-to-end technology services: AI automation, software engineering, apps, web platforms, cybersecurity, cloud, analytics and consulting.",
+    "AI products (HCRM AI, BaseLead AI) and end-to-end technology services: AI automation, software engineering, apps, web platforms, cloud, analytics and consulting.",
 };
 
 export default function ProductsServicesPage() {

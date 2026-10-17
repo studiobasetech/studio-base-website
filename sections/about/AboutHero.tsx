@@ -75,7 +75,7 @@ export default function AboutHero() {
           <motion.p variants={fadeUp} className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base">
             Studio Base is a technology company dedicated to turning ideas into
             meaningful digital experiences. We specialize in artificial
-            intelligence, software engineering, cybersecurity, and digital
+            intelligence, software engineering, and digital
             transformation, helping businesses design, build, and scale
             solutions that create real impact.
           </motion.p>
@@ -209,7 +209,7 @@ export default function AboutHero() {
           {[
             { t: "AI", pos: "left-[4%] top-[14%]" },
             { t: "SOFTWARE", pos: "right-[0%] top-[24%]" },
-            { t: "SECURITY", pos: "left-[0%] top-[52%]" },
+            { t: "MOBILE", pos: "left-[0%] top-[52%]" },
             { t: "DESIGN", pos: "right-[4%] top-[58%]" },
           ].map((l, i) => (
             <motion.span

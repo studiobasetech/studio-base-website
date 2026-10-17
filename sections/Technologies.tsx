@@ -35,8 +35,6 @@ const technologies = [
   "WordPress",
   "Stripe",
   "Figma",
-  "OWASP",
-  "Burp Suite",
 ];
 
 const SPEED = 40; // pixels per second (higher = faster)

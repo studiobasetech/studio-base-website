@@ -63,7 +63,7 @@ export default function WhyStudioBase() {
             <>
               <p>
                 Studio Base combines proprietary artificial intelligence
-                products with advanced software engineering and cybersecurity
+                products with advanced software engineering
                 expertise to help businesses operate smarter, faster, and more
                 efficiently.
               </p>

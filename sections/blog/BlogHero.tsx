@@ -18,7 +18,7 @@ const fadeUp: Variants = {
 };
 
 // Words that slowly cycle in the background ticker line
-const topics = ["AI", "Automation", "Security", "Data", "Cloud", "Web"];
+const topics = ["AI", "Automation", "Data", "Cloud", "Web"];
 
 // Same hover colours as the blog cards (purple left out on purpose: no purple in the hero)
 const topicColors = ["text-blue-400", "text-cyan-300", "text-yellow-300", "text-pink-400", "text-orange-300"];
@@ -95,7 +95,7 @@ export default function BlogHero() {
           className="mt-6 max-w-2xl text-sm leading-relaxed text-zinc-300 md:text-base"
         >
           Practical thinking on artificial intelligence, automation,
-          security, data, cloud and the web, written for people who build and run
+          data, cloud and the web, written for people who build and run
           modern businesses.
         </motion.p>
 

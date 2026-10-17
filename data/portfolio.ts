@@ -8,7 +8,7 @@ import type { Accent } from "./services";
 export type PortfolioCategory = {
   id: string;
   label: string; // shown on two lines: "AI Solutions\n& Automation"
-  icon: "brain" | "code" | "phone" | "platform" | "shield";
+  icon: "brain" | "code" | "phone" | "platform";
   accent: Accent;
 };
 
@@ -17,7 +17,6 @@ export const portfolioCategories: PortfolioCategory[] = [
   { id: "software", label: "Software\nEngineering", icon: "code", accent: "purple" },
   { id: "mobile", label: "Mobile\nApplications", icon: "phone", accent: "yellow" },
   { id: "platforms", label: "Digital\nPlatforms", icon: "platform", accent: "cyan" },
-  { id: "security", label: "Cybersecurity\nSolutions", icon: "shield", accent: "blue" },
 ];
 
 export type Project = {
@@ -133,30 +132,6 @@ export const projects: Project[] = [
       "3x increase in online sales",
       "50% faster load times",
       "Improved customer experience and conversions",
-    ],
-  },
-  {
-    id: "security-infrastructure",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Security Infrastructure Enhancement",
-    client: "Financial Services Company",
-    image: "/images/portfolio/project-security-blue.jpg",
-    featured: true,
-    accent: "blue",
-    challenge: "Outdated infrastructure and security vulnerabilities.",
-    solution:
-      "Comprehensive cybersecurity assessment, infrastructure hardening, and monitoring system.",
-    features: [
-      "Security assessment & vulnerability analysis",
-      "Infrastructure optimization",
-      "Real-time threat monitoring",
-      "Employee security training",
-    ],
-    results: [
-      "90% reduction in security risks",
-      "Zero major security incidents",
-      "Full compliance with industry standards",
     ],
   },
   {
@@ -432,70 +407,5 @@ export const projects: Project[] = [
     solution: "Fast, modern website with an easy content manager the marketing team runs itself.",
     features: ["Custom design", "Easy content editing", "SEO foundations", "Multi-language pages"],
     results: ["Faster, more modern website", "Marketing team updates it alone", "Better search visibility"],
-  },
-  {
-    id: "web-app-penetration-test",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Web Application Penetration Test",
-    client: "SaaS Company",
-    image: "/images/portfolio/p-pentest.jpg",
-    accent: "blue",
-    challenge: "The company needed to prove its platform was secure before signing larger clients.",
-    solution: "In-depth penetration test with a clear report and guided fixing of every finding.",
-    features: ["Penetration testing", "Risk-ranked findings", "Remediation guidance", "Re-test and sign-off"],
-    results: ["Critical issues fixed", "Stronger position in security reviews", "Clear security roadmap"],
-  },
-  {
-    id: "cloud-security-hardening",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Cloud Security Hardening",
-    client: "E-Commerce Company",
-    image: "/images/portfolio/p-cloud-hardening.jpg",
-    accent: "blue",
-    challenge: "Fast growth had left cloud settings inconsistent and some data exposed.",
-    solution: "Cloud security review, configuration hardening and continuous posture monitoring.",
-    features: ["Configuration review", "Access hardening", "Encryption everywhere", "Posture monitoring"],
-    results: ["Exposed resources closed", "Consistent security settings", "Ongoing visibility of risks"],
-  },
-  {
-    id: "security-awareness-program",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Security Awareness Program",
-    client: "Insurance Company",
-    image: "/images/portfolio/p-security-awareness.jpg",
-    accent: "blue",
-    challenge: "Employees were the main target of phishing emails and fake payment requests.",
-    solution: "Ongoing awareness program with phishing simulations and short training modules.",
-    features: ["Phishing simulations", "Short training modules", "Department reports", "Reporting button"],
-    results: ["More suspicious emails reported", "Fewer clicks on phishing tests", "A stronger security culture"],
-  },
-  {
-    id: "identity-access-management",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Identity & Access Management",
-    client: "Professional Services Firm",
-    image: "/images/portfolio/p-identity-access.jpg",
-    accent: "blue",
-    challenge: "Staff used shared passwords and former employees kept access to some tools.",
-    solution: "Single sign-on, multi-factor authentication and regular access reviews.",
-    features: ["Single sign-on", "Multi-factor authentication", "Role-based access", "Access reviews"],
-    results: ["No more shared passwords", "Instant offboarding", "Simpler, safer logins"],
-  },
-  {
-    id: "backup-disaster-recovery",
-    category: "security",
-    tag: "Cybersecurity",
-    title: "Backup & Disaster Recovery",
-    client: "Accounting Firm",
-    image: "/images/portfolio/p-backup-recovery.jpg",
-    accent: "blue",
-    challenge: "Backups were never tested and a ransomware attack could have stopped the business.",
-    solution: "Immutable backups in separate locations with regular restore tests and a recovery plan.",
-    features: ["Immutable backups", "Multiple locations", "Restore testing", "Recovery playbook"],
-    results: ["Proven ability to recover", "Protection against ransomware", "Peace of mind during tax season"],
   },
 ];

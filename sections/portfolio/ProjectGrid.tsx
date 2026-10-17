@@ -306,7 +306,7 @@ export default function ProjectGrid() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-40px" }}
-          className="-mx-6 mb-16 flex gap-3 overflow-x-auto px-6 pb-2 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0"
+          className="-mx-6 mb-16 flex gap-3 overflow-x-auto px-6 pb-2 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0"
         >
           {portfolioCategories.map((c, i) => {
             const a = accents[c.accent];
