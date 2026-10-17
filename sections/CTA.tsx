@@ -1,9 +1,26 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import ParticleField from "@/components/ParticleField";
 import { ArrowRight } from "lucide-react";
 import { consultationHref } from "@/data/site";
 
-export default function CTA() {
+/**
+ * Closing call to action with the mountain portal image. Text and
+ * buttons can be changed per page; defaults are the Home text.
+ */
+export default function CTA({
+  eyebrow = "LET'S BUILD TOGETHER",
+  title,
+  description = "Partner with Studio Base and turn your ideas into powerful technology solutions that drive real business growth.",
+  primary = { label: "Book a Consultation", href: consultationHref },
+  secondary = { label: "Contact Us", href: "/contact" },
+}: {
+  eyebrow?: string;
+  title?: ReactNode;
+  description?: string;
+  primary?: { label: string; href: string };
+  secondary?: { label: string; href: string };
+} = {}) {
 
   return (
 
@@ -90,7 +107,7 @@ export default function CTA() {
               tracking-[0.45em]
               text-zinc-400
             ">
-              LET'S BUILD TOGETHER
+              {eyebrow}
             </p>
 
 
@@ -104,13 +121,19 @@ export default function CTA() {
               md:text-5xl
             ">
 
-              Turn Your Ideas
+              {title ?? (
 
-              <br />
+                <>
 
-              <span className="text-blue-500">
-                Into Real Solutions.
-              </span>
+                  Turn Your Ideas
+
+                  <br />
+
+                  <span className="text-blue-500">Into Real Solutions.</span>
+
+                </>
+
+              )}
 
             </h2>
 
@@ -123,9 +146,7 @@ export default function CTA() {
               leading-relaxed
               text-zinc-400
             ">
-              Partner with Studio Base and turn your ideas into
-              powerful technology solutions that drive real
-              business growth.
+              {description}
             </p>
 
 
@@ -139,7 +160,7 @@ export default function CTA() {
             ">
 
 
-              <Link href={consultationHref} className="
+              <Link href={primary.href} className="
                 flex
                 items-center
                 gap-2
@@ -149,11 +170,11 @@ export default function CTA() {
                 py-2.5
                 text-xs
                 font-semibold
-                text-black
+                text-white
                 transition
                 hover:bg-blue-400
               ">
-                Book a Consultation
+                {primary.label}
 
                 <ArrowRight size={14}/>
 
@@ -161,7 +182,7 @@ export default function CTA() {
 
 
 
-              <Link href="/contact" className="
+              <Link href={secondary.href} className="
                 rounded-full
                 border
                 border-white/30
@@ -174,7 +195,7 @@ export default function CTA() {
                 hover:border-blue-500
                 hover:text-blue-500
               ">
-                Contact Us
+                {secondary.label}
               </Link>
 
 

@@ -1,35 +1,44 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/PageHeader";
-import SectionPlaceholder from "@/components/SectionPlaceholder";
+import ContactHero from "@/sections/contact/ContactHero";
+import ContactForm from "@/sections/contact/ContactForm";
+import ConnectCards from "@/sections/contact/ConnectCards";
+import GlobalTeam from "@/sections/contact/GlobalTeam";
+import CTA from "@/sections/CTA";
+import SectionTransition from "@/components/SectionTransition";
+import { ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Book a consultation or get in touch with Studio Base.",
+  description:
+    "Tell us about your project, book a consultation or join the Studio Base network. We typically reply within 24 hours.",
 };
 
 export default function ContactPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="CONTACT"
-        title="Let's Build"
-        accent="Something Together."
-        description="Tell us about your project and we'll get back to you soon."
-      />
-
-      <SectionPlaceholder
-        name="Contact Form"
-        notes="Name, email, company, service of interest and message."
-      />
-      <SectionPlaceholder
-        name="Contact Details"
-        notes={`${contact.email} · ${contact.phone} · ${contact.location}`}
-      />
-      <SectionPlaceholder
-        name="Book a Consultation"
-        notes="Calendar booking (for example Calendly) or WhatsApp link."
-      />
+      <ContactHero />
+      <ContactForm />
+      <SectionTransition><ConnectCards /></SectionTransition>
+      <SectionTransition><GlobalTeam /></SectionTransition>
+      <SectionTransition>
+        <CTA
+          eyebrow="LET'S CREATE REAL OPPORTUNITIES"
+          title={
+            <>
+              Ready to Turn
+              <br />
+              Your Ideas <ShimmerText>Into Reality?</ShimmerText>
+            </>
+          }
+          description="Tell us about your project and let's explore how we can create a solution that drives real results."
+          primary={{ label: "Send Us a Message", href: "#contact-form" }}
+          secondary={{
+            label: "Book a Consultation",
+            href: `mailto:${contact.email}?subject=${encodeURIComponent("Consultation request")}`,
+          }}
+        />
+      </SectionTransition>
     </>
   );
 }
