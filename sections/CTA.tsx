@@ -64,7 +64,7 @@ export default function CTA({
           "
           style={{
             backgroundImage:
-              "url('/images/cta-mountain-blue.png')",
+              "url('/images/cta-mountain-blue-v2.webp')",
           }}
         />
 

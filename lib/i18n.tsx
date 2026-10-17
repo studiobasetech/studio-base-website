@@ -69,27 +69,47 @@ export function T({ en, es }: { en: ReactNode; es: ReactNode }) {
 }
 
 /* Browser-tab titles per page (blog articles set their own in ArticleBody). */
-const pageTitles: Record<string, Bi> = {
-  "/": {
-    en: "Studio Base - Technology Solutions & Digital Transformation",
-    es: "Studio Base - Soluciones tecnológicas y transformación digital",
-  },
-  "/products-services": { en: "Products & Services | Studio Base", es: "Productos y Servicios | Studio Base" },
-  "/portfolio": { en: "Portfolio | Studio Base", es: "Portafolio | Studio Base" },
-  "/about": { en: "About Studio Base | Studio Base", es: "Sobre Studio Base | Studio Base" },
-  "/blog": { en: "Blog | Studio Base", es: "Blog | Studio Base" },
-  "/contact": { en: "Contact | Studio Base", es: "Contacto | Studio Base" },
+const pageTitles: Record<string, string> = {
+  "/": "Automatización con IA y software a la medida en Austin, TX | Studio Base",
+  "/products-services": "Servicios de automatización con IA y desarrollo de software | Studio Base",
+  "/portfolio": "Portafolio: proyectos de IA, software y apps | Studio Base",
+  "/about": "Sobre nosotros: empresa de IA y software en Austin, TX | Studio Base",
+  "/blog": "Blog: IA, automatización, datos y web | Studio Base",
+  "/contact": "Contáctanos: expertos en IA y software en Austin | Studio Base",
+  "/privacy": "Política de privacidad | Studio Base",
 };
+
+/*
+ * Tab titles: the English ones come from each page's SEO metadata (what Google
+ * sees). In Spanish we swap in a translated title and put the English one back
+ * when the visitor switches to English again.
+ */
+const spanishTitles = new Set<string>();
+
+export function useLocalizedTitle(esTitle: string | undefined, active = true) {
+  const { lang } = useLang();
+  const pathname = usePathname();
+  useEffect(() => {
+    if (!active) return;
+    const root = document.documentElement;
+    if (!spanishTitles.has(document.title)) root.dataset.titleEn = document.title;
+    if (lang === "es" && esTitle) {
+      spanishTitles.add(esTitle);
+      document.title = esTitle;
+    } else if (root.dataset.titleEn) {
+      document.title = root.dataset.titleEn;
+    }
+  }, [lang, esTitle, pathname, active]);
+}
 
 /** Keeps <html lang> and the browser-tab title in sync with the chosen language. */
 export function HtmlLang() {
   const { lang } = useLang();
   const pathname = usePathname();
+  const key = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
   useEffect(() => {
     document.documentElement.lang = lang;
-    const key = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
-    const title = pageTitles[key];
-    if (title) document.title = title[lang];
-  }, [lang, pathname]);
+  }, [lang]);
+  useLocalizedTitle(pageTitles[key], key in pageTitles);
   return null;
 }

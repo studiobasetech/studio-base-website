@@ -79,7 +79,7 @@ export const values: { title: Bi; text: Bi; icon: "bulb" | "users" | "focus" | "
 export const expertCategories: {
   id: string;
   label: Bi;
-  icon: "brain" | "code" | "phone" | "shield" | "pen" | "sales";
+  icon: "brain" | "code" | "phone" | "shield" | "pen" | "sales" | "language";
   tone: Tone;
   slots: number;
 }[] = [
@@ -88,4 +88,11 @@ export const expertCategories: {
   { id: "mobile", label: { en: "Mobile Developers", es: "Desarrolladores móviles" }, icon: "phone", tone: "cyan", slots: 2 },
   { id: "design", label: { en: "UI/UX Designers", es: "Diseñadores UI/UX" }, icon: "pen", tone: "pink", slots: 1 },
   { id: "sales", label: { en: "Sales Executives", es: "Ejecutivos de ventas" }, icon: "sales", tone: "green", slots: 5 },
+  {
+    id: "sales-es",
+    label: { en: "Spanish Sales Executives", es: "Ejecutivos de ventas en español" },
+    icon: "language",
+    tone: "blue",
+    slots: 5,
+  },
 ];

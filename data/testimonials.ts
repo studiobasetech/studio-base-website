@@ -1,21 +1,45 @@
 /**
- * Client reviews for the Home "Trusted by Innovative Companies" carousel.
+ * The real client reviews. Used by the Home "Trusted by Innovative
+ * Companies" carousel and by <ClientQuote> / <ClientVoices> on other pages.
  * Companies are shown by initials only, for client privacy.
- * tone: colour of the card (blue | purple | yellow | cyan | pink | green).
+ *
+ * IMPORTANT: quotes are verbatim. Never edit, paraphrase or invent reviews,
+ * and never attach a review to a specific case study.
+ *
+ * id:        stable identifier (use with getTestimonial)
+ * tags:      what the review genuinely talks about (use with testimonialsByTag)
+ * highlight: optional single sentence copied EXACTLY from the quote, for short excerpts
+ * tone:      colour of the card (blue | purple | yellow | cyan | pink | green).
  */
 import type { Bi } from "@/lib/i18n";
 
+export type TestimonialTag =
+  | "ai"
+  | "automation"
+  | "ai-agents"
+  | "customer-support"
+  | "software"
+  | "mobile"
+  | "platforms"
+  | "consulting"
+  | "strategy";
+
 export type Testimonial = {
+  id: string;
+  tags: TestimonialTag[];
   initials: string;
   industry: Bi;
   service: Bi;
   quote: Bi;
   rating: number;
+  highlight?: Bi;
   tone: "blue" | "purple" | "yellow" | "cyan" | "pink" | "green";
 };
 
 export const testimonials: Testimonial[] = [
   {
+    id: "am",
+    tags: ["ai", "automation"],
     initials: "A.M.",
     industry: { en: "Business Operations", es: "Operaciones de negocio" },
     service: { en: "AI Automation", es: "Automatización con IA" },
@@ -27,6 +51,8 @@ export const testimonials: Testimonial[] = [
     tone: "blue",
   },
   {
+    id: "jr",
+    tags: ["software"],
     initials: "J.R.",
     industry: { en: "Technology", es: "Tecnología" },
     service: { en: "Software Engineering", es: "Ingeniería de software" },
@@ -38,6 +64,8 @@ export const testimonials: Testimonial[] = [
     tone: "purple",
   },
   {
+    id: "lc",
+    tags: ["mobile"],
     initials: "L.C.",
     industry: { en: "Digital Products", es: "Productos digitales" },
     service: { en: "Mobile Development", es: "Desarrollo móvil" },
@@ -46,9 +74,15 @@ export const testimonials: Testimonial[] = [
       es: "Nuestro objetivo era crear una experiencia móvil moderna para nuestros clientes. El equipo entendió la importancia de la usabilidad, el rendimiento y una experiencia consistente en todos los dispositivos. La comunicación durante todo el proceso fue clara y profesional.",
     },
     rating: 5,
+    highlight: {
+      en: "Communication throughout the process was clear and professional.",
+      es: "La comunicación durante todo el proceso fue clara y profesional.",
+    },
     tone: "yellow",
   },
   {
+    id: "kb",
+    tags: ["ai", "automation", "ai-agents", "customer-support"],
     initials: "K.B.",
     industry: { en: "Customer Support", es: "Atención al cliente" },
     service: { en: "AI Voice Agents", es: "Agentes de voz con IA" },
@@ -60,6 +94,8 @@ export const testimonials: Testimonial[] = [
     tone: "pink",
   },
   {
+    id: "st",
+    tags: ["consulting", "strategy"],
     initials: "S.T.",
     industry: { en: "Business Strategy", es: "Estrategia de negocio" },
     service: { en: "Technology Consulting", es: "Consultoría tecnológica" },
@@ -71,6 +107,8 @@ export const testimonials: Testimonial[] = [
     tone: "cyan",
   },
   {
+    id: "mp",
+    tags: ["software", "platforms"],
     initials: "M.P.",
     industry: { en: "Digital Platforms", es: "Plataformas digitales" },
     service: { en: "Custom Software", es: "Software a la medida" },
@@ -82,3 +120,18 @@ export const testimonials: Testimonial[] = [
     tone: "green",
   },
 ];
+
+/** One review by id (e.g. "lc"). */
+export function getTestimonial(id: string): Testimonial | undefined {
+  return testimonials.find((t) => t.id === id);
+}
+
+/** Several reviews by id, in the given order (unknown ids are skipped). */
+export function getTestimonials(...ids: string[]): Testimonial[] {
+  return ids.map(getTestimonial).filter((t): t is Testimonial => Boolean(t));
+}
+
+/** Reviews that have at least one of the given tags. */
+export function testimonialsByTag(...tags: TestimonialTag[]): Testimonial[] {
+  return testimonials.filter((t) => t.tags.some((tag) => tags.includes(tag)));
+}

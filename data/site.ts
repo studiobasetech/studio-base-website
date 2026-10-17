@@ -19,8 +19,10 @@ export const contact = {
   location: "Austin, TX", // same in both languages
 };
 
-// Replace "#" with your real profile URLs.
-export const socials = [
+// Social profiles. The footer hides any entry whose href is "#" (or empty),
+// so the icons stay hidden for now and appear automatically once you replace
+// "#" with your real profile URLs.
+export const socials: { label: string; short: string; href: string }[] = [
   { label: "LinkedIn", short: "in", href: "#" },
   { label: "Instagram", short: "◎", href: "#" },
   { label: "X", short: "𝕏", href: "#" },
@@ -29,3 +31,8 @@ export const socials = [
 
 // Where every "Book a Consultation" button goes.
 export const consultationHref = "/contact#contact-form";
+
+// Legal pages linked in the footer's bottom row.
+export const legalLinks: { label: Bi; href: string }[] = [
+  { label: { en: "Privacy Policy", es: "Política de privacidad" }, href: "/privacy" },
+];

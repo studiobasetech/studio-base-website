@@ -3,18 +3,15 @@
 import { Lightbulb, Quote, Sparkles } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { headingId, localizePost, type Post } from "@/data/blog";
-import { useLang } from "@/lib/i18n";
-import { useEffect } from "react";
+import { useLang, useLocalizedTitle } from "@/lib/i18n";
 
 /** Renders an article's blocks with the site's typography (in the chosen language). */
 export default function ArticleBody({ post: original }: { post: Post }) {
   const { lang, tr } = useLang();
   const post = localizePost(original, lang);
 
-  // browser-tab title in the chosen language
-  useEffect(() => {
-    document.title = `${post.title} | Studio Base`;
-  }, [post.title]);
+  // browser-tab title in Spanish when the visitor reads in Spanish
+  useLocalizedTitle(lang === "es" ? `${post.title} | Studio Base` : undefined);
 
   // which paragraph gets the drop cap, and the number shown on each heading
   const firstP = post.body.findIndex((b) => b.type === "p");

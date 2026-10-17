@@ -8,6 +8,26 @@ import CTA from "@/sections/CTA";
 import Testimonials from "@/sections/Testimonials";
 import OrbitGame from "@/sections/OrbitGame";
 import SectionTransition from "@/components/SectionTransition";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "AI Automation & Custom Software in Austin, TX | Studio Base",
+  absoluteTitle: true,
+  description:
+    "Austin, TX AI automation company: AI agents, AI voice agents, custom software, mobile and web development for businesses in the US and Latin America.",
+  path: "/",
+  keywords: [
+    "AI automation company Austin",
+    "AI agents for business",
+    "AI voice agents",
+    "custom software development Austin TX",
+    "mobile app development company",
+    "web development Austin",
+    "digital transformation consulting",
+    "agencia de IA en Austin",
+  ],
+});
 
 // Navbar and Footer come from app/layout.tsx.
 // SectionTransition gives each section its scroll-in animation.
@@ -17,9 +37,9 @@ export default function Home() {
       <Hero />
       <SectionTransition><Services /></SectionTransition>
       <SectionTransition><Products /></SectionTransition>
+      <SectionTransition><Testimonials /></SectionTransition>
       <SectionTransition><Process /></SectionTransition>
       <SectionTransition><WhyStudio /></SectionTransition>
-      <SectionTransition><Testimonials /></SectionTransition>
       <SectionTransition><Technologies /></SectionTransition>
       <SectionTransition><OrbitGame /></SectionTransition>
       <SectionTransition><CTA /></SectionTransition>

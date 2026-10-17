@@ -8,6 +8,7 @@ import {
   Code2,
   Handshake,
   Heart,
+  Languages,
   PenTool,
   Search,
   ShieldCheck,
@@ -22,7 +23,7 @@ import { tones, type Tone } from "./palette";
 import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const icons: Record<string, LucideIcon> = { brain: BrainCircuit, code: Code2, phone: Smartphone, shield: ShieldCheck, pen: PenTool, sales: Handshake };
+const icons: Record<string, LucideIcon> = { brain: BrainCircuit, code: Code2, phone: Smartphone, shield: ShieldCheck, pen: PenTool, sales: Handshake, language: Languages };
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
@@ -51,7 +52,9 @@ function Avatar({ tone, id }: { tone: Tone; id: string }) {
   );
 }
 
-/* Abstract "network of experts" visual: avatar nodes linked by glowing lines */
+/* Abstract "network of experts" visual: avatar nodes linked by glowing lines.
+   The outer nodes use the six category colours (purple AI, yellow full-stack,
+   cyan mobile, pink design, green sales, blue Spanish sales); the hub is Studio Base. */
 const netNodes = [
   { x: 90, y: 70, tone: "purple" as Tone },
   { x: 240, y: 40, tone: "blue" as Tone },
@@ -59,8 +62,8 @@ const netNodes = [
   { x: 60, y: 200, tone: "cyan" as Tone },
   { x: 215, y: 165, tone: "blue" as Tone, hub: true },
   { x: 345, y: 230, tone: "pink" as Tone },
-  { x: 150, y: 285, tone: "yellow" as Tone },
-  { x: 285, y: 310, tone: "purple" as Tone },
+  { x: 150, y: 285, tone: "green" as Tone },
+  { x: 285, y: 310, tone: "green" as Tone },
 ];
 const netLinks = [[0, 4], [1, 4], [2, 4], [3, 4], [5, 4], [6, 4], [7, 4], [0, 1], [1, 2], [2, 5], [5, 7], [7, 6], [6, 3], [3, 0]];
 
@@ -157,8 +160,8 @@ export default function ExpertNetwork() {
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-5 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">
               {tr(
-                "Studio Base operates through a flexible network of specialized technology professionals who are selected based on each project's requirements, technical complexity, and business objectives. We collaborate with experienced AI engineers, full-stack and mobile developers, UI/UX designers and technology sales executives, allowing us to assemble the right team for every project and deliver end-to-end solutions with specialized talent.",
-                "Studio Base trabaja con una red flexible de profesionales de tecnología especializados, seleccionados según los requisitos, la complejidad técnica y los objetivos de negocio de cada proyecto. Colaboramos con ingenieros de IA, desarrolladores full-stack y móviles, diseñadores UI/UX y ejecutivos de ventas de tecnología con experiencia, lo que nos permite armar el equipo ideal para cada proyecto y entregar soluciones integrales con talento especializado.",
+                "Studio Base operates through a flexible network of specialized technology professionals who are selected based on each project's requirements, technical complexity, and business objectives. We collaborate with experienced AI engineers, full-stack and mobile developers, UI/UX designers, and English- and Spanish-speaking technology sales executives, allowing us to assemble the right team for every project and deliver end-to-end solutions with specialized talent.",
+                "Studio Base trabaja con una red flexible de profesionales de tecnología especializados, seleccionados según los requisitos, la complejidad técnica y los objetivos de negocio de cada proyecto. Colaboramos con ingenieros de IA, desarrolladores full-stack y móviles, diseñadores UI/UX y ejecutivos de ventas de tecnología en inglés y en español con experiencia, lo que nos permite armar el equipo ideal para cada proyecto y entregar soluciones integrales con talento especializado.",
               )}
             </motion.p>
           </motion.div>
@@ -269,7 +272,9 @@ export default function ExpertNetwork() {
         </div>
 
         {/* CARDS */}
-        <motion.div layout className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+        {/* Flex-wrap + centred rows so an uneven last row (17 cards) stays balanced:
+            2 / 3 / 4 / 6 per row at mobile / sm / md / lg. */}
+        <motion.div layout className="mt-8 flex flex-wrap justify-center gap-4">
           <AnimatePresence mode="popLayout">
             {shown.map((c, i) => {
               const t = tones[c.tone];
@@ -281,7 +286,8 @@ export default function ExpertNetwork() {
                   initial={{ opacity: 0, y: 30, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.92 }}
-                  transition={{ duration: 0.6, delay: (i % 7) * 0.06, ease: EASE }}
+                  transition={{ duration: 0.6, delay: (i % 6) * 0.06, ease: EASE }}
+                  className="w-[calc((100%_-_1rem)/2)] sm:w-[calc((100%_-_2rem)/3)] md:w-[calc((100%_-_3rem)/4)] lg:w-[calc((100%_-_5rem)/6)]"
                 >
                   <TiltCard
                     tilt={8}

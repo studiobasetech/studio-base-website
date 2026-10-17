@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   Lightbulb,
   ListChecks,
+  Lock,
   ShieldCheck,
   Smartphone,
   Target,
@@ -25,6 +26,8 @@ import Reveal from "@/components/Reveal";
 import { portfolioCategories, projects, type Project } from "@/data/portfolio";
 import { accents } from "@/sections/products-services/accents";
 import SectionIntro from "@/sections/products-services/SectionIntro";
+import ClientQuote from "@/components/ClientQuote";
+import { getTestimonials } from "@/data/testimonials";
 import { useLang, type Bi, type Lang, pick } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -55,6 +58,14 @@ const chipItem: Variants = {
 };
 
 const MotionLink = motion.create(Link);
+
+/* Real client reviews about each TYPE of work (not tied to any case study below). */
+const categoryReviews: Record<string, string[]> = {
+  ai: ["am", "kb"],
+  software: ["jr", "mp"],
+  mobile: ["lc"],
+  platforms: ["mp"],
+};
 
 function blockText(p: Project, key: (typeof blocks)[number]["key"], lang: Lang): string[] {
   const v: Bi | Bi[] = p[key];
@@ -286,6 +297,8 @@ export default function ProjectGrid() {
   const { t, tr } = useLang();
   const [active, setActive] = useState("all");
   const [open, setOpen] = useState<Project | null>(null);
+  const reviews = getTestimonials(...(categoryReviews[active] ?? []));
+  const activeCategory = portfolioCategories.find((c) => c.id === active);
   const shown =
     active === "all"
       ? projects.filter((p) => p.featured)
@@ -409,6 +422,50 @@ export default function ProjectGrid() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* WHAT CLIENTS SAY about this type of work */}
+        <AnimatePresence mode="wait">
+          {reviews.length > 0 && activeCategory && (
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="mt-14 border-t border-white/10 pt-10"
+            >
+              <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-[10px] tracking-[0.4em] text-zinc-400">
+                    {tr("WHAT CLIENTS SAY", "LO QUE DICEN NUESTROS CLIENTES")}
+                  </p>
+                  <h3 className="mt-2 text-xl font-medium leading-snug text-white md:text-2xl">
+                    {tr("Client reviews about our", "Reseñas de clientes sobre nuestro trabajo en")}{" "}
+                    <span className={accents[activeCategory.accent].text}>
+                      {t(activeCategory.label).replace(/\n/g, " ")}
+                    </span>{" "}
+                    {tr("work", "")}
+                  </h3>
+                  <p className="mt-2 max-w-2xl text-xs leading-relaxed text-zinc-500">
+                    {tr(
+                      "General reviews about this type of work, not linked to the specific projects above.",
+                      "Reseñas generales sobre este tipo de trabajo, no vinculadas a los proyectos específicos de arriba.",
+                    )}
+                  </p>
+                </div>
+                <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+                  <Lock size={11} className="text-blue-400" />
+                  {tr("Client identities kept confidential", "Identidad de los clientes confidencial")}
+                </p>
+              </div>
+              <div className={`grid gap-5 ${reviews.length > 1 ? "md:grid-cols-2" : "md:max-w-2xl"}`}>
+                {reviews.map((r) => (
+                  <ClientQuote key={r.id} testimonial={r} compact />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* rendered on <body> so the page's scroll effects can't offset it */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { BarChart3, Globe2, Infinity as InfinityIcon, Users, type LucideIcon } from "lucide-react";
+import { Globe2, Infinity as InfinityIcon, TrendingUp, Users, type LucideIcon } from "lucide-react";
 import { ShimmerText } from "@/components/Effects";
 import { useLang, type Bi } from "@/lib/i18n";
 
@@ -11,7 +11,7 @@ const stats: { id: string; icon: LucideIcon; label: Bi; text: string; rgb: strin
   { id: "reach", icon: InfinityIcon, label: { en: "Global\nReach", es: "Alcance\nglobal" }, text: "text-blue-400", rgb: "59,130,246" },
   { id: "team", icon: Users, label: { en: "Remote\nTeam", es: "Equipo\nremoto" }, text: "text-purple-400", rgb: "168,85,247" },
   { id: "industries", icon: Globe2, label: { en: "Multiple\nIndustries", es: "Múltiples\nindustrias" }, text: "text-cyan-400", rgb: "34,211,238" },
-  { id: "impact", icon: BarChart3, label: { en: "Real\nImpact", es: "Impacto\nreal" }, text: "text-yellow-300", rgb: "250,204,21" },
+  { id: "impact", icon: TrendingUp, label: { en: "Real\nImpact", es: "Impacto\nreal" }, text: "text-yellow-300", rgb: "250,204,21" },
 ];
 
 // Abstract network of regions (no map): x / y in a 600×360 box

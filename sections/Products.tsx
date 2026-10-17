@@ -39,7 +39,7 @@ const products: {
       { en: "Workflow Optimization", es: "Optimización de flujos de trabajo" },
     ],
 
-    image: "/images/hcrm-ai.png",
+    image: "/images/hcrm-ai-v2.webp",
     accent: "purple",
   },
 
@@ -63,7 +63,7 @@ const products: {
       { en: "Sales Analytics & Insights", es: "Analítica e insights de ventas" },
     ],
 
-    image: "/images/baselead-ai-gold.png",
+    image: "/images/baselead-ai-gold-v2.webp",
     accent: "yellow",
   },
 ];

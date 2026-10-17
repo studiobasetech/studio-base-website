@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import AboutHero from "@/sections/about/AboutHero";
 import Pillars from "@/sections/about/Pillars";
 import ExpertNetwork from "@/sections/about/ExpertNetwork";
+import ClientTrust from "@/sections/about/ClientTrust";
 import CTA from "@/sections/CTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
 import { T } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "About Studio Base",
+export const metadata: Metadata = pageMetadata({
+  title: "About Us: AI & Software Company in Austin, TX",
   description:
-    "Studio Base is a technology company specialized in AI, software engineering and digital transformation, working through a network of specialized experts.",
-};
+    "Studio Base is a technology company in Austin, TX with a remote network of experts in AI, software engineering and digital transformation consulting.",
+  path: "/about/",
+  keywords: [
+    "AI company Austin TX",
+    "software company Austin",
+    "digital transformation consulting",
+    "remote software development team",
+    "empresa de tecnología en Austin",
+  ],
+});
 
 export default function AboutPage() {
   return (
@@ -20,6 +30,7 @@ export default function AboutPage() {
       <AboutHero />
       <SectionTransition><Pillars /></SectionTransition>
       <SectionTransition><ExpertNetwork /></SectionTransition>
+      <SectionTransition><ClientTrust /></SectionTransition>
       <SectionTransition>
         <CTA
           eyebrow={{ en: "LET'S BUILD TOGETHER", es: "CONSTRUYAMOS JUNTOS" }}

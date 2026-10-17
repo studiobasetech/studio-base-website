@@ -1,19 +1,29 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import ContactHero from "@/sections/contact/ContactHero";
 import ContactForm from "@/sections/contact/ContactForm";
 import ConnectCards from "@/sections/contact/ConnectCards";
 import GlobalTeam from "@/sections/contact/GlobalTeam";
+import ContactQuote from "@/sections/contact/ContactQuote";
 import CTA from "@/sections/CTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
 import { T } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Contact",
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Us: AI & Software Experts in Austin",
   description:
-    "Tell us about your project, book a consultation or join the Studio Base network. We typically reply within 24 hours.",
-};
+    "Tell us about your project or book a consultation with Studio Base in Austin, TX: AI automation, custom software, apps and web. Reply within 24 hours.",
+  path: "/contact/",
+  keywords: [
+    "hire AI developers",
+    "AI consulting Austin",
+    "software development quote",
+    "contact Studio Base",
+    "contratar desarrollo de software",
+  ],
+});
 
 export default function ContactPage() {
   return (
@@ -22,6 +32,7 @@ export default function ContactPage() {
       <ContactForm />
       <SectionTransition><ConnectCards /></SectionTransition>
       <SectionTransition><GlobalTeam /></SectionTransition>
+      <ContactQuote />
       <SectionTransition>
         <CTA
           eyebrow={{ en: "LET'S CREATE REAL OPPORTUNITIES", es: "CREEMOS OPORTUNIDADES REALES" }}

@@ -12,6 +12,7 @@ import {
   Code2,
   Ellipsis,
   Heart,
+  Loader2,
   Lock,
   Mail,
   MessageSquare,
@@ -27,6 +28,24 @@ import { contact } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+/* ------------------------------------------------------------------
+   FORM DELIVERY ENDPOINT (FormSubmit — https://formsubmit.co)
+   The site is a static export on GitHub Pages (no server / API routes),
+   so submissions are POSTed as JSON to FormSubmit's AJAX endpoint, which
+   emails them to contact.email (info@studiobase.tech).
+
+   IMPORTANT: the very first submission triggers an ACTIVATION email to
+   info@studiobase.tech. Someone must click "Activate Form" in that email
+   once; until then submissions are not delivered.
+
+   After activation, FormSubmit shows a random-string alias for the inbox
+   (e.g. https://formsubmit.co/ajax/<random-string>). Swap it in here so
+   the email address isn't exposed in the page source.
+   ------------------------------------------------------------------ */
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${contact.email}`;
+
+type Status = "idle" | "sending" | "success" | "error";
 
 // Options for "What are you interested in?" (the English text is what
 // goes into the email to the Studio Base inbox; visitors see their language)
@@ -105,7 +124,10 @@ export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", company: "", interest: "", message: "" });
   const [types, setTypes] = useState<string[]>([]);
   const [tried, setTried] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [honey, setHoney] = useState(""); // spam honeypot — real visitors never fill it
+  const sent = status === "success";
+  const sending = status === "sending";
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -122,25 +144,73 @@ export default function ContactForm() {
   const toggleType = (t: string) =>
     setTypes((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
 
-  /* No server on this site: the message opens in the visitor's email
-     app, addressed to the Studio Base inbox (contact.email in data/site.ts). */
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setTried(true);
-    if (!valid) return;
+  // English labels/values for the Studio Base team, whatever language the visitor uses
+  const projectTypeText = types.map((t) => t.replace("\n", " ")).join(", ");
+  const languageText = lang === "es" ? "Spanish" : "English";
+
+  /* Fallback: open the visitor's email app with everything prefilled,
+     addressed to the Studio Base inbox (contact.email in data/site.ts). */
+  const mailtoHref = (() => {
     const lines = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
       form.company && `Company: ${form.company}`,
       `Interested in: ${form.interest}`,
-      types.length > 0 && `Project type: ${types.map((t) => t.replace("\n", " ")).join(", ")}`,
+      types.length > 0 && `Project type: ${projectTypeText}`,
       lang === "es" && "Language: Spanish",
       "",
       form.message,
     ].filter((l) => l !== false && l !== "") as string[];
     const subject = `New enquiry: ${form.interest} — ${form.name}`;
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
-    setSent(true);
+    return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+  })();
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (sending) return;
+    setTried(true);
+    if (!valid) return;
+
+    // Honeypot filled → almost certainly a bot: pretend it worked, send nothing.
+    if (honey) {
+      setStatus("success");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          Name: form.name,
+          Email: form.email,
+          Company: form.company || "—",
+          "Interested in": form.interest,
+          "Project type": projectTypeText || "—",
+          Message: form.message,
+          Language: languageText,
+          Page: typeof window !== "undefined" ? window.location.href : "",
+          _subject: `New website inquiry — ${form.name}`,
+          _template: "table",
+          _captcha: "false",
+          _replyto: form.email,
+          _honey: honey,
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as { success?: string | boolean } | null;
+      const ok = res.ok && (data?.success === true || data?.success === "true");
+      setStatus(ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const reset = () => {
+    setForm({ name: "", email: "", company: "", interest: "", message: "" });
+    setTypes([]);
+    setTried(false);
+    setStatus("idle");
   };
 
   return (
@@ -191,23 +261,23 @@ export default function ContactForm() {
                 >
                   <Check size={26} strokeWidth={3} />
                 </motion.span>
-                <h3 className="mt-5 text-xl font-semibold text-white">{tr("Almost there!", "¡Ya casi!")}</h3>
+                <h3 className="mt-5 text-xl font-semibold text-white">{tr("Message sent!", "¡Mensaje enviado!")}</h3>
                 <p className="mt-2 max-w-sm text-sm text-zinc-400">
                   {tr(
-                    "Your email app has opened with your message ready to go. Just press send and we'll get back to you soon. If it didn't open, write to",
-                    "Tu aplicación de correo se abrió con tu mensaje listo. Solo presiona enviar y te responderemos pronto. Si no se abrió, escríbenos a",
+                    "Thanks for reaching out. Our team will get back to you soon, usually within 24 hours. You can also write to us at",
+                    "Gracias por escribirnos. Nuestro equipo te responderá pronto, normalmente en menos de 24 horas. También puedes escribirnos a",
                   )}{" "}
-                  <a href={`mailto:${contact.email}`} className="text-blue-400 underline-offset-4 hover:underline">
+                  <a href={`mailto:${contact.email}`} className="break-all text-blue-400 underline-offset-4 hover:underline">
                     {contact.email}
                   </a>
                   .
                 </p>
                 <button
                   type="button"
-                  onClick={() => setSent(false)}
+                  onClick={reset}
                   className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-white"
                 >
-                  {tr("Edit message", "Editar mensaje")}
+                  {tr("Send another message", "Enviar otro mensaje")}
                 </button>
               </motion.div>
             ) : (
@@ -222,6 +292,17 @@ export default function ContactForm() {
                 exit={{ opacity: 0 }}
                 className="relative mt-8 space-y-4"
               >
+                {/* Honeypot (anti-spam): hidden from people and screen readers */}
+                <input
+                  type="text"
+                  name="_honey"
+                  value={honey}
+                  onChange={(e) => setHoney(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden opacity-0"
+                />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field icon={User} error={tried && missing.name}>
                     <input className={inputCls} placeholder={tr("Full Name *", "Nombre completo *")}
@@ -318,15 +399,26 @@ export default function ContactForm() {
                 <motion.div variants={item} className="flex flex-col gap-5 pt-4 sm:flex-row sm:items-center sm:justify-between">
                   <motion.button
                     type="submit"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.96 }}
+                    disabled={sending}
+                    aria-busy={sending}
+                    whileHover={sending ? undefined : { scale: 1.05 }}
+                    whileTap={sending ? undefined : { scale: 0.96 }}
                     animate={{ boxShadow: ["0 0 0 0 rgba(59,130,246,0.5)", "0 0 0 18px rgba(59,130,246,0)"] }}
                     transition={{ boxShadow: { duration: 1.8, repeat: Infinity, ease: "easeOut" } }}
-                    className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-blue-500 px-10 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-400"
+                    className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-blue-500 px-10 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-400 disabled:cursor-wait disabled:opacity-80 disabled:hover:bg-blue-500"
                   >
                     <LightSweep />
-                    <span className="relative">{tr("Send Message", "Enviar mensaje")}</span>
-                    <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
+                    {sending ? (
+                      <>
+                        <Loader2 size={16} className="relative animate-spin" />
+                        <span className="relative">{tr("Sending…", "Enviando…")}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="relative">{tr("Send Message", "Enviar mensaje")}</span>
+                        <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
+                      </>
+                    )}
                   </motion.button>
                   <p className="flex items-center gap-3 text-xs text-zinc-400">
                     <Lock size={18} className="text-blue-400" />
@@ -334,6 +426,25 @@ export default function ContactForm() {
                     <br className="hidden sm:block" /> {tr("and will never be shared.", "y nunca será compartida.")}
                   </p>
                 </motion.div>
+
+                {status === "error" && (
+                  <motion.p
+                    role="alert"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="rounded-xl border border-pink-500/40 bg-pink-500/[0.06] px-4 py-3 text-xs leading-relaxed text-pink-300"
+                  >
+                    {tr(
+                      "Sorry, we couldn't send your message right now. Please try again in a moment, or",
+                      "Lo sentimos, no pudimos enviar tu mensaje en este momento. Intenta de nuevo en un momento o",
+                    )}{" "}
+                    <a href={mailtoHref} className="font-semibold text-white underline underline-offset-4 hover:text-blue-300">
+                      {tr("email us directly", "escríbenos directamente")}
+                    </a>
+                    .
+                  </motion.p>
+                )}
               </motion.form>
             )}
           </AnimatePresence>
