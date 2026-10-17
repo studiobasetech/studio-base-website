@@ -51,13 +51,9 @@ export default function AboutHero() {
       onMouseMove={onMove}
       className="relative overflow-hidden bg-black px-6 pb-16 pt-32 lg:flex lg:min-h-[760px] lg:items-center lg:px-12 lg:pb-24 lg:pt-32"
     >
-      <StarField meteorEvery={[3000, 7000]} density={0.45} goldOnly />
+      <StarField meteorEvery={[4000, 8000]} density={0.3} goldOnly />
       <ParticleField />
-      <motion.div
-        animate={{ opacity: [0.4, 0.8, 0.4] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute right-[10%] top-1/4 h-[480px] w-[520px] rounded-full bg-blue-600/20 blur-[140px]"
-      />
+      <div className="pointer-events-none absolute right-[10%] top-1/4 h-[480px] w-[520px] rounded-full bg-blue-600/15 blur-[100px]" />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
         {/* TEXT */}
@@ -117,11 +113,10 @@ export default function AboutHero() {
 
         {/* HOLOGRAM */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(14px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.4, delay: 0.4, ease: EASE }}
           className="relative mx-auto aspect-square w-full max-w-[520px]"
-          style={{ perspective: 1200 }}
         >
           {/* grid floor */}
           <div
@@ -162,7 +157,7 @@ export default function AboutHero() {
           <motion.div
             animate={{ opacity: [0.35, 0.7, 0.35] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-[22%] left-1/2 h-[64%] w-[46%] -translate-x-1/2 bg-gradient-to-t from-blue-500/40 via-blue-400/10 to-transparent [clip-path:polygon(18%_100%,82%_100%,100%_0,0_0)] blur-[2px]"
+            className="absolute bottom-[22%] left-1/2 h-[64%] w-[46%] -translate-x-1/2 bg-gradient-to-t from-blue-500/40 via-blue-400/10 to-transparent [clip-path:polygon(18%_100%,82%_100%,100%_0,0_0)]"
           />
 
           {/* floating monogram */}
@@ -170,14 +165,16 @@ export default function AboutHero() {
             <motion.div
               animate={{ y: [0, -16, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              style={{ rotateY: rotY, rotateX: rotX, transformStyle: "preserve-3d" }}
+              style={{ rotateY: rotY, rotateX: rotX, transformPerspective: 1200 }}
               className="relative w-[46%]"
             >
+              {/* soft glow behind the logo (cheaper than a drop-shadow filter) */}
+              <span className="absolute inset-[8%] rounded-full bg-blue-500/50 blur-2xl" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/sb-monogram.png"
                 alt="Studio Base"
-                className="relative w-full drop-shadow-[0_0_30px_rgba(59,130,246,0.9)]"
+                className="relative w-full"
                 draggable={false}
               />
               {/* scan line */}
@@ -220,7 +217,7 @@ export default function AboutHero() {
               initial={{ opacity: 0, x: i % 2 ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 1.2 + i * 0.15, ease: EASE }}
-              className={`absolute rounded-md border border-blue-400/30 bg-black/50 px-2.5 py-1 font-mono text-[10px] tracking-[0.25em] text-blue-200 backdrop-blur-md ${l.pos}`}
+              className={`absolute rounded-md border border-blue-400/30 bg-black/70 px-2.5 py-1 font-mono text-[10px] tracking-[0.25em] text-blue-200 ${l.pos}`}
             >
               {l.t}
             </motion.span>

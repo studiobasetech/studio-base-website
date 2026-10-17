@@ -25,8 +25,8 @@ const valueMotion = [{ rotate: [0, -10, 10, 0] }, { y: [0, -6, 0] }, { rotate: [
 
 const grid: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.14 } } };
 const card: Variants = {
-  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: EASE } },
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
 };
 
 /** Mission / Vision / Approach cards + the five values. */
@@ -53,7 +53,7 @@ export default function Pillars() {
                   style={{ boxShadow: `0 0 50px -22px rgba(${t.rgb},0.7)` }}
                 >
                   <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                    animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 6, delay: i, repeat: Infinity, ease: "easeInOut" }}
                     className={`pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full blur-3xl ${t.glow}`}
                   />
@@ -125,7 +125,7 @@ export default function Pillars() {
                     transition={{ duration: i === 2 ? 10 : 3, repeat: Infinity, ease: i === 2 ? "linear" : "easeInOut" }}
                     className="relative block"
                   >
-                    <Icon size={36} strokeWidth={1.4} className={t.text} style={{ filter: `drop-shadow(0 0 10px rgba(${t.rgb},0.7))` }} />
+                    <Icon size={36} strokeWidth={1.4} className={t.text} />
                   </motion.span>
                 </span>
                 <h3 className={`mt-4 text-xs font-semibold tracking-[0.2em] text-white transition-colors duration-300 ${t.groupText}`}>

@@ -83,9 +83,11 @@ function NetworkVisual() {
               viewport={{ once: true }}
               transition={{ duration: 1.2, delay: 0.2 + i * 0.06, ease: EASE }}
             />
-            <circle r="2.2" fill="#bfdbfe">
-              <animateMotion dur={`${2.5 + (i % 4) * 0.6}s`} begin={`${(i * 0.37) % 3}s`} repeatCount="indefinite" path={d} />
-            </circle>
+            {b === 4 && (
+              <circle r="2.2" fill="#bfdbfe">
+                <animateMotion dur={`${2.5 + (i % 4) * 0.6}s`} begin={`${(i * 0.37) % 3}s`} repeatCount="indefinite" path={d} />
+              </circle>
+            )}
           </g>
         );
       })}
@@ -94,17 +96,11 @@ function NetworkVisual() {
         const r = n.hub ? 30 : 20;
         return (
           <g key={i}>
-            <motion.circle
-              cx={n.x}
-              cy={n.y}
-              r={r + 6}
-              fill="none"
-              stroke={t.hex}
-              strokeOpacity="0.5"
-              animate={{ r: [r + 4, r + 14, r + 4], opacity: [0.7, 0, 0.7] }}
-              transition={{ duration: 3, delay: i * 0.3, repeat: Infinity, ease: "easeOut" }}
-            />
-            <circle cx={n.x} cy={n.y} r={r} fill="#05070d" stroke={t.hex} strokeWidth="1.5" style={{ filter: `drop-shadow(0 0 8px ${t.hex})` }} />
+            <circle cx={n.x} cy={n.y} r={r + 8} fill="none" stroke={t.hex} strokeOpacity="0.5">
+              <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur="3s" begin={`${i * 0.3}s`} repeatCount="indefinite" />
+            </circle>
+            <circle cx={n.x} cy={n.y} r={r + 3} fill={t.hex} fillOpacity="0.12" />
+            <circle cx={n.x} cy={n.y} r={r} fill="#05070d" stroke={t.hex} strokeWidth="1.5" />
             <circle cx={n.x} cy={n.y - r * 0.22} r={r * 0.32} fill={t.hex} />
             <path
               d={`M${n.x - r * 0.62} ${n.y + r * 0.62} a${r * 0.62} ${r * 0.5} 0 0 1 ${r * 1.24} 0`}
@@ -131,11 +127,7 @@ export default function ExpertNetwork() {
 
   return (
     <section id="our-network" className="relative scroll-mt-20 overflow-hidden bg-black px-6 py-16 lg:px-12">
-      <motion.div
-        animate={{ x: [0, 70, 0], y: [0, 30, 0] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute right-0 top-20 h-96 w-96 rounded-full bg-blue-500/10 blur-[120px]"
-      />
+      <div className="pointer-events-none absolute right-0 top-20 h-96 w-96 rounded-full bg-blue-500/10 blur-[100px]" />
 
       <div className="relative mx-auto max-w-7xl border-t border-white/10 pt-16">
         {/* INTRO + VISUAL */}
@@ -169,8 +161,8 @@ export default function ExpertNetwork() {
 
           <div className="relative">
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, scale: 0.94 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 1.2, ease: EASE }}
               className="relative aspect-[43/35] w-full"
@@ -185,7 +177,7 @@ export default function ExpertNetwork() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-              className="relative mt-4 rounded-xl border border-yellow-400/50 bg-black/70 p-5 shadow-[0_0_40px_-15px_rgba(250,204,21,0.6)] backdrop-blur-md lg:absolute lg:-right-2 lg:bottom-0 lg:mt-0 lg:w-[260px]"
+              className="relative mt-4 rounded-xl border border-yellow-400/50 bg-black/85 p-5 shadow-[0_0_40px_-15px_rgba(250,204,21,0.6)] lg:absolute lg:-right-2 lg:bottom-0 lg:mt-0 lg:w-[260px]"
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-yellow-400/40 bg-yellow-400/10 text-yellow-300">
@@ -275,8 +267,8 @@ export default function ExpertNetwork() {
                 <motion.div
                   key={c.key}
                   layout
-                  initial={{ opacity: 0, y: 30, scale: 0.95, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.92 }}
                   transition={{ duration: 0.6, delay: (i % 7) * 0.06, ease: EASE }}
                 >
@@ -293,7 +285,7 @@ export default function ExpertNetwork() {
                       {/* scan line on hover */}
                       <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] translate-y-[-10px] bg-gradient-to-r from-transparent via-white/80 to-transparent opacity-0 transition-all duration-[1200ms] group-hover:translate-y-[300px] group-hover:opacity-100" />
                       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#07070a] to-transparent" />
-                      <span className={`absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border backdrop-blur-sm ${t.iconBox}`}>
+                      <span className={`absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border bg-black/40 ${t.iconBox}`}>
                         <Icon size={15} />
                       </span>
                     </div>
