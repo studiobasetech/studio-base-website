@@ -11,7 +11,7 @@ import {
   BrainCircuit,
   ChartNoAxesCombined,
   Code2,
-  Layers,
+  LayoutDashboard,
   Lightbulb,
   ListChecks,
   ShieldCheck,
@@ -32,7 +32,7 @@ const categoryIcons: Record<string, LucideIcon> = {
   brain: BrainCircuit,
   code: Code2,
   phone: Smartphone,
-  layers: Layers,
+  platform: LayoutDashboard,
   shield: ShieldCheck,
 };
 
@@ -280,7 +280,10 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
 export default function ProjectGrid() {
   const [active, setActive] = useState("all");
   const [open, setOpen] = useState<Project | null>(null);
-  const shown = active === "all" ? projects : projects.filter((p) => p.category === active);
+  const shown =
+    active === "all"
+      ? projects.filter((p) => p.featured)
+      : projects.filter((p) => p.category === active);
 
   return (
     <section id="projects" className="relative scroll-mt-20 overflow-hidden bg-black px-6 py-16 lg:px-12">
@@ -358,6 +361,12 @@ export default function ProjectGrid() {
             </p>
           }
         />
+
+        {active === "all" && (
+          <p className="-mt-4 mb-8 text-xs uppercase tracking-[0.25em] text-zinc-500">
+            Featured projects · choose a category above to see more
+          </p>
+        )}
 
         {active !== "all" && (
           <Reveal y={10} className="-mt-4 mb-8">
