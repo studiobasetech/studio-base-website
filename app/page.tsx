@@ -5,6 +5,7 @@ import Process from "@/sections/Process";
 import WhyStudio from "@/sections/WhyStudio";
 import Technologies from "@/sections/Technologies";
 import CTA from "@/sections/CTA";
+import OrbitGame from "@/sections/OrbitGame";
 import SectionTransition from "@/components/SectionTransition";
 
 // Navbar and Footer come from app/layout.tsx.
@@ -18,6 +19,7 @@ export default function Home() {
       <SectionTransition><Process /></SectionTransition>
       <SectionTransition><WhyStudio /></SectionTransition>
       <SectionTransition><Technologies /></SectionTransition>
+      <SectionTransition><OrbitGame /></SectionTransition>
       <SectionTransition><CTA /></SectionTransition>
     </>
   );

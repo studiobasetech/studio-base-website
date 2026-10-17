@@ -3,7 +3,6 @@ import ContactHero from "@/sections/contact/ContactHero";
 import ContactForm from "@/sections/contact/ContactForm";
 import ConnectCards from "@/sections/contact/ConnectCards";
 import GlobalTeam from "@/sections/contact/GlobalTeam";
-import SpaceGame from "@/sections/contact/SpaceGame";
 import CTA from "@/sections/CTA";
 import SectionTransition from "@/components/SectionTransition";
 import { ShimmerText } from "@/components/Effects";
@@ -22,7 +21,6 @@ export default function ContactPage() {
       <ContactForm />
       <SectionTransition><ConnectCards /></SectionTransition>
       <SectionTransition><GlobalTeam /></SectionTransition>
-      <SectionTransition><SpaceGame /></SectionTransition>
       <SectionTransition>
         <CTA
           eyebrow="LET'S CREATE REAL OPPORTUNITIES"
