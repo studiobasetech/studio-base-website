@@ -28,7 +28,7 @@ const word: Variants = {
 
 /**
  * Contact hero: an astronaut on the Moon looking at the stars
- * (public/images/contact-astronaut.jpg) with live stars, shooting
+ * (public/images/contact-astronaut-hd.jpg) with live stars, shooting
  * stars, the constellation effect and a slow mouse parallax.
  */
 export default function ContactHero() {
@@ -64,10 +64,10 @@ export default function ContactHero() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/contact-astronaut.jpg"
+            src="/images/contact-astronaut-hd.jpg"
             alt=""
             aria-hidden="true"
-            className="h-full w-full select-none object-cover object-[72%_center]"
+            className="h-full w-full select-none object-cover object-[70%_center]"
             draggable={false}
           />
         </motion.div>
@@ -117,11 +117,11 @@ export default function ContactHero() {
             className="absolute left-0 top-0 hidden h-full w-px origin-top bg-gradient-to-b from-blue-500 via-white/20 to-transparent lg:block"
           />
           <p className="text-sm leading-relaxed text-zinc-300 md:text-base">
-            Have a project in mind, a question about our services, or want to
-            explore a collaboration? We&apos;d love to hear from you. Whether
-            you need a custom solution, want to join our network of experts,
-            or simply want to learn more about Studio Base, our team is here
-            to help.
+            Whether you are planning a new digital product, exploring how
+            AI and automation can strengthen your operations, or interested
+            in joining our network of specialists, we would be glad to hear
+            from you. Share a few details and our team will respond promptly
+            with clear next steps.
           </p>
         </motion.div>
       </motion.div>
