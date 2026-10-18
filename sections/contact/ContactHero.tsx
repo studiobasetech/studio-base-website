@@ -57,7 +57,7 @@ export default function ContactHero() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative min-h-[640px] overflow-hidden bg-black px-6 pb-24 pt-32 lg:flex lg:min-h-[680px] lg:items-center lg:px-12 lg:pb-32 lg:pt-32"
+      className="relative overflow-hidden bg-black px-6 pb-10 pt-28 sm:min-h-[640px] sm:pb-24 sm:pt-32 lg:flex lg:min-h-[680px] lg:items-center lg:px-12 lg:pb-32 lg:pt-32"
     >
       {/* astronaut on the Moon */}
       <motion.div style={{ x: imgX, y: imgY }} className="absolute -inset-6">
