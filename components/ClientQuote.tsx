@@ -80,7 +80,7 @@ export default function ClientQuote({
         <div className="min-w-0">
           <p className="text-sm font-semibold text-white">{item.initials}</p>
           <p className="text-xs leading-snug text-zinc-400">
-            {t(item.industry)} <span className="text-zinc-600">·</span>{" "}
+            {t(item.industry)} <span className="text-zinc-400">·</span>{" "}
             <span className={c.text}>{t(item.service)}</span>
           </p>
         </div>

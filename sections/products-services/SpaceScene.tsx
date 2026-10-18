@@ -178,10 +178,10 @@ function Hud() {
           />
           {tr("Systems online", "Sistemas en línea")}
         </p>
-        <p className="mt-1 text-zinc-500">{tr("Orbit 01 · AI Core", "Órbita 01 · Núcleo IA")}</p>
+        <p className="mt-1 text-zinc-400">{tr("Orbit 01 · AI Core", "Órbita 01 · Núcleo IA")}</p>
       </div>
 
-      <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-500 sm:text-[10px]">
+      <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-400 sm:text-[10px]">
         <p className="text-blue-300/70">{COORDS}</p>
         <p className="mt-1">{tr("Studio Base HQ", "Sede Studio Base")}</p>
       </div>

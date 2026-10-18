@@ -188,7 +188,7 @@ export default function OrbitGame() {
                 {tr("ORBIT DEFENSE", "DEFENSA ORBITAL")}
                 <span className="-ml-3 hidden sm:inline">&nbsp;· SB-01</span>
               </span>
-              <span className="flex items-center gap-2 whitespace-nowrap font-mono text-[10px] tracking-[0.25em] text-zinc-500">
+              <span className="flex items-center gap-2 whitespace-nowrap font-mono text-[10px] tracking-[0.25em] text-zinc-400">
                 <motion.span
                   animate={{ opacity: [1, 0.25, 1] }}
                   transition={{ duration: 1.2, repeat: Infinity }}
@@ -382,7 +382,7 @@ export default function OrbitGame() {
         </motion.div>
 
         {best > 0 && (
-          <p className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] tracking-[0.25em] text-zinc-500">
+          <p className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] tracking-[0.25em] text-zinc-400">
             <Trophy size={12} className="text-yellow-300/80" /> {tr("YOUR BEST:", "TU RÉCORD:")} <span className="text-zinc-200">{best}</span>
           </p>
         )}

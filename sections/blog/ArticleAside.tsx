@@ -98,7 +98,7 @@ export default function ArticleAside({ post: original }: { post: Post }) {
     <div className="sticky top-28 space-y-8">
       {/* progress */}
       <div>
-        <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+        <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">
           <span>{tr("Reading", "Lectura")}</span>
           <span className="text-blue-400">{Math.round(progress * 100)}%</span>
         </div>
@@ -112,7 +112,7 @@ export default function ArticleAside({ post: original }: { post: Post }) {
 
       {/* contents */}
       <nav aria-label={tr("Contents", "Contenido")}>
-        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">
           {tr("In this article", "En este artículo")}
         </p>
         <ol className="mt-4 space-y-1 border-l border-white/10">
@@ -126,10 +126,10 @@ export default function ArticleAside({ post: original }: { post: Post }) {
                   className={`relative -ml-px flex gap-3 border-l py-1.5 pl-4 text-[13px] leading-snug transition-colors ${
                     on
                       ? "border-blue-500 text-white"
-                      : "border-transparent text-zinc-500 hover:text-zinc-200"
+                      : "border-transparent text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
-                  <span className={`font-mono text-[11px] ${on ? "text-blue-500" : "text-zinc-600"}`}>
+                  <span className={`font-mono text-[11px] ${on ? "text-blue-500" : "text-zinc-400"}`}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {h}
@@ -141,7 +141,7 @@ export default function ArticleAside({ post: original }: { post: Post }) {
       </nav>
 
       <div>
-        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">{tr("Share", "Compartir")}</p>
+        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400">{tr("Share", "Compartir")}</p>
         <ShareButtons title={post.title} slug={post.slug} />
       </div>
     </div>

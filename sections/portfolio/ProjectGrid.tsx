@@ -117,7 +117,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
       {/* text */}
       <div className="relative z-10 flex flex-1 flex-col p-5 md:p-6">
         <h3 className="text-lg font-semibold leading-snug text-white">{title}</h3>
-        <p className="mt-1 text-xs text-zinc-500">{t(project.client)}</p>
+        <p className="mt-1 text-xs text-zinc-400">{t(project.client)}</p>
 
         <div className="mt-5 space-y-4">
           {blocks.map((b) => {
@@ -384,7 +384,7 @@ export default function ProjectGrid() {
         />
 
         {active === "all" && (
-          <p className="-mt-4 mb-8 text-xs uppercase tracking-[0.25em] text-zinc-500">
+          <p className="-mt-4 mb-8 text-xs uppercase tracking-[0.25em] text-zinc-400">
             {tr(
               "Featured projects · choose a category above to see more",
               "Proyectos destacados · elige una categoría arriba para ver más",
@@ -446,14 +446,14 @@ export default function ProjectGrid() {
                     </span>{" "}
                     {tr("work", "")}
                   </h3>
-                  <p className="mt-2 max-w-2xl text-xs leading-relaxed text-zinc-500">
+                  <p className="mt-2 max-w-2xl text-xs leading-relaxed text-zinc-400">
                     {tr(
                       "General reviews about this type of work, not linked to the specific projects above.",
                       "Reseñas generales sobre este tipo de trabajo, no vinculadas a los proyectos específicos de arriba.",
                     )}
                   </p>
                 </div>
-                <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+                <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
                   <Lock size={11} className="text-blue-400" />
                   {tr("Client identities kept confidential", "Identidad de los clientes confidencial")}
                 </p>

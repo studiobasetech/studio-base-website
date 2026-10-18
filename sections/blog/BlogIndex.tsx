@@ -64,7 +64,7 @@ function FeaturedPost() {
             {post.title}
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-zinc-400 md:text-base">{post.excerpt}</p>
-          <div className="mt-6 flex items-center gap-3 text-xs text-zinc-500">
+          <div className="mt-6 flex items-center gap-3 text-xs text-zinc-400">
             <span>{formatDate(post.date, lang)}</span>
             <span className="h-1 w-1 rounded-full bg-zinc-600" />
             <span className="flex items-center gap-1">
@@ -151,7 +151,7 @@ export default function BlogIndex() {
         </motion.div>
 
         {shown.length === 0 && (
-          <p className="mt-10 text-sm text-zinc-500">
+          <p className="mt-10 text-sm text-zinc-400">
             {tr("No other articles in this topic yet.", "Todavía no hay más artículos sobre este tema.")}
           </p>
         )}

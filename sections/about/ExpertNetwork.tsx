@@ -266,7 +266,7 @@ export default function ExpertNetwork() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder={tr("Search by expertise…", "Buscar por especialidad…")}
               aria-label={tr("Search by expertise", "Buscar por especialidad")}
-              className="w-full bg-transparent text-sm text-white placeholder:text-zinc-500 focus:outline-none"
+              className="w-full bg-transparent text-sm text-white placeholder:text-zinc-400 focus:outline-none"
             />
           </label>
         </div>
@@ -316,7 +316,7 @@ export default function ExpertNetwork() {
             })}
           </AnimatePresence>
         </motion.div>
-        {shown.length === 0 && <p className="mt-8 text-sm text-zinc-500">{tr("No expertise matches your search.", "Ninguna especialidad coincide con tu búsqueda.")}</p>}
+        {shown.length === 0 && <p className="mt-8 text-sm text-zinc-400">{tr("No expertise matches your search.", "Ninguna especialidad coincide con tu búsqueda.")}</p>}
       </div>
     </section>
   );

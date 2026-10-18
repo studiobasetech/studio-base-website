@@ -104,7 +104,7 @@ export default function PostCard({ post: original, index = 0 }: { post: Post; in
           </h3>
           <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-zinc-400">{post.excerpt}</p>
 
-          <div className="mt-auto flex items-center justify-between pt-6 text-xs text-zinc-500">
+          <div className="mt-auto flex items-center justify-between pt-6 text-xs text-zinc-400">
             <span className="flex items-center gap-3">
               <span>{formatDate(post.date, lang)}</span>
               <span className="h-1 w-1 rounded-full bg-zinc-600" />

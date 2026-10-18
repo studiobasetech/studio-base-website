@@ -4,6 +4,7 @@ import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
 import { contact, legalLinks, navLinks, socials } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";
+import { GA_MEASUREMENT_ID, openCookieSettings } from "@/lib/analytics";
 
 // Every link here points to a real page or section.
 const resources: { label: Bi; href: string }[] = [
@@ -33,7 +34,7 @@ export default function Footer() {
               />
             </Link>
 
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-500">
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-400">
               {tr(
                 "A technology and creative company building digital infrastructure for forward-thinking businesses.",
                 "Una empresa de tecnología y creatividad que construye infraestructura digital para negocios con visión de futuro.",
@@ -67,7 +68,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-zinc-500 transition hover:text-blue-500"
+                    className="text-sm text-zinc-400 transition hover:text-blue-500"
                   >
                     {t(item.label)}
                   </Link>
@@ -84,7 +85,7 @@ export default function Footer() {
                 <li key={item.label.en}>
                   <Link
                     href={item.href}
-                    className="text-sm text-zinc-500 transition hover:text-blue-500"
+                    className="text-sm text-zinc-400 transition hover:text-blue-500"
                   >
                     {t(item.label)}
                   </Link>
@@ -98,16 +99,16 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white">{tr("Contact", "Contacto")}</h3>
             <a
               href={`mailto:${contact.email}`}
-              className="mt-5 block text-sm text-zinc-500 transition hover:text-blue-500"
+              className="mt-5 block text-sm text-zinc-400 transition hover:text-blue-500"
             >
               {contact.email}
             </a>
-            <p className="mt-2 text-sm text-zinc-500">{contact.location}</p>
+            <p className="mt-2 text-sm text-zinc-400">{contact.location}</p>
           </div>
         </div>
 
         {/* BOTTOM */}
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 md:flex-row md:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-400 md:flex-row md:justify-between">
           <p>© {new Date().getFullYear()} Studio Base. {tr("All rights reserved.", "Todos los derechos reservados.")}</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {legalLinks.map((item) => (
@@ -115,6 +116,11 @@ export default function Footer() {
                 {t(item.label)}
               </Link>
             ))}
+            {GA_MEASUREMENT_ID && (
+              <button type="button" onClick={openCookieSettings} className="transition hover:text-blue-500">
+                {tr("Cookie settings", "Configuración de cookies")}
+              </button>
+            )}
           </div>
         </div>
       </div>

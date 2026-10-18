@@ -94,7 +94,7 @@ export default function Technologies() {
       <div className="mx-auto max-w-7xl">
         {/* TITLE */}
 
-        <p className="mb-8 text-xs tracking-[0.4em] text-zinc-500">
+        <p className="mb-8 text-xs tracking-[0.4em] text-zinc-400">
           {tr("TRUSTED TECHNOLOGIES", "TECNOLOGÍAS DE CONFIANZA")}
         </p>
 

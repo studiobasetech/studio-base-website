@@ -244,7 +244,7 @@ function ValueCard({ item, index }: { item: Value; index: number }) {
           {t(item.title)}
         </h3>
 
-        <p className="mt-3 text-xs leading-relaxed text-zinc-500 transition duration-300 group-hover:text-zinc-400">
+        <p className="mt-3 text-xs leading-relaxed text-zinc-400 transition duration-300 group-hover:text-zinc-300">
           {t(item.description)}
         </p>
       </div>
@@ -268,7 +268,7 @@ export default function WhyStudio() {
           >
             <motion.p
               variants={copyItem}
-              className="text-xs tracking-[0.4em] text-zinc-500"
+              className="text-xs tracking-[0.4em] text-zinc-400"
             >
               {tr("WHY STUDIO BASE", "POR QUÉ STUDIO BASE")}
             </motion.p>

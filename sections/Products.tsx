@@ -316,8 +316,8 @@ export default function Products() {
           {/* LEFT INTRO */}
 
           <div>
-            <p className="text-xs tracking-[0.4em] text-zinc-500">
-              {tr("OUR PROPRIETARY PRODUCTS", "NUESTROS PRODUCTOS PROPIOS")}
+            <p className="text-xs tracking-[0.4em] text-zinc-400">
+              {tr("OUR PRODUCTS", "NUESTROS PRODUCTOS")}
             </p>
 
             {/* Each line is nowrap so the title stays on exactly two lines

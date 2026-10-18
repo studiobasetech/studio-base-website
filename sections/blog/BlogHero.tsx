@@ -131,7 +131,7 @@ export default function BlogHero() {
                 className={topicColors[i % topicColors.length]}
               >
                 {t(topic)}
-                {i < topics.length - 1 && <span className="ml-3 text-zinc-600">/</span>}
+                {i < topics.length - 1 && <span className="ml-3 text-zinc-400">/</span>}
               </motion.span>
             ))}
           </span>

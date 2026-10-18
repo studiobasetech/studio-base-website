@@ -47,8 +47,8 @@ export default function ContactQuote() {
             {item.initials}
           </span>
           <span>
-            {tr("Client review", "Reseña de cliente")} <span className="text-zinc-600">·</span> {t(item.industry)}{" "}
-            <span className="text-zinc-600">·</span> <span className={c.text}>{t(item.service)}</span>
+            {tr("Client review", "Reseña de cliente")} <span className="text-zinc-400">·</span> {t(item.industry)}{" "}
+            <span className="text-zinc-400">·</span> <span className={c.text}>{t(item.service)}</span>
           </span>
         </figcaption>
       </motion.figure>

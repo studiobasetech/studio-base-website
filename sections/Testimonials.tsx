@@ -93,7 +93,7 @@ export default function Testimonials() {
               "Empresas de distintas industrias confían en Studio Base para construir, automatizar y escalar su tecnología.",
             )}
           </motion.p>
-          <motion.p variants={fadeUp} className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+          <motion.p variants={fadeUp} className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
             <Lock size={11} className="text-blue-400" />{" "}
             {tr("Client identities kept confidential", "Identidad de los clientes confidencial")}
           </motion.p>
@@ -164,7 +164,7 @@ export default function Testimonials() {
                           <div className="min-w-0">
                             <p className="font-semibold text-white">{t.initials}</p>
                             <p className="text-xs leading-snug text-zinc-400">
-                              {tx(t.industry)} <span className="text-zinc-600">·</span> <span className={c.text}>{tx(t.service)}</span>
+                              {tx(t.industry)} <span className="text-zinc-400">·</span> <span className={c.text}>{tx(t.service)}</span>
                             </p>
                           </div>
                         </div>

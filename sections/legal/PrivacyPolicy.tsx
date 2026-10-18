@@ -33,8 +33,8 @@ const sections: Section[] = [
     title: { en: "2. Information we collect", es: "2. Información que recopilamos" },
     body: [
       {
-        en: "We only collect the information you choose to send us through the contact form:",
-        es: "Solo recopilamos la información que decides enviarnos a través del formulario de contacto:",
+        en: "We collect the information you choose to send us through the contact form:",
+        es: "Recopilamos la información que decides enviarnos a través del formulario de contacto:",
       },
     ],
     list: [
@@ -46,8 +46,8 @@ const sections: Section[] = [
     ],
     after: [
       {
-        en: "If you email us directly, we receive your email address and whatever you include in your message. We do not sell, rent or trade your personal information.",
-        es: "Si nos escribes directamente por correo, recibimos tu dirección de correo y lo que incluyas en tu mensaje. No vendemos, rentamos ni intercambiamos tu información personal.",
+        en: "If you email us directly, we receive your email address and whatever you include in your message. If you accept analytics cookies, we also receive usage statistics through Google Analytics (see section 4). We do not sell, rent or trade your personal information.",
+        es: "Si nos escribes directamente por correo, recibimos tu dirección de correo y lo que incluyas en tu mensaje. Si aceptas las cookies de analítica, también recibimos estadísticas de uso a través de Google Analytics (consulta la sección 4). No vendemos, rentamos ni intercambiamos tu información personal.",
       },
     ],
   },
@@ -70,8 +70,16 @@ const sections: Section[] = [
         es: "Solo guardamos una cosa en tu navegador: tu preferencia de idioma (inglés o español), almacenada en localStorage con la clave “sb-lang” para que el sitio recuerde tu elección. Nunca sale de tu dispositivo y puedes borrarla cuando quieras desde la configuración de tu navegador.",
       },
       {
-        en: "We do not use advertising or tracking cookies, and we currently do not use any analytics tools. If we add analytics in the future, we will update this policy before doing so.",
-        es: "No usamos cookies de publicidad ni de rastreo, y actualmente no usamos ninguna herramienta de analítica. Si en el futuro agregamos analítica, actualizaremos esta política antes de hacerlo.",
+        en: "We also save your cookie choice (accepted or declined) in localStorage under the key “sb-cookie-consent”, so we don’t ask you again on every visit.",
+        es: "También guardamos tu elección sobre las cookies (aceptadas o rechazadas) en localStorage con la clave “sb-cookie-consent”, para no preguntarte en cada visita.",
+      },
+      {
+        en: "Google Analytics: if you click “Accept” in our cookie notice, we use Google Analytics 4, a service from Google LLC, to understand how visitors use the website (for example, which pages are viewed, how long visits last, the type of device and browser, and the approximate country or city). Google Analytics sets cookies named “_ga” and “_ga_…”, which by default last up to 2 years. Google Analytics 4 does not store full IP addresses. We use this information only in aggregate to improve the website, and we do not use it for advertising.",
+        es: "Google Analytics: si haces clic en “Aceptar” en nuestro aviso de cookies, usamos Google Analytics 4, un servicio de Google LLC, para entender cómo se usa el sitio web (por ejemplo, qué páginas se visitan, cuánto duran las visitas, el tipo de dispositivo y navegador, y el país o la ciudad aproximados). Google Analytics crea cookies llamadas “_ga” y “_ga_…”, que por defecto duran hasta 2 años. Google Analytics 4 no guarda direcciones IP completas. Usamos esta información solo de forma agregada para mejorar el sitio, y no la usamos para publicidad.",
+      },
+      {
+        en: "If you click “Decline”, Google Analytics is not loaded and no analytics cookies are set. You can change your mind at any time with the “Cookie settings” link at the bottom of every page; if you withdraw consent, we stop Google Analytics and delete its cookies. Google processes this data under its own privacy policy (policies.google.com/privacy). We do not use advertising cookies.",
+        es: "Si haces clic en “Rechazar”, Google Analytics no se carga y no se crean cookies de analítica. Puedes cambiar de opinión cuando quieras con el enlace “Configuración de cookies” al final de cada página; si retiras tu consentimiento, detenemos Google Analytics y borramos sus cookies. Google trata estos datos conforme a su propia política de privacidad (policies.google.com/privacy). No usamos cookies de publicidad.",
       },
     ],
   },
@@ -117,8 +125,8 @@ const sections: Section[] = [
     body: [{ en: "We only share your information:", es: "Solo compartimos tu información:" }],
     list: [
       {
-        en: "With service providers that help us run this website and communicate with you (such as FormSubmit, our email provider and GitHub Pages), only as needed for that purpose",
-        es: "Con proveedores de servicios que nos ayudan a operar este sitio web y comunicarnos contigo (como FormSubmit, nuestro proveedor de correo y GitHub Pages), solo en la medida necesaria para ese fin",
+        en: "With service providers that help us run this website and communicate with you (such as FormSubmit, our email provider, GitHub Pages and, if you accept analytics cookies, Google Analytics), only as needed for that purpose",
+        es: "Con proveedores de servicios que nos ayudan a operar este sitio web y comunicarnos contigo (como FormSubmit, nuestro proveedor de correo, GitHub Pages y, si aceptas las cookies de analítica, Google Analytics), solo en la medida necesaria para ese fin",
       },
       {
         en: "When required by law, or to protect our rights, our users or the public",
@@ -196,13 +204,13 @@ export default function PrivacyPolicy() {
             </span>
             {tr("Privacy Policy", "Política de privacidad")}
           </h1>
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-sm text-zinc-400">
             {tr("Last updated:", "Última actualización:")} {t(lastUpdated)}
           </p>
           <p className="mt-6 text-base leading-relaxed text-zinc-300">
             {tr(
-              "Your privacy matters to us. We keep this simple: we collect only what you send us, we use it to reply and work with you, and we don’t sell it.",
-              "Tu privacidad nos importa. Lo hacemos simple: solo recopilamos lo que nos envías, lo usamos para responderte y trabajar contigo, y no lo vendemos.",
+              "Your privacy matters to us. We keep this simple: we collect what you send us and, only if you accept, visit statistics. We use it to reply, work with you and improve the site, and we don’t sell it.",
+              "Tu privacidad nos importa. Lo hacemos simple: recopilamos lo que nos envías y, solo si lo aceptas, estadísticas de visitas. Lo usamos para responderte, trabajar contigo y mejorar el sitio, y no lo vendemos.",
             )}
           </p>
         </motion.div>

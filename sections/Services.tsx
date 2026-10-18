@@ -442,7 +442,7 @@ export default function Services() {
         {/* HEADER */}
 
         <div className="mb-8">
-          <p className="text-xs tracking-[0.4em] text-zinc-500">{tr("OUR SERVICES", "NUESTROS SERVICIOS")}</p>
+          <p className="text-xs tracking-[0.4em] text-zinc-400">{tr("OUR SERVICES", "NUESTROS SERVICIOS")}</p>
 
           <h2 className="mt-4 max-w-5xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:whitespace-nowrap md:text-5xl">
             {lang === "es" ? (

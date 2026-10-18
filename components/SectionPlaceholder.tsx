@@ -20,7 +20,7 @@ export default function SectionPlaceholder({
         </p>
         <h2 className="mt-3 text-2xl font-semibold text-white">{name}</h2>
         {notes && (
-          <p className="mt-3 max-w-md text-sm text-zinc-500">{notes}</p>
+          <p className="mt-3 max-w-md text-sm text-zinc-400">{notes}</p>
         )}
       </div>
     </section>
