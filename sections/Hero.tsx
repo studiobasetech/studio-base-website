@@ -389,16 +389,6 @@ export default function Hero() {
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Scroll indicator */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-8 z-10 flex justify-center">
-        <motion.div
-          animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex h-10 w-6 justify-center rounded-full border border-white/30 pt-2"
-        >
-          <span className="h-2 w-1 rounded-full bg-blue-500" />
-        </motion.div>
-      </div>
     </section>
   );
 }
