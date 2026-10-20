@@ -158,7 +158,7 @@ export default function CustomCursor() {
 
           {/* Rocket (the icon points up-right, so it is turned to point up) */}
           <Rocket
-            size={60}
+            size={50}
             strokeWidth={2}
             className="-rotate-45 text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.9)]"
           />
