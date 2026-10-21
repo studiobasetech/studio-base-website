@@ -24,7 +24,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
         {/* logo in the middle while the curtain is up */}
         <motion.img
-          src="/images/studio-base-logo-sb.png"
+          src="/images/studio-base-logo-v2.png"
           alt=""
           initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 0, scale: 0.9 }}

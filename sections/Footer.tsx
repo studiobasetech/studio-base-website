@@ -28,7 +28,7 @@ export default function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Link href="/">
               <img
-                src="/images/studio-base-logo-sb.png"
+                src="/images/studio-base-logo-v2.png"
                 alt="Studio Base"
                 className="h-10 w-auto"
               />

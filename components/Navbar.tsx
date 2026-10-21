@@ -110,7 +110,7 @@ export default function Navbar() {
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
             >
               <Image
-                src="/images/studio-base-logo-sb.png"
+                src="/images/studio-base-logo-v2.png"
                 alt="Studio Base"
                 width={240}
                 height={50}

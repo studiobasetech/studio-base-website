@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 export const SITE_URL = "https://studiobase.tech";
 export const SITE_NAME = "Studio Base";
 export const SITE_EMAIL = "info@studiobase.tech";
-export const SITE_LOGO = `${SITE_URL}/images/studio-base-logo-sb.png`;
+export const SITE_LOGO = `${SITE_URL}/images/studio-base-logo-v2.png`;
 
 /**
  * Google Search Console verification (HTML tag method).
