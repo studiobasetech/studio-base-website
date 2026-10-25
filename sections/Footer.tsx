@@ -103,7 +103,11 @@ export default function Footer() {
             >
               {contact.email}
             </a>
-            <p className="mt-2 text-sm text-zinc-400">{contact.location}</p>
+            <address className="mt-2 text-sm not-italic leading-relaxed text-zinc-400">
+              {contact.address.street}
+              <br />
+              {contact.address.city}, {contact.address.region} {contact.address.zip}
+            </address>
           </div>
         </div>
 

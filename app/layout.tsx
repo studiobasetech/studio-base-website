@@ -135,8 +135,10 @@ const structuredData = {
       email: SITE_EMAIL,
       address: {
         "@type": "PostalAddress",
+        streetAddress: "5900 Balcones Drive # 34618",
         addressLocality: "Austin",
         addressRegion: "TX",
+        postalCode: "78731",
         addressCountry: "US",
       },
       areaServed: ["United States", "Latin America"],
@@ -154,8 +156,10 @@ const structuredData = {
       parentOrganization: { "@id": ORG_ID },
       address: {
         "@type": "PostalAddress",
+        streetAddress: "5900 Balcones Drive # 34618",
         addressLocality: "Austin",
         addressRegion: "TX",
+        postalCode: "78731",
         addressCountry: "US",
       },
       areaServed: [

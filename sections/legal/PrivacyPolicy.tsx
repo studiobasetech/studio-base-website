@@ -267,7 +267,11 @@ export default function PrivacyPolicy() {
               )}
             </p>
             <p className="mt-4 text-sm leading-relaxed text-zinc-300 md:text-base">
-              Studio Base · {contact.location}
+              Studio Base
+              <br />
+              {contact.address.street}
+              <br />
+              {contact.address.city}, {contact.address.region} {contact.address.zip}
               <br />
               <a href={`mailto:${contact.email}`} className="break-all text-blue-400 transition hover:text-blue-300">
                 {contact.email}
