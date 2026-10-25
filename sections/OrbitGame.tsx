@@ -6,12 +6,12 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Cpu, Gauge, Play, RotateCcw, Shield, Trophy, Zap } from "lucide-react";
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { consultationHref } from "@/data/site";
-import { createGame, type HudState, type Phase } from "./orbit/engine";
+import type { createGame, HudState, Phase } from "./orbit/engine3d";
 import { useLang } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  ORBIT DEFENSE — Home "Interactive Lab". The game itself lives in   */
-/*  sections/orbit/engine.ts; this file is the console + HUD around it.*/
+/*  sections/orbit/engine3d.ts; this file is the console + HUD around it.*/
 /* ------------------------------------------------------------------ */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -61,27 +61,12 @@ export default function OrbitGame() {
     const c = canvasRef.current;
     const wrap = wrapRef.current;
     if (!c || !wrap) return;
-    const gm = createGame(c, {
-      onHud: setHud,
-      onPhase: setPhase,
-      getLang: () => langRef.current,
-      onOver: (score) => {
-        const prev = readBest();
-        if (score > prev) saveBest(score);
-        setBest(Math.max(prev, score));
-        setFinal(score);
-        setPhase("over");
-      },
-    });
-    game.current = gm;
-    const fit = () => gm.resize(wrap.clientWidth, wrap.clientHeight);
-    fit();
-    requestAnimationFrame(() => setBest(readBest()));
-    const ro = new ResizeObserver(fit);
-    ro.observe(wrap);
-
+    // three.js is loaded on demand so it never weighs down the first paint of the home page
+    let gm: ReturnType<typeof createGame> | null = null;
+    let cancelled = false;
+    let ro: ResizeObserver | null = null;
     const key = (down: boolean) => (e: KeyboardEvent) => {
-      if (!gm.isLive()) return;
+      if (!gm || !gm.isLive()) return;
       if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         gm.setKey("left", down);
         e.preventDefault();
@@ -95,9 +80,33 @@ export default function OrbitGame() {
     const ku = key(false);
     window.addEventListener("keydown", kd);
     window.addEventListener("keyup", ku);
+    import("./orbit/engine3d").then(({ createGame: create }) => {
+      if (cancelled) return;
+      const g = create(c, {
+        onHud: setHud,
+        onPhase: setPhase,
+        getLang: () => langRef.current,
+        onOver: (score) => {
+          const prev = readBest();
+          if (score > prev) saveBest(score);
+          setBest(Math.max(prev, score));
+          setFinal(score);
+          setPhase("over");
+        },
+      });
+      gm = g;
+      game.current = g;
+      const fit = () => g.resize(wrap.clientWidth, wrap.clientHeight);
+      fit();
+      setBest(readBest());
+      ro = new ResizeObserver(fit);
+      ro.observe(wrap);
+    });
     return () => {
-      gm.destroy();
-      ro.disconnect();
+      cancelled = true;
+      gm?.destroy();
+      game.current = null;
+      ro?.disconnect();
       window.removeEventListener("keydown", kd);
       window.removeEventListener("keyup", ku);
     };
@@ -148,7 +157,7 @@ export default function OrbitGame() {
           </motion.p>
           <motion.div variants={fadeUp} className="mt-6 flex flex-wrap justify-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
             {[
-              { icon: Gauge, t: tr("60 FPS engine", "Motor a 60 FPS") },
+              { icon: Gauge, t: tr("Real-time 3D", "3D en tiempo real") },
               { icon: Cpu, t: tr("Zero downloads", "Sin descargas") },
               { icon: Zap, t: tr("Any device", "Cualquier dispositivo") },
             ].map(({ icon: Icon, t }, k) => (
@@ -208,9 +217,8 @@ export default function OrbitGame() {
                 className={`absolute inset-0 h-full w-full outline-none ${live ? "cursor-crosshair touch-none" : ""}`}
               />
 
-              {/* scanlines + vignette */}
-              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.025)_0px,rgba(255,255,255,0.025)_1px,transparent_1px,transparent_3px)]" />
-              <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_140px_rgba(0,0,0,0.85)]" />
+              {/* cinematic vignette */}
+              <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,0.6)]" />
 
               {/* HUD corners */}
               <Corner className="left-4 top-4 border-l-2 border-t-2" />
