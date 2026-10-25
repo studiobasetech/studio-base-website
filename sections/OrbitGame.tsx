@@ -319,14 +319,14 @@ export default function OrbitGame() {
                       </h3>
                       <p className="mt-3 max-w-md text-sm text-zinc-400">
                         {tr(
-                          "Blast asteroids, UFOs, comets and space jellyfish, rescue stranded astronauts, survive the black hole and take down the Mothership.",
-                          "Destruye asteroides, ovnis, cometas y medusas espaciales, rescata a los astronautas a la deriva, sobrevive al agujero negro y derriba la nave nodriza.",
+                          "Pilot your starfighter through asteroid fields and enemy drone patrols, rescue stranded crew, survive each wave and take down the Mothership.",
+                          "Pilotea tu caza estelar entre campos de asteroides y patrullas de drones enemigos, rescata a la tripulación varada, sobrevive cada oleada y derriba la nave nodriza.",
                         )}
                       </p>
                       <div className="mt-6 hidden max-w-lg grid-cols-3 gap-3 text-left sm:grid">
                         {[
                           { k: tr("STEER", "CONTROL"), v: tr("Mouse · touch · ← →", "Mouse · táctil · ← →") },
-                          { k: tr("RESCUE", "RESCATE"), v: tr("Catch drifting astronauts +300", "Atrapa astronautas a la deriva +300") },
+                          { k: tr("RESCUE", "RESCATE"), v: tr("Fly into escape pods +300", "Recoge cápsulas de escape +300") },
                           { k: tr("POWER", "PODER"), v: tr("Yellow shield · purple triple shot", "Escudo amarillo · disparo triple morado") },
                         ].map((x, k) => (
                           <div key={k} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-sm">

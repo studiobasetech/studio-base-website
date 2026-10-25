@@ -8,9 +8,8 @@ import { GA_MEASUREMENT_ID, openCookieSettings } from "@/lib/analytics";
 
 // Every link here points to a real page or section.
 const resources: { label: Bi; href: string }[] = [
-  { label: { en: "Case Studies", es: "Casos de éxito" }, href: "/portfolio" },
-  { label: { en: "Careers", es: "Empleos" }, href: "/about#our-network" },
-  { label: { en: "Contact Form", es: "Formulario de contacto" }, href: "/contact#contact-form" },
+  { label: { en: "Book a Consultation", es: "Agenda una consulta" }, href: "/contact#contact-form" },
+  { label: { en: "Privacy Policy", es: "Política de privacidad" }, href: "/privacy" },
 ];
 
 export default function Footer() {
@@ -36,8 +35,8 @@ export default function Footer() {
 
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-400">
               {tr(
-                "A technology and creative company building digital infrastructure for forward-thinking businesses.",
-                "Una empresa de tecnología y creatividad que construye infraestructura digital para negocios con visión de futuro.",
+                "A tech firm building AI-powered products, custom software and digital infrastructure that help businesses automate, scale and grow.",
+                "Una firma tecnológica que desarrolla productos con IA, software a la medida e infraestructura digital que ayudan a los negocios a automatizar, escalar y crecer.",
               )}
             </p>
 
