@@ -23,7 +23,7 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   "Artificial Intelligence": [
     "AI agents for business",
     "artificial intelligence for business",
-    "AI automation company Austin",
+    "AI automation company",
     "inteligencia artificial para empresas",
   ],
   Automation: [
@@ -33,8 +33,8 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
     "automatización con IA",
   ],
   "Web & Software": [
-    "custom software development Austin TX",
-    "web development Austin",
+    "custom software development company",
+    "web development company",
     "software engineering",
     "desarrollo de software a la medida",
   ],

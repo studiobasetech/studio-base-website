@@ -12,13 +12,13 @@ import { contact } from "@/data/site";
 import { T } from "@/lib/i18n";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact Us: AI & Software Experts in Austin",
+  title: "Contact Us: AI & Software Experts",
   description:
-    "Tell us about your project or book a consultation with Studio Base in Austin, TX: AI automation, custom software, apps and web. Reply within 24 hours.",
+    "Tell us about your project or book a consultation with Studio Base: AI automation, custom software, mobile apps and web development. Reply within 24 hours.",
   path: "/contact/",
   keywords: [
     "hire AI developers",
-    "AI consulting Austin",
+    "AI consulting",
     "software development quote",
     "contact Studio Base",
     "contratar desarrollo de software",

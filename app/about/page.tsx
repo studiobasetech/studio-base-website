@@ -11,16 +11,16 @@ import { contact } from "@/data/site";
 import { T } from "@/lib/i18n";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Us: AI & Software Company in Austin, TX",
+  title: "About Us: AI & Software Tech Firm",
   description:
-    "Studio Base is a technology company in Austin, TX with a remote network of experts in AI, software engineering and digital transformation consulting.",
+    "Studio Base is a tech firm with a remote network of experts in AI, software engineering, mobile development and UI/UX design for digital transformation.",
   path: "/about/",
   keywords: [
-    "AI company Austin TX",
-    "software company Austin",
+    "AI company",
+    "software development firm",
     "digital transformation consulting",
     "remote software development team",
-    "empresa de tecnología en Austin",
+    "firma tecnológica",
   ],
 });
 

@@ -25,9 +25,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "AI Automation & Custom Software in Austin, TX | Studio Base";
+const SITE_TITLE = "AI Automation & Custom Software Development | Studio Base";
 const SITE_DESCRIPTION =
-  "Studio Base is an Austin, TX technology company building AI agents, business automation, custom software, mobile and web apps for the US and Latin America.";
+  "Studio Base is a tech firm building AI-powered products, custom software and digital infrastructure that help businesses automate, scale and grow.";
 
 /*
  * Browser tab title, Google result and link previews (WhatsApp, iMessage,

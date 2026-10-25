@@ -12,20 +12,20 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "AI Automation & Custom Software in Austin, TX | Studio Base",
+  title: "AI Automation & Custom Software Development | Studio Base",
   absoluteTitle: true,
   description:
-    "Austin, TX AI automation company: AI agents, AI voice agents, custom software, mobile and web development for businesses in the US and Latin America.",
+    "Studio Base is a tech firm building AI-powered products, custom software and digital infrastructure that help businesses automate, scale and grow.",
   path: "/",
   keywords: [
-    "AI automation company Austin",
+    "AI automation company",
     "AI agents for business",
     "AI voice agents",
-    "custom software development Austin TX",
+    "custom software development company",
     "mobile app development company",
-    "web development Austin",
+    "web development company",
     "digital transformation consulting",
-    "agencia de IA en Austin",
+    "agencia de inteligencia artificial",
   ],
 });
 

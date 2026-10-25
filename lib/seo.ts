@@ -28,19 +28,19 @@ export const GOOGLE_SITE_VERIFICATION: string = "";
 /** Keywords used on every page (pages add their own on top). */
 export const DEFAULT_KEYWORDS: string[] = [
   "Studio Base",
-  "AI automation company Austin",
-  "custom software development Austin TX",
+  "AI automation company",
+  "custom software development company",
   "AI agents for business",
   "AI voice agents",
   "mobile app development company",
-  "web development Austin",
+  "web development company",
   "digital transformation consulting",
   "business process automation",
-  "technology company Austin TX",
+  "tech firm",
   "automatización con IA",
   "desarrollo de software a la medida",
   "desarrollo de aplicaciones móviles",
-  "agencia de IA en Austin",
+  "agencia de inteligencia artificial",
 ];
 
 /** Default link-preview image (app/opengraph-image.png, 1200×630). */

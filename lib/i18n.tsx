@@ -70,12 +70,12 @@ export function T({ en, es }: { en: ReactNode; es: ReactNode }) {
 
 /* Browser-tab titles per page (blog articles set their own in ArticleBody). */
 const pageTitles: Record<string, string> = {
-  "/": "Automatización con IA y software a la medida en Austin, TX | Studio Base",
+  "/": "Automatización con IA y desarrollo de software a la medida | Studio Base",
   "/products-services": "Servicios de automatización con IA y desarrollo de software | Studio Base",
   "/portfolio": "Portafolio: proyectos de IA, software y apps | Studio Base",
-  "/about": "Sobre nosotros: empresa de IA y software en Austin, TX | Studio Base",
+  "/about": "Sobre nosotros: firma tecnológica de IA y software | Studio Base",
   "/blog": "Blog: IA, automatización, datos y web | Studio Base",
-  "/contact": "Contáctanos: expertos en IA y software en Austin | Studio Base",
+  "/contact": "Contáctanos: expertos en IA y software | Studio Base",
   "/privacy": "Política de privacidad | Studio Base",
 };
 
