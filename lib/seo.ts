@@ -43,9 +43,13 @@ export const DEFAULT_KEYWORDS: string[] = [
   "agencia de inteligencia artificial",
 ];
 
-/** Default link-preview image (app/opengraph-image.png, 1200×630). */
+/**
+ * Default link-preview image (1200×630). It has a unique file name on purpose:
+ * browsers, Google and social apps cache preview images by URL, so a new image
+ * must get a NEW name (e.g. ...-2027.png) or they keep showing the old one.
+ */
 export const DEFAULT_OG_IMAGE = {
-  url: "/opengraph-image.png",
+  url: "/images/share/studio-base-preview-2026.png",
   width: 1200,
   height: 630,
   alt: "Studio Base - Technology Solutions & Digital Transformation",

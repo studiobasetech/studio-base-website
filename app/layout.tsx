@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import {
   DEFAULT_KEYWORDS,
+  DEFAULT_OG_IMAGE,
   GOOGLE_SITE_VERIFICATION,
   SITE_EMAIL,
   SITE_LOGO,
@@ -31,9 +32,8 @@ const SITE_DESCRIPTION =
 
 /*
  * Browser tab title, Google result and link previews (WhatsApp, iMessage,
- * LinkedIn, X...). The favicon and the preview image are the files
- * app/favicon.ico, app/icon.png, app/apple-icon.png and
- * app/opengraph-image.png; Next.js picks them up automatically.
+ * LinkedIn, X...). The icons are app/favicon.ico, app/icon.png and
+ * app/apple-icon.png; the link-preview image is public/images/share/studio-base-preview-2026.png (see lib/seo.ts).
  * Shared SEO settings (site URL, keywords, Google verification) live in lib/seo.ts.
  */
 export const metadata: Metadata = {
@@ -70,11 +70,13 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     locale: "en_US",
     alternateLocale: ["es_US"],
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE.url],
   },
   // Added only once a token is pasted into lib/seo.ts
   ...(GOOGLE_SITE_VERIFICATION ? { verification: { google: GOOGLE_SITE_VERIFICATION } } : {}),
