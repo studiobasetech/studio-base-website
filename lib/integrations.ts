@@ -9,7 +9,7 @@
  * e.g. "https://eva-ai.your-name.workers.dev". When set, Eva answers questions
  * her script doesn't cover with real AI (Google Gemini).
  */
-export const EVA_AI_ENDPOINT: string = "";
+export const EVA_AI_ENDPOINT: string = "https://eva-ai.studiobase-tech.workers.dev";
 
 /**
  * Cal.com booking page (free). Paste the part after "cal.com/", e.g.
