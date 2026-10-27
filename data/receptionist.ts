@@ -150,6 +150,50 @@ export const LINES = {
     en: "Sorry, I didn't quite get that. You can ask me what Studio Base does, about AI agents, pricing, or timelines, or I can book you a free consultation.",
     es: "Perdón, no te entendí bien. Puedes preguntarme qué hace Studio Base, sobre los agentes de inteligencia artificial, precios o tiempos, o puedo agendarte una consulta gratis.",
   },
+  formIntro: {
+    en: "Hi, I'm Eva! I'll help you fill out this form, just by talking. Let's start: what's your full name?",
+    es: "¡Hola, soy Eva! Te ayudo a llenar este formulario, solo hablando. Empecemos: ¿cuál es tu nombre completo?",
+  },
+  formEmail: {
+    en: "Nice to meet you! What's your email address?",
+    es: "¡Mucho gusto! ¿Cuál es tu correo electrónico?",
+  },
+  formBadEmail: {
+    en: "I couldn't quite get that email. Could you type it in the email field? I'll wait.",
+    es: "No logré entender bien el correo. ¿Podrías escribirlo en el campo de correo? Te espero.",
+  },
+  formCompany: {
+    en: "Thanks! What's the name of your company? If you don't have one, just say skip.",
+    es: "¡Gracias! ¿Cómo se llama tu empresa? Si no tienes una, solo di omitir.",
+  },
+  formTypes: {
+    en: "What kind of project is it? A website, a mobile app, custom software, AI automation, or something else? You can choose more than one.",
+    es: "¿Qué tipo de proyecto es? ¿Un sitio web, una aplicación móvil, software a la medida, automatización con inteligencia artificial u otra cosa? Puedes elegir más de uno.",
+  },
+  formTypesAgain: {
+    en: "Sorry, I didn't catch that. Is it a website, a mobile app, custom software, AI automation, or something else?",
+    es: "Perdón, no te entendí. ¿Es un sitio web, una aplicación móvil, software a la medida, automatización con inteligencia artificial u otra cosa?",
+  },
+  formMessage: {
+    en: "Perfect. Now tell me a little about your project or your question. Take your time.",
+    es: "Perfecto. Ahora cuéntame un poco sobre tu proyecto o tu pregunta. Tómate tu tiempo.",
+  },
+  formConfirm: {
+    en: "Great, I've filled everything in. Please check the form, and when you're ready, say send, or press Send Message.",
+    es: "Listo, ya llené todo. Revisa el formulario y, cuando estés listo, di enviar, o presiona Enviar mensaje.",
+  },
+  formSent: {
+    en: "Your message has been sent! Our team will reply within one business day. Thank you!",
+    es: "¡Tu mensaje fue enviado! Nuestro equipo te responderá en un día hábil. ¡Gracias!",
+  },
+  formFail: {
+    en: "I'm sorry, I couldn't send it just now. Please press Send Message again in a moment, or email info at studiobase dot tech.",
+    es: "Lo siento, no pude enviarlo en este momento. Por favor presiona Enviar mensaje de nuevo en un momento, o escribe a info arroba studiobase punto tech.",
+  },
+  formEdit: {
+    en: "No problem. You can edit anything directly on the form, and press Send Message when you're ready.",
+    es: "No hay problema. Puedes editar lo que quieras directamente en el formulario, y presionar Enviar mensaje cuando estés listo.",
+  },
 } satisfies Record<string, Bi>;
 
 export type LineId = keyof typeof LINES;
@@ -419,7 +463,7 @@ export function spokenEmail(s: string) {
 }
 
 /** strip "my name is" / "me llamo" etc. */
-function cleanName(s: string) {
+export function cleanName(s: string) {
   const t = s
     .trim()
     .replace(/^(hi|hello|hola)[,!. ]+/i, "")
@@ -512,6 +556,50 @@ export function reply(prev: ConvState, said: string): Reply {
   if (["question", "questions", "pregunta", "preguntas", "duda", "dudas"].some((k) => toks.includes(k)) && toks.length <= 8)
     return { state: { ...st, offered: false }, line: "hello" };
   return { state: { ...st, offered: false }, line: "fallback" };
+}
+
+/* ------------------------------------------------------------------ */
+/* helping fill out the contact form by voice                         */
+/* ------------------------------------------------------------------ */
+
+/** project types on the contact form, as ids */
+export type ProjectTypeId = "web" | "mobile" | "software" | "ai" | "other";
+const TYPE_WORDS: Record<ProjectTypeId, string[]> = {
+  web: ["website*", "web", "site", "landing", "ecommerce", "e commerce", "online store", "pagina*", "sitio*", "tienda en linea", "tienda online"],
+  mobile: ["app", "apps", "mobile", "ios", "android", "iphone", "application*", "aplicacion*", "movil"],
+  software: ["software", "custom software", "system*", "platform*", "saas", "crm", "dashboard*", "programa*", "sistema*", "plataforma*"],
+  ai: ["ai", "a i", "artificial", "automat*", "agent*", "chatbot*", "bot", "receptionist*", "ia", "inteligencia", "automatiz*", "agente*", "recepcionist*"],
+  other: ["other", "something else", "else", "otro", "otra", "otra cosa", "consulting", "consultoria", "branding", "design", "diseno"],
+};
+
+/** which project types the visitor mentioned ("a website and an app" → web, mobile) */
+export function parseProjectTypes(said: string): ProjectTypeId[] {
+  const toks = tokenize(said);
+  return (Object.keys(TYPE_WORDS) as ProjectTypeId[]).filter((id) => TYPE_WORDS[id].some((kw) => matches(toks, kw)));
+}
+
+/** an answer that means "I don't have one / skip" */
+export function isSkip(said: string) {
+  const toks = tokenize(said);
+  return toks.length <= 6 && ["skip", "none", "no", "nothing", "n/a", "na", "no company", "i dont have", "i do not have", "not applicable", "omitir", "ninguna", "ninguno", "no tengo", "nada", "saltar", "siguiente", "next"].some((k) => matches(toks, k));
+}
+
+/** "send it" vs "wait, I want to change something" */
+export function confirmAnswer(said: string): "send" | "edit" | null {
+  const toks = tokenize(said);
+  if (["no", "wait", "change", "edit", "fix", "not yet", "hold on", "espera", "cambiar", "cambia", "corregir", "editar", "todavia no", "aun no"].some((k) => matches(toks, k))) return "edit";
+  if (["send", "send it", "submit", "yes", "yeah", "yep", "sure", "ok", "okay", "go ahead", "looks good", "perfect", "envia*", "enviar", "si", "claro", "dale", "listo", "perfecto", "manda*", "adelante"].some((k) => matches(toks, k))) return "send";
+  return null;
+}
+
+/** "my company is Acme" → "Acme" */
+export function cleanCompany(s: string) {
+  return s
+    .trim()
+    .replace(/^(it'?s|it is|my company is|the company is|my company'?s name is|the name is|it'?s called|we are|we're|mi empresa es|la empresa es|se llama|mi empresa se llama|somos)\s+/i, "")
+    .replace(/[.!?]+$/, "")
+    .trim()
+    .slice(0, 120);
 }
 
 export const pickLine = (id: LineId, lang: Lang) => LINES[id][lang];

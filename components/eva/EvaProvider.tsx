@@ -3,7 +3,22 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { contact } from "@/data/site";
 import { useLang } from "@/lib/i18n";
-import { LINES, detectLang, initialState, reply, type ConvState, type Lead, type LineId } from "@/data/receptionist";
+import {
+  LINES,
+  cleanCompany,
+  cleanName,
+  confirmAnswer,
+  detectLang,
+  initialState,
+  isSkip,
+  parseProjectTypes,
+  reply,
+  spokenEmail,
+  type ConvState,
+  type Lead,
+  type LineId,
+  type ProjectTypeId,
+} from "@/data/receptionist";
 
 /* ------------------------------------------------------------------ */
 /*  Eva, the AI receptionist: the call itself (voice, listening,       */
@@ -33,11 +48,24 @@ type SR = {
   stop: () => void;
   abort: () => void;
 };
+/** true when this browser can listen (Chrome, Edge, Safari) */
+export const speechSupported = () => !!getSR();
 const getSR = (): (new () => SR) | null => {
   if (typeof window === "undefined") return null;
   const w = window as unknown as { SpeechRecognition?: new () => SR; webkitSpeechRecognition?: new () => SR };
   return w.SpeechRecognition || w.webkitSpeechRecognition || null;
 };
+
+/** what the contact form gives Eva so she can fill it in by voice */
+export type FormFillHooks = {
+  setField: (field: "name" | "email" | "company" | "message", value: string) => void;
+  setTypes: (ids: ProjectTypeId[]) => void;
+  getEmail: () => string;
+  /** sends the form; resolves true when it was delivered */
+  send: () => Promise<boolean>;
+};
+type FormStep = "name" | "email" | "company" | "types" | "message" | "confirm";
+const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 type EvaApi = {
   status: EvaStatus;
@@ -61,6 +89,9 @@ type EvaApi = {
   /** true while the home page section is on screen (the floating button hides then) */
   sectionVisible: boolean;
   setSectionVisible: (v: boolean) => void;
+  /** "chat" = receptionist call, "form" = helping fill out the contact form */
+  mode: "chat" | "form";
+  startFormFill: (hooks: FormFillHooks) => void;
 };
 
 const EvaContext = createContext<EvaApi | null>(null);
@@ -97,6 +128,14 @@ export function EvaProvider({ children }: { children: ReactNode }) {
   const inputs = useRef(new Set<HTMLInputElement>());
   const langRef = useRef(lang);
   const handleUserRef = useRef<(text: string) => void>(() => {});
+  const [mode, setMode] = useState<"chat" | "form">("chat");
+  const modeRef = useRef<"chat" | "form">("chat");
+  const formHooks = useRef<FormFillHooks | null>(null);
+  const formStep = useRef<FormStep>("name");
+  const typesRetried = useRef(false);
+  const emailPoll = useRef<ReturnType<typeof setInterval> | null>(null);
+  /** longer pauses allowed while the visitor describes their project */
+  const longTurn = useRef(false);
   const startListeningRef = useRef<() => void>(() => {});
 
   const registerInput = useCallback((el: HTMLInputElement | null) => {
@@ -169,7 +208,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       interimText = inter;
       setInterim(`${fin} ${inter}`.trim());
       if (silence) clearTimeout(silence);
-      silence = setTimeout(finish, inter ? 1800 : 1200);
+      silence = setTimeout(finish, longTurn.current ? 2600 : inter ? 1800 : 1200);
     };
     r.onerror = (e) => {
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
@@ -220,7 +259,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         level.current = 0;
         if (!inCallRef.current) return;
         if (after) after();
-        else if (conv.current.step === "email") {
+        else if (modeRef.current === "chat" && conv.current.step === "email") {
           setStatus("listening");
           focusInput();
         } else startListening();
@@ -241,6 +280,12 @@ export function EvaProvider({ children }: { children: ReactNode }) {
   /* ---------- call controls ---------- */
   const endCall = useCallback(() => {
     inCallRef.current = false;
+    if (emailPoll.current) clearInterval(emailPoll.current);
+    emailPoll.current = null;
+    modeRef.current = "chat";
+    setMode("chat");
+    formHooks.current = null;
+    longTurn.current = false;
     setInCall(false);
     stopListening();
     if (audio.current) {
@@ -280,6 +325,85 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  /* ---------- filling out the contact form by voice ---------- */
+  const goFormStep = useCallback(
+    (next: FormStep, line: LineId) => {
+      formStep.current = next;
+      longTurn.current = next === "message";
+      speak(line);
+    },
+    [speak],
+  );
+
+  const waitForTypedEmail = useCallback(() => {
+    if (emailPoll.current) clearInterval(emailPoll.current);
+    let last = "";
+    // move on once a valid email has been typed and left unchanged for a moment
+    emailPoll.current = setInterval(() => {
+      const h = formHooks.current;
+      if (!h || !inCallRef.current || formStep.current !== "email") {
+        if (emailPoll.current) clearInterval(emailPoll.current);
+        return;
+      }
+      const v = h.getEmail().trim();
+      if (EMAIL_OK.test(v) && v === last) {
+        if (emailPoll.current) clearInterval(emailPoll.current);
+        stopListening();
+        goFormStep("company", "formCompany");
+      }
+      last = v;
+    }, 1200);
+  }, [goFormStep, stopListening]);
+
+  const handleForm = useCallback(
+    async (said: string) => {
+      const h = formHooks.current;
+      if (!h) return;
+      switch (formStep.current) {
+        case "name":
+          h.setField("name", cleanName(said) || said);
+          return goFormStep("email", "formEmail");
+        case "email": {
+          // already typed in the field ("done", "ok", "listo")?
+          if (EMAIL_OK.test(h.getEmail().trim())) return goFormStep("company", "formCompany");
+          const e = EMAIL_OK.test(said.trim()) ? said.trim() : spokenEmail(said);
+          if (!EMAIL_OK.test(e)) {
+            speak("formBadEmail");
+            waitForTypedEmail();
+            return;
+          }
+          h.setField("email", e);
+          return goFormStep("company", "formCompany");
+        }
+        case "company":
+          if (!isSkip(said)) h.setField("company", cleanCompany(said));
+          return goFormStep("types", "formTypes");
+        case "types": {
+          const ids = parseProjectTypes(said);
+          if (ids.length) h.setTypes(ids);
+          else if (!typesRetried.current) {
+            typesRetried.current = true;
+            return speak("formTypesAgain");
+          }
+          return goFormStep("message", "formMessage");
+        }
+        case "message":
+          h.setField("message", said);
+          return goFormStep("confirm", "formConfirm");
+        case "confirm": {
+          const a = confirmAnswer(said);
+          if (a === "edit") return speak("formEdit", endCall);
+          if (a !== "send") return speak("formConfirm");
+          setStatus("thinking");
+          const ok = await h.send();
+          if (!inCallRef.current) return;
+          return speak(ok ? "formSent" : "formFail", endCall);
+        }
+      }
+    },
+    [goFormStep, speak, waitForTypedEmail, endCall],
+  );
+
   const handleUser = useCallback(
     async (text: string) => {
       const said = text.trim();
@@ -287,6 +411,10 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       stopListening();
       audio.current?.pause();
       push("you", said);
+      if (modeRef.current === "form") {
+        setStatus("thinking");
+        return handleForm(said);
+      }
       // answer in the language the visitor is using (English or Spanish), not only the site's language
       if (conv.current.step === "chat") {
         const spoken = detectLang(said);
@@ -309,7 +437,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         else speak(r.line);
       }, 350);
     },
-    [push, speak, stopListening, submitLead, endCall],
+    [push, speak, stopListening, submitLead, endCall, handleForm],
   );
   useEffect(() => {
     handleUserRef.current = handleUser;
@@ -323,9 +451,8 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     if (v) setWidgetOpen(false);
   }, []);
 
-  const startCall = useCallback(() => {
-    langRef.current = lang;
-    setMicSupported(!!getSR());
+  /** create the audio player + analyser (must run inside a click) */
+  const ensureAudio = useCallback(() => {
     if (!audio.current) {
       const a = new Audio();
       a.preload = "auto";
@@ -345,6 +472,12 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       }
     }
     actx.current?.resume().catch(() => {});
+  }, []);
+
+  const startCall = useCallback(() => {
+    langRef.current = lang;
+    setMicSupported(!!getSR());
+    ensureAudio();
     conv.current = initialState();
     setStep("chat");
     setMsgs([]);
@@ -354,7 +487,32 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       if (inCallRef.current) speak("greet");
     }, 900);
-  }, [lang, speak]);
+  }, [lang, speak, ensureAudio]);
+
+  /** Eva helps fill out the contact form: asks each field by voice and types the answers in */
+  const startFormFill = useCallback(
+    (hooks: FormFillHooks) => {
+      if (inCallRef.current) endCall();
+      langRef.current = lang;
+      setMicSupported(!!getSR());
+      ensureAudio();
+      formHooks.current = hooks;
+      formStep.current = "name";
+      typesRetried.current = false;
+      longTurn.current = false;
+      modeRef.current = "form";
+      setMode("form");
+      setWidgetOpen(false);
+      setMsgs([]);
+      inCallRef.current = true;
+      setInCall(true);
+      setStatus("connecting");
+      setTimeout(() => {
+        if (inCallRef.current) speak("formIntro");
+      }, 600);
+    },
+    [lang, endCall, ensureAudio, speak],
+  );
 
   const toggleMic = useCallback(() => {
     const next = !micOnRef.current;
@@ -429,8 +587,10 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       setWidgetOpen,
       sectionVisible,
       setSectionVisible: markSectionVisible,
+      mode,
+      startFormFill,
     }),
-    [status, inCall, msgs, caption, interim, micOn, micSupported, step, startCall, endCall, send, toggleMic, registerInput, widgetOpen, sectionVisible, markSectionVisible],
+    [status, inCall, msgs, caption, interim, micOn, micSupported, step, startCall, endCall, send, toggleMic, registerInput, widgetOpen, sectionVisible, markSectionVisible, mode, startFormFill],
   );
 
   return <EvaContext.Provider value={api}>{children}</EvaContext.Provider>;

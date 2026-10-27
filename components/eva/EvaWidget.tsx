@@ -15,8 +15,9 @@ import EvaPanel from "./EvaPanel";
 
 export default function EvaWidget() {
   const { tr } = useLang();
-  const { widgetOpen, setWidgetOpen, sectionVisible, inCall, status } = useEva();
-  const hidden = sectionVisible && !widgetOpen;
+  const { widgetOpen, setWidgetOpen, sectionVisible, inCall, status, mode } = useEva();
+  // step aside while the home section is on screen, or while Eva is helping with the contact form
+  const hidden = (sectionVisible && !widgetOpen) || mode === "form";
 
   // Escape minimizes the panel
   useEffect(() => {
