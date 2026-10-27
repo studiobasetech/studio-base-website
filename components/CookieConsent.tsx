@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Script from "next/script";
 import { AnimatePresence, motion } from "framer-motion";
 import { Cookie } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
@@ -19,8 +18,8 @@ import { useLang } from "@/lib/i18n";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Cookie notice + Google Analytics.
- * Analytics loads only after the visitor clicks "Accept". The choice is saved
+ * Cookie notice for Google Analytics (the Google tag itself is in app/layout.tsx).
+ * Analytics cookies are only allowed after the visitor clicks "Accept". The choice is saved
  * in the browser, and the footer's "Cookie settings" link reopens this notice.
  */
 export default function CookieConsent({ measurementId = GA_MEASUREMENT_ID }: { measurementId?: string }) {
@@ -42,6 +41,9 @@ export default function CookieConsent({ measurementId = GA_MEASUREMENT_ID }: { m
   const open = mounted && (consent === null || reopened);
 
   const choose = (value: Consent) => {
+    // tell the Google tag (loaded in app/layout.tsx) what the visitor chose
+    const g = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    g?.("consent", "update", { analytics_storage: value });
     if (value === "denied") disableAnalytics();
     saveConsent(value);
     setReopened(false);
@@ -49,19 +51,6 @@ export default function CookieConsent({ measurementId = GA_MEASUREMENT_ID }: { m
 
   return (
     <>
-      {consent === "granted" && (
-        <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`} strategy="afterInteractive" />
-          <Script id="ga-init" strategy="afterInteractive">
-            {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-window['ga-disable-${measurementId}'] = false;
-gtag('js', new Date());
-gtag('config', '${measurementId}');`}
-          </Script>
-        </>
-      )}
-
       <AnimatePresence>
         {open && (
           <motion.div

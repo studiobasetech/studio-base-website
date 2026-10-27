@@ -2,6 +2,7 @@ import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { EvaProvider } from "@/components/eva/EvaProvider";
 import EvaWidget from "@/components/eva/EvaWidget";
 import { HtmlLang } from "@/lib/i18n";
@@ -218,6 +219,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      {GA_MEASUREMENT_ID && (
+        <head>
+          {/* Google tag (gtag.js) with Consent Mode: storage stays "denied" (no analytics
+              cookies) until the visitor clicks "Accept" in the cookie notice. */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+var sbConsent = null; try { sbConsent = localStorage.getItem('sb-cookie-consent'); } catch (e) {}
+gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: sbConsent === 'granted' ? 'granted' : 'denied' });
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}');`,
+            }}
+          />
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+        </head>
+      )}
       <body className="flex min-h-full flex-col bg-black text-white">
         {/* Structured data for Google; "<" is escaped so the JSON can never close the tag early */}
         <script

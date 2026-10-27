@@ -6,8 +6,10 @@
  * 2. Copy the stream's Measurement ID (it looks like "G-ABC123XYZ9") and
  *    paste it between the quotes below, then publish the site.
  *
+ * The Google tag is added to every page in app/layout.tsx using Consent Mode:
+ * until a visitor clicks "Accept" in the cookie notice, analytics storage is
+ * "denied" (no _ga cookies; Google only receives anonymous, cookie-free signals).
  * While the ID is empty, nothing is loaded and no cookie notice is shown.
- * Analytics only starts after a visitor clicks "Accept" in the cookie notice.
  */
 export const GA_MEASUREMENT_ID: string = "G-NBVMZXH2R9";
 
@@ -54,10 +56,9 @@ export function subscribeOpenSettings(onOpen: () => void) {
   return () => window.removeEventListener(OPEN_EVENT, onOpen);
 }
 
-/** Stops Google Analytics and removes its cookies when consent is withdrawn. */
+/** Removes Google Analytics cookies when consent is declined or withdrawn. */
 export function disableAnalytics() {
   if (!GA_MEASUREMENT_ID) return;
-  (window as unknown as Record<string, unknown>)[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
   const host = window.location.hostname.replace(/^www\./, "");
   document.cookie.split(";").forEach((c) => {
     const name = c.split("=")[0].trim();
