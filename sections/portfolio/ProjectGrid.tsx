@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   ArrowRight,

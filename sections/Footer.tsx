@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import ParticleField from "@/components/ParticleField";
 import { LEGAL_NAME, contact, legalLinks, navLinks, socials } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";

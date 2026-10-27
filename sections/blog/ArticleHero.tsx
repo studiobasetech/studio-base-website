@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ArrowLeft, Clock } from "lucide-react";
 import ParticleField from "@/components/ParticleField";

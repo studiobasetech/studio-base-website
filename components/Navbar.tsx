@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import {
 } from "framer-motion";
 
 import { consultationHref, navLinks as links } from "@/data/site";
-import { useLang } from "@/lib/i18n";
+import { useLang, stripLang } from "@/lib/i18n";
 import LanguageToggle from "@/components/LanguageToggle";
 
 const MotionLink = motion.create(Link);
@@ -69,7 +69,7 @@ export default function Navbar() {
   }, [open]);
 
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+    href === "/" ? stripLang(pathname) === "/" : stripLang(pathname).startsWith(href);
 
   const activeHref = links.find((l) => isActive(l.href))?.href ?? null;
   const pillHref = hovered ?? activeHref;

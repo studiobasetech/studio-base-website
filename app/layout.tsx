@@ -221,8 +221,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      {GA_MEASUREMENT_ID && (
-        <head>
+      <head>
+        {/* Spanish pages (/es/...) say so in <html lang> right away */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if (location.pathname === '/es' || location.pathname.indexOf('/es/') === 0) document.documentElement.lang = 'es';`,
+          }}
+        />
+        {GA_MEASUREMENT_ID && (
+          <>
           {/* Google tag (gtag.js) with Consent Mode: storage stays "denied" (no analytics
               cookies) until the visitor clicks "Accept" in the cookie notice. */}
           <script
@@ -236,8 +243,9 @@ gtag('config', '${GA_MEASUREMENT_ID}');`,
             }}
           />
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
-        </head>
-      )}
+          </>
+        )}
+      </head>
       <body className="flex min-h-full flex-col bg-black text-white">
         {/* Structured data for Google; "<" is escaped so the JSON can never close the tag early */}
         <script

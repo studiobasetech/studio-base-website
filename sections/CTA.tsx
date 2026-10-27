@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import type { ReactNode } from "react";
 import ParticleField from "@/components/ParticleField";
 import { ArrowRight } from "lucide-react";

@@ -7,6 +7,7 @@
  * and no hreflang alternates. Spanish keywords are listed alongside English.
  */
 import type { Metadata } from "next";
+import type { Lang } from "@/lib/i18n";
 
 export const SITE_URL = "https://studiobase.tech";
 export const SITE_NAME = "Studio Base";
@@ -71,7 +72,23 @@ type PageSeo = {
   keywords?: string[];
   /** true = use the title as is, without " | Studio Base" (home page). */
   absoluteTitle?: boolean;
+  /** "es" for the Spanish copy of a page (app/es/...); path stays the English one. */
+  lang?: Lang;
 };
+
+/** English path → Spanish path ("/about/" → "/es/about/") */
+export const spanishPath = (path: string) => (path === "/" ? "/es/" : `/es${path}`);
+
+/** Spanish keywords used on every Spanish page. */
+const DEFAULT_KEYWORDS_ES: string[] = [
+  "Studio Base",
+  "firma tecnológica",
+  "automatización con IA",
+  "agentes de IA para empresas",
+  "desarrollo de software a la medida",
+  "desarrollo de aplicaciones móviles",
+  "agencia de inteligencia artificial",
+];
 
 /** Metadata for a regular page: title, description, keywords, canonical, previews. */
 export function pageMetadata({
@@ -80,18 +97,22 @@ export function pageMetadata({
   path,
   keywords = [],
   absoluteTitle = false,
+  lang = "en",
 }: PageSeo): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${SITE_NAME}`;
+  const url = lang === "es" ? spanishPath(path) : path;
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
-    keywords: Array.from(new Set([...keywords, ...DEFAULT_KEYWORDS])),
-    alternates: { canonical: path },
+    keywords: Array.from(new Set([...keywords, ...(lang === "es" ? DEFAULT_KEYWORDS_ES : DEFAULT_KEYWORDS)])),
+    // canonical + hreflang: tells Google the English and Spanish pages are translations of each other
+    alternates: { canonical: url, languages: { en: path, es: spanishPath(path), "x-default": path } },
     openGraph: {
       ...OPEN_GRAPH_DEFAULTS,
-      alternateLocale: [...OPEN_GRAPH_DEFAULTS.alternateLocale],
+      locale: lang === "es" ? "es_US" : "en_US",
+      alternateLocale: [lang === "es" ? "en_US" : "es_US"],
       type: "website",
-      url: path,
+      url,
       title: fullTitle,
       description,
       images: [DEFAULT_OG_IMAGE],

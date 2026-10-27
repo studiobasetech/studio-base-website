@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { consultationHref } from "@/data/site";
 import { useLang } from "@/lib/i18n";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Cpu, Gauge, Play, RotateCcw, Shield, Trophy, Zap } from "lucide-react";
 import { LightSweep, ShimmerText } from "@/components/Effects";

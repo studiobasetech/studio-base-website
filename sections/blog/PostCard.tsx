@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { TiltCard } from "@/components/Effects";
 import { categoryLabel, formatDate, localizePost, readingTime, type Post } from "@/data/blog";

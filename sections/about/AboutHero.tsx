@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform, type Variants } from "framer-motion";
 import { LightSweep, ShimmerText } from "@/components/Effects";

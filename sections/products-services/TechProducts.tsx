@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Check, Cpu, Crosshair } from "lucide-react";
 import Reveal from "@/components/Reveal";

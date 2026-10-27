@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LangLink";
 import { motion } from "framer-motion";
 import { ShieldCheck } from "lucide-react";
 import { contact } from "@/data/site";
