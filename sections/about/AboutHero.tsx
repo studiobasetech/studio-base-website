@@ -82,8 +82,8 @@ export default function AboutHero() {
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base">
             {tr(
-              "Studio Base is a technology company dedicated to turning ideas into meaningful digital experiences. We specialize in artificial intelligence, software engineering, and digital transformation, helping businesses design, build, and scale solutions that create real impact.",
-              "Studio Base es una empresa de tecnología dedicada a convertir ideas en experiencias digitales con propósito. Nos especializamos en inteligencia artificial, ingeniería de software y transformación digital, y ayudamos a las empresas a diseñar, construir y escalar soluciones que generan un impacto real.",
+              "Studio Base is a tech firm dedicated to turning ideas into meaningful digital experiences. We specialize in artificial intelligence, software engineering, and digital transformation, helping businesses design, build, and scale solutions that create real impact.",
+              "Studio Base es una firma tecnológica dedicada a convertir ideas en experiencias digitales con propósito. Nos especializamos en inteligencia artificial, ingeniería de software y transformación digital, y ayudamos a las empresas a diseñar, construir y escalar soluciones que generan un impacto real.",
             )}
           </motion.p>
           <motion.p variants={fadeUp} className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">

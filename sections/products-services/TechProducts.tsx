@@ -53,8 +53,8 @@ export default function TechProducts() {
         <SectionIntro
           eyebrow={{ en: "OUR TECHNOLOGY PRODUCTS", es: "NUESTROS PRODUCTOS TECNOLÓGICOS" }}
           title={tr(
-            "Proprietary AI Solutions for Modern Businesses.",
-            "Soluciones de IA propias para empresas modernas.",
+            "Our Own AI Solutions for Modern Businesses.",
+            "Nuestras propias soluciones de IA para empresas modernas.",
           )}
           side={
             <p>

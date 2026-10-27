@@ -117,8 +117,8 @@ export default function ProductsHero() {
             className="mt-6 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base"
           >
             {tr(
-              "Studio Base is a technology company specialized in artificial intelligence, software engineering, and digital transformation solutions. We help organizations automate operations, develop scalable technology solutions, strengthen digital infrastructure, and create innovative digital products.",
-              "Studio Base es una empresa de tecnología especializada en inteligencia artificial, ingeniería de software y soluciones de transformación digital. Ayudamos a las organizaciones a automatizar sus operaciones, desarrollar soluciones tecnológicas escalables, fortalecer su infraestructura digital y crear productos digitales innovadores.",
+              "Studio Base is a tech firm specialized in artificial intelligence, software engineering, and digital transformation solutions. We help organizations automate operations, develop scalable technology solutions, strengthen digital infrastructure, and create innovative digital products.",
+              "Studio Base es una firma tecnológica especializada en inteligencia artificial, ingeniería de software y soluciones de transformación digital. Ayudamos a las organizaciones a automatizar sus operaciones, desarrollar soluciones tecnológicas escalables, fortalecer su infraestructura digital y crear productos digitales innovadores.",
             )}
           </motion.p>
 

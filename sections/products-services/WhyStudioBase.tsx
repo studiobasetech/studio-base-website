@@ -68,7 +68,7 @@ export default function WhyStudioBase() {
             <>
               <p>
                 {tr(
-                  "Studio Base combines proprietary artificial intelligence products with advanced software engineering expertise to help businesses operate smarter, faster, and more efficiently.",
+                  "Studio Base combines its own AI products with advanced software engineering expertise to help businesses operate smarter, faster, and more efficiently.",
                   "Studio Base combina productos propios de inteligencia artificial con amplia experiencia en ingeniería de software para que las empresas operen de forma más inteligente, rápida y eficiente.",
                 )}
               </p>
