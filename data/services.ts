@@ -87,9 +87,9 @@ export const techProducts: TechProduct[] = [
       { en: "Sales Pipeline Management", es: "Gestión del embudo de ventas" },
       { en: "CRM Integration", es: "Integración con CRM" },
     ],
-    image: "/images/baselead-ai-gold-v2.webp",
+    image: "/images/baselead-ai-blue.webp",
     href: "/contact#contact-form",
-    accent: "yellow",
+    accent: "blue",
   },
 ];
 

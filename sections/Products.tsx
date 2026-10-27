@@ -63,8 +63,8 @@ const products: {
       { en: "Sales Analytics & Insights", es: "Analítica e insights de ventas" },
     ],
 
-    image: "/images/baselead-ai-gold-v2.webp",
-    accent: "yellow",
+    image: "/images/baselead-ai-blue.webp",
+    accent: "blue",
   },
 ];
 
