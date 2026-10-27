@@ -271,8 +271,10 @@ export function EvaProvider({ children }: { children: ReactNode }) {
           _replyto: lead.email,
         }),
       });
-      const data = (await res.json().catch(() => null)) as { success?: string | boolean } | null;
-      return res.ok && (data?.success === true || data?.success === "true");
+      const data = (await res.json().catch(() => null)) as { success?: string | boolean; message?: string } | null;
+      const ok = res.ok && (data?.success === true || data?.success === "true");
+      if (!ok) console.warn("Eva booking not delivered:", res.status, data?.message ?? data);
+      return ok;
     } catch {
       return false;
     }

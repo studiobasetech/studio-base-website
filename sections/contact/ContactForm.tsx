@@ -179,8 +179,10 @@ export default function ContactForm() {
           _honey: honey,
         }),
       });
-      const data = (await res.json().catch(() => null)) as { success?: string | boolean } | null;
+      const data = (await res.json().catch(() => null)) as { success?: string | boolean; message?: string } | null;
       const ok = res.ok && (data?.success === true || data?.success === "true");
+      // FormSubmit explains failures here (e.g. "This form needs Activation…"): visible in the browser console
+      if (!ok) console.warn("Contact form not delivered:", res.status, data?.message ?? data);
       setStatus(ok ? "success" : "error");
     } catch {
       setStatus("error");
