@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
+import { LEGAL_NAME } from "@/data/site";
 import { EvaProvider } from "@/components/eva/EvaProvider";
 import EvaWidget from "@/components/eva/EvaWidget";
 import { HtmlLang } from "@/lib/i18n";
@@ -135,6 +136,7 @@ const structuredData = {
       "@type": "Organization",
       "@id": ORG_ID,
       name: SITE_NAME,
+      legalName: LEGAL_NAME,
       url: SITE_URL,
       logo: { "@type": "ImageObject", url: SITE_LOGO },
       email: SITE_EMAIL,

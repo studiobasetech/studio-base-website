@@ -1,4 +1,5 @@
 import type { Bi } from "@/lib/i18n";
+import { LEGAL_NAME } from "@/data/site";
 
 /**
  * Privacy Policy text (English + Spanish), shown at /privacy by
@@ -10,7 +11,7 @@ import type { Bi } from "@/lib/i18n";
  * receptionist demo) added. Update LEGAL_ENTITY, PRIVACY_UPDATED and the
  * relevant section whenever the website's practices change.
  */
-export const LEGAL_ENTITY = "Studio Base LLC";
+export const LEGAL_ENTITY = LEGAL_NAME;
 
 export const PRIVACY_EFFECTIVE: Bi = { en: "October 2026", es: "octubre de 2026" };
 export const PRIVACY_UPDATED: Bi = { en: "October 2026", es: "octubre de 2026" };

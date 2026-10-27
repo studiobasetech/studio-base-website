@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
-import { contact, legalLinks, navLinks, socials } from "@/data/site";
+import { LEGAL_NAME, contact, legalLinks, navLinks, socials } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";
 import { GA_MEASUREMENT_ID, openCookieSettings } from "@/lib/analytics";
 
@@ -103,6 +103,8 @@ export default function Footer() {
               {contact.email}
             </a>
             <address className="mt-2 text-sm not-italic leading-relaxed text-zinc-400">
+              {LEGAL_NAME}
+              <br />
               {contact.address.street}
               <br />
               {contact.address.city}, {contact.address.region} {contact.address.zip}
@@ -112,7 +114,7 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-400 md:flex-row md:justify-between">
-          <p>© {new Date().getFullYear()} Studio Base. {tr("All rights reserved.", "Todos los derechos reservados.")}</p>
+          <p>© {new Date().getFullYear()} {LEGAL_NAME}. {tr("All rights reserved.", "Todos los derechos reservados.")}</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {legalLinks.map((item) => (
               <Link key={item.href} href={item.href} className="transition hover:text-blue-500">

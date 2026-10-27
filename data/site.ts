@@ -14,6 +14,9 @@ export const navLinks: { label: Bi; href: string }[] = [
   { label: { en: "Contact", es: "Contacto" }, href: "/contact" },
 ];
 
+/** Registered legal name (copyright, privacy policy, Google company info). */
+export const LEGAL_NAME = "Studio Base LLC";
+
 export const contact = {
   email: "info@studiobase.tech",
   // Company headquarters / mailing address. Shown ONLY where an address belongs
