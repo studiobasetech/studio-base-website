@@ -86,7 +86,7 @@ gtag('config', '${measurementId}');`}
                     "Nos gustaría usar cookies de Google Analytics para entender cómo se usa nuestro sitio web y mejorarlo. Solo se activan si las aceptas.",
                   )}{" "}
                   <Link href="/privacy" className="text-blue-400 underline-offset-2 hover:underline">
-                    {tr("Privacy Policy", "Política de privacidad")}
+                    {tr("Privacy Policy", "Aviso de privacidad")}
                   </Link>
                 </p>
               </div>

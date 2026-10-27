@@ -9,7 +9,7 @@ import { GA_MEASUREMENT_ID, openCookieSettings } from "@/lib/analytics";
 // Every link here points to a real page or section.
 const resources: { label: Bi; href: string }[] = [
   { label: { en: "Book a Consultation", es: "Agenda una consulta" }, href: "/contact#contact-form" },
-  { label: { en: "Privacy Policy", es: "Política de privacidad" }, href: "/privacy" },
+  { label: { en: "Privacy Policy", es: "Aviso de privacidad" }, href: "/privacy" },
 ];
 
 export default function Footer() {

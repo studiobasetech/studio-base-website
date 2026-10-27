@@ -42,5 +42,5 @@ export const consultationHref = "/contact#contact-form";
 
 // Legal pages linked in the footer's bottom row.
 export const legalLinks: { label: Bi; href: string }[] = [
-  { label: { en: "Privacy Policy", es: "Política de privacidad" }, href: "/privacy" },
+  { label: { en: "Privacy Policy", es: "Aviso de privacidad" }, href: "/privacy" },
 ];

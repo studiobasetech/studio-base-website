@@ -76,7 +76,7 @@ const pageTitles: Record<string, string> = {
   "/about": "Sobre nosotros: firma tecnológica de IA y software | Studio Base",
   "/blog": "Blog: IA, automatización, datos y web | Studio Base",
   "/contact": "Contáctanos: expertos en IA y software | Studio Base",
-  "/privacy": "Política de privacidad | Studio Base",
+  "/privacy": "Aviso de privacidad | Studio Base",
 };
 
 /*
