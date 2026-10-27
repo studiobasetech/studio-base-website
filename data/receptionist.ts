@@ -327,7 +327,9 @@ const KW: Record<Intent, [string, number][]> = {
   services: [
     ["service*", 2], ["what do you do", 4], ["what does studio base do", 5], ["what does", 1], ["what you do", 3], ["what can you do", 4],
     ["what do you guys do", 4], ["what do you offer", 4], ["offer*", 2], ["help me with", 2], ["do for me", 3], ["what is studio base", 4],
-    ["tell me about studio base", 4], ["how can you help", 4], ["help my business", 3], ["me pueden ayudar", 4], ["ayudar con mi negocio", 3], ["como me pueden ayudar", 4], ["what kind of work", 3], ["servicio*", 2], ["que hacen", 4], ["que hace", 3], ["que ofrecen", 4],
+    ["tell me about studio base", 4], ["information", 3], ["more info", 3], ["info about", 3], ["tell me more", 3], ["learn more", 3],
+    ["know more", 3], ["about studio base", 3], ["what studio base", 3], ["what the studio base", 4], ["what is it you do", 4], ["explain", 2],
+    ["informacion", 3], ["mas informacion", 3], ["saber mas", 3], ["conocer mas", 3], ["que es lo que hacen", 4], ["explica*", 2], ["cuentame mas", 3], ["how can you help", 4], ["help my business", 3], ["me pueden ayudar", 4], ["ayudar con mi negocio", 3], ["como me pueden ayudar", 4], ["what kind of work", 3], ["servicio*", 2], ["que hacen", 4], ["que hace", 3], ["que ofrecen", 4],
     ["a que se dedica*", 4], ["que pueden hacer", 4], ["que es studio base", 4], ["ofrec*", 2], ["en que me pueden ayudar", 4],
   ],
   about: [
@@ -500,9 +502,15 @@ export function reply(prev: ConvState, said: string): Reply {
 
   if (short && startsWithAny(toks, NO)) return { state: { ...st, offered: false }, line: "no" };
   if (short && startsWithAny(toks, YES)) return startBooking();
-  if (startsWithAny(toks, HELLO)) return { state: { ...st, offered: false }, line: "hello" };
-  // anything else that mentions Studio Base is most likely "what do you do?"
-  if (matches(toks, "studio base") || matches(toks, "studiobase")) return { state: { ...st, offered: false }, line: "services" };
+  // anything else that mentions Studio Base (or "you guys", "your company") is most likely "what do you do?"
+  if (["studio base", "studiobase", "studio", "your company", "you guys", "ustedes", "su empresa"].some((k) => matches(toks, k)))
+    return { state: { ...st, offered: false }, line: "services" };
+  // only a plain greeting gets "Hi! How can I help?"; a longer message we didn't understand gets suggestions
+  const rest = toks.filter((w) => !["eva", "there", "hi", "hello", "hey", "hola", "buenas", "buenos", "dias", "tardes", "noches", "good", "morning", "afternoon", "evening"].includes(w));
+  if (startsWithAny(toks, HELLO) && rest.length <= 2) return { state: { ...st, offered: false }, line: "hello" };
+  // "I have a question" / "tengo una pregunta" → invite the question
+  if (["question", "questions", "pregunta", "preguntas", "duda", "dudas"].some((k) => toks.includes(k)) && toks.length <= 8)
+    return { state: { ...st, offered: false }, line: "hello" };
   return { state: { ...st, offered: false }, line: "fallback" };
 }
 
