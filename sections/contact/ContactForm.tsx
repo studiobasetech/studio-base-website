@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   ArrowRight,
@@ -24,6 +24,9 @@ import {
 import { LightSweep, ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";
+import EvaFormAssistant from "@/components/eva/EvaFormAssistant";
+import type { FormFillHooks } from "@/components/eva/EvaProvider";
+import type { ProjectTypeId } from "@/data/receptionist";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -44,6 +47,15 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${contact.email}`;
 
 type Status = "idle" | "sending" | "success" | "error";
+
+// Eva (voice form filling) names project types by id → the checkbox they tick
+const TYPE_BY_ID: Record<ProjectTypeId, string> = {
+  web: "Website\nDevelopment",
+  mobile: "Mobile\nApplication",
+  software: "Custom\nSoftware",
+  ai: "AI Automation",
+  other: "Other",
+};
 
 // Project type checkboxes (each with its own accent colour)
 const projectTypes: { label: Bi; icon: LucideIcon; text: string; on: string; rgb: string }[] = [
@@ -110,6 +122,15 @@ export default function ContactForm() {
   const [tried, setTried] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [honey, setHoney] = useState(""); // spam honeypot — real visitors never fill it
+  // latest values, for sending from Eva (voice) as well as from the button
+  const formRef = useRef(form);
+  const typesRef = useRef(types);
+  const honeyRef = useRef(honey);
+  useEffect(() => {
+    formRef.current = form;
+    typesRef.current = types;
+    honeyRef.current = honey;
+  });
   const sent = status === "success";
   const sending = status === "sending";
 
@@ -147,16 +168,17 @@ export default function ContactForm() {
     return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
   })();
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (sending) return;
+  /** sends the form; returns true when FormSubmit delivered it (used by the button and by Eva) */
+  const deliver = async (): Promise<boolean> => {
+    const f = formRef.current;
+    const typeText = typesRef.current.map((t) => t.replace("\n", " ")).join(", ");
     setTried(true);
-    if (!valid) return;
+    if (!f.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email) || !f.message.trim()) return false;
 
     // Honeypot filled → almost certainly a bot: pretend it worked, send nothing.
-    if (honey) {
+    if (honeyRef.current) {
       setStatus("success");
-      return;
+      return true;
     }
 
     setStatus("sending");
@@ -165,18 +187,18 @@ export default function ContactForm() {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          Name: form.name,
-          Email: form.email,
-          Company: form.company || "—",
-          "Project type": projectTypeText || "—",
-          Message: form.message,
+          Name: f.name,
+          Email: f.email,
+          Company: f.company || "—",
+          "Project type": typeText || "—",
+          Message: f.message,
           Language: languageText,
           Page: typeof window !== "undefined" ? window.location.href : "",
-          _subject: `New website inquiry — ${form.name}`,
+          _subject: `New website inquiry — ${f.name}`,
           _template: "table",
           _captcha: "false",
-          _replyto: form.email,
-          _honey: honey,
+          _replyto: f.email,
+          _honey: honeyRef.current,
         }),
       });
       const data = (await res.json().catch(() => null)) as { success?: string | boolean; message?: string } | null;
@@ -184,9 +206,25 @@ export default function ContactForm() {
       // FormSubmit explains failures here (e.g. "This form needs Activation…"): visible in the browser console
       if (!ok) console.warn("Contact form not delivered:", res.status, data?.message ?? data);
       setStatus(ok ? "success" : "error");
+      return ok;
     } catch {
       setStatus("error");
+      return false;
     }
+  };
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (sending) return;
+    void deliver();
+  };
+
+  // what Eva needs to fill the form in by voice
+  const evaHooks: FormFillHooks = {
+    setField: (field, value) => setForm((cur) => ({ ...cur, [field]: value })),
+    setTypes: (ids) => setTypes((cur) => [...new Set([...cur, ...ids.map((id) => TYPE_BY_ID[id])])]),
+    getEmail: () => formRef.current.email,
+    send: deliver,
   };
 
   const reset = () => {
@@ -286,6 +324,7 @@ export default function ContactForm() {
                   aria-hidden="true"
                   className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden opacity-0"
                 />
+                <EvaFormAssistant hooks={evaHooks} />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field icon={User} error={tried && missing.name}>
                     <input className={inputCls} placeholder={tr("Full Name *", "Nombre completo *")}
