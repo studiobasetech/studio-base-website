@@ -2,6 +2,8 @@ import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import { EvaProvider } from "@/components/eva/EvaProvider";
+import EvaWidget from "@/components/eva/EvaWidget";
 import { HtmlLang } from "@/lib/i18n";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -224,9 +226,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <HtmlLang />
         <CustomCursor />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {/* Eva, the AI receptionist: one shared call for the home page section and the floating button */}
+        <EvaProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <EvaWidget />
+        </EvaProvider>
         <CookieConsent />
       </body>
     </html>

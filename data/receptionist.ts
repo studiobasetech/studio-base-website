@@ -1,11 +1,11 @@
 /**
- * "Ava", the AI receptionist demo on the home page.
+ * "Eva", the AI receptionist demo on the website (home page section + floating button on every page).
  *
- * Everything Ava can say lives in LINES. Each line has a matching voice clip
- * in public/audio/ava/<en|es>/<id>.mp3 (generated from this text). If you
+ * Everything Eva can say lives in LINES. Each line has a matching voice clip
+ * in public/audio/eva/<en|es>/<id>.mp3 (generated from this text). If you
  * edit a line, the clip must be regenerated so the voice still matches.
  *
- * The conversation logic (what Ava answers to what) is in reply() below.
+ * The conversation logic (what Eva answers to what) is in reply() below.
  * It understands the most common questions a business receptionist gets
  * and books free consultations, which are emailed to info@studiobase.tech.
  */
@@ -13,8 +13,8 @@ import type { Bi, Lang } from "@/lib/i18n";
 
 export const LINES = {
   greet: {
-    en: "Hi, thanks for calling Studio Base! I'm Ava, the AI receptionist. I can tell you about our services, answer your questions, or book you a free consultation. How can I help you today?",
-    es: "¡Hola, gracias por llamar a Studio Base! Soy Ava, la recepcionista con inteligencia artificial. Puedo contarte sobre nuestros servicios, responder tus preguntas o agendarte una consulta gratis. ¿En qué te puedo ayudar hoy?",
+    en: "Hi, thanks for calling Studio Base! I'm Eva, the AI receptionist. I can tell you about our services, answer your questions, or book you a free consultation. How can I help you today?",
+    es: "¡Hola, gracias por llamar a Studio Base! Soy Eva, la recepcionista con inteligencia artificial. Puedo contarte sobre nuestros servicios, responder tus preguntas o agendarte una consulta gratis. ¿En qué te puedo ayudar hoy?",
   },
   hello: {
     en: "Hi there! How can I help you today?",
@@ -191,7 +191,7 @@ function cleanName(s: string) {
 
 export type Reply = { state: ConvState; line: LineId; submit?: Lead; end?: boolean };
 
-/** Decide Ava's answer to what the visitor said or typed. */
+/** Decide Eva's answer to what the visitor said or typed. */
 export function reply(prev: ConvState, said: string): Reply {
   const t = norm(said);
   const st: ConvState = { ...prev, lead: { ...prev.lead } };
