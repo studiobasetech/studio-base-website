@@ -7,7 +7,8 @@ import StarField from "./StarField";
 /**
  * Products & Services hero background.
  *
- * A rendered spiral galaxy (public/images/galaxy-hero-blue.jpg) with live
+ * A rendered spiral galaxy (public/images/galaxy-hero-mono.jpg: black, blue,
+ * gray and white, no purple) with live
  * layers on top: twinkling stars and shooting stars, blue Matrix-style
  * code rain, and thin blue orbit rings + a radar sweep locked onto the
  * galaxy core. Slow zoom + mouse parallax for depth. (The constellation
@@ -18,7 +19,7 @@ import StarField from "./StarField";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Where the galaxy core sits inside galaxy-hero-blue.jpg (fractions of the image)
+// Where the galaxy core sits inside galaxy-hero-mono.jpg (fractions of the image)
 const CORE_X = 66;
 const CORE_Y = 46;
 // The galaxy's tilt in the image, so the rings line up with its disk
@@ -30,7 +31,7 @@ function OrbitRings() {
   const rings = [
     { size: 40, dash: "2 10", speed: 80, color: "rgba(59,130,246,0.45)", width: 0.35 },
     { size: 56, dash: "60 30 4 30", speed: 120, color: "rgba(147,197,253,0.35)", width: 0.3 },
-    { size: 76, dash: "1 6", speed: 160, color: "rgba(196,181,253,0.25)", width: 0.3 },
+    { size: 76, dash: "1 6", speed: 160, color: "rgba(203,213,225,0.25)", width: 0.3 },
   ];
 
   return (
@@ -126,7 +127,7 @@ export default function GalaxyScene({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/galaxy-hero-blue.jpg"
+              src="/images/galaxy-hero-mono.jpg"
               alt=""
               className="absolute inset-0 h-full w-full select-none"
               draggable={false}
@@ -146,7 +147,7 @@ export default function GalaxyScene({
         </motion.div>
 
         {/* live stars + shooting stars on top of the image */}
-        <StarField meteorEvery={[2500, 6000]} density={0.35} />
+        <StarField meteorEvery={[2500, 6000]} density={0.35} goldOnly />
 
         {/* Matrix-style code rain: strongest on the right, fading out
             toward the headline (desktop) / toward the text (phones) */}
