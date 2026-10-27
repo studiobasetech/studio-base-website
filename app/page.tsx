@@ -1,5 +1,6 @@
 import Hero from "@/sections/Hero";
 import Services from "@/sections/Services";
+import AIReceptionist from "@/sections/AIReceptionist";
 import Products from "@/sections/Products";
 import Process from "@/sections/Process";
 import WhyStudio from "@/sections/WhyStudio";
@@ -36,6 +37,7 @@ export default function Home() {
     <>
       <Hero />
       <SectionTransition><Services /></SectionTransition>
+      <SectionTransition><AIReceptionist /></SectionTransition>
       <SectionTransition><Products /></SectionTransition>
       <SectionTransition><Testimonials /></SectionTransition>
       <SectionTransition><Process /></SectionTransition>
