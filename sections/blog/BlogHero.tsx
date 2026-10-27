@@ -27,8 +27,8 @@ const topics: Bi[] = [
   { en: "Web", es: "Web" },
 ];
 
-// Same hover colours as the blog cards (purple left out on purpose: no purple in the hero)
-const topicColors = ["text-blue-400", "text-cyan-300", "text-yellow-300", "text-pink-400", "text-orange-300"];
+// Topic line: one quiet colour so the hero stays mostly black and white
+const topicColors = ["text-zinc-300"];
 
 export default function BlogHero() {
   const { t, tr, lang } = useLang();
@@ -36,7 +36,7 @@ export default function BlogHero() {
   return (
     <section className="relative overflow-hidden bg-black px-6 pb-16 pt-32 lg:px-12 lg:pb-20 lg:pt-40">
       {/* background: stars, perspective grid, glows, constellation */}
-      <StarField meteorEvery={[3000, 7000]} density={0.5} goldOnly />
+      <StarField meteorEvery={[4000, 9000]} density={0.4} goldOnly />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] [mask-image:linear-gradient(to_top,black,transparent)]"
@@ -49,38 +49,18 @@ export default function BlogHero() {
           style={{
             rotateX: 62,
             backgroundImage:
-              "linear-gradient(rgba(59,130,246,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.22) 1px, transparent 1px)",
+              "linear-gradient(rgba(59,130,246,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.1) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
           }}
         />
       </div>
-      {/* colour aura (no purple) */}
+      {/* one faint blue glow: the hero stays mostly black */}
       <motion.div
-        animate={{ x: [0, 70, 0], y: [0, -40, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-24 -top-10 h-[460px] w-[560px] rounded-full bg-cyan-400/20 blur-[140px]"
-      />
-      <motion.div
-        animate={{ x: [0, -50, 0], y: [0, 40, 0], scale: [1, 1.1, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute right-1/4 top-1/3 h-[380px] w-[460px] rounded-full bg-yellow-400/20 blur-[130px]"
-      />
-      <motion.div
-        animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.2, 1] }}
+        animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.08, 1] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -left-28 top-1/4 h-[400px] w-[440px] rounded-full bg-pink-500/[0.16] blur-[130px]"
+        className="pointer-events-none absolute -right-32 -top-24 h-[460px] w-[560px] rounded-full bg-blue-600/[0.08] blur-[140px]"
       />
-      <motion.div
-        animate={{ x: [0, 40, 0], y: [0, -25, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -bottom-24 left-1/3 h-[340px] w-[520px] rounded-full bg-blue-500/[0.14] blur-[130px]"
-      />
-      <motion.div
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute bottom-10 -right-10 h-[300px] w-[360px] rounded-full bg-orange-400/[0.14] blur-[120px]"
-      />
-      <ParticleField />
+      <ParticleField strength={0.6} />
 
       <motion.div
         variants={container}
