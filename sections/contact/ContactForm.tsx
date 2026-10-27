@@ -8,7 +8,6 @@ import {
   BrainCircuit,
   Building2,
   Check,
-  ChevronDown,
   Code2,
   Ellipsis,
   Heart,
@@ -17,7 +16,6 @@ import {
   Mail,
   MessageSquare,
   Smartphone,
-  Target,
   User,
   Users,
   Zap,
@@ -46,20 +44,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${contact.email}`;
 
 type Status = "idle" | "sending" | "success" | "error";
-
-// Options for "What are you interested in?" (the English text is what
-// goes into the email to the Studio Base inbox; visitors see their language)
-const interests: Bi[] = [
-  { en: "AI Solutions & Automation", es: "Soluciones de IA y automatización" },
-  { en: "Software Engineering", es: "Ingeniería de software" },
-  { en: "Mobile Applications", es: "Aplicaciones móviles" },
-  { en: "Digital Platforms", es: "Plataformas digitales" },
-  { en: "HCRM AI", es: "HCRM AI" },
-  { en: "BaseLead AI", es: "BaseLead AI" },
-  { en: "Book a consultation", es: "Agendar una consulta" },
-  { en: "Join the Studio Base network", es: "Unirme a la red de Studio Base" },
-  { en: "Other", es: "Otro" },
-];
 
 // Project type checkboxes (each with its own accent colour)
 const projectTypes: { label: Bi; icon: LucideIcon; text: string; on: string; rgb: string }[] = [
@@ -107,9 +91,9 @@ const item: Variants = {
 const fieldBox =
   "group relative flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 transition-colors duration-300 focus-within:border-blue-500 focus-within:bg-blue-500/[0.06] focus-within:shadow-[0_0_30px_-10px_rgba(59,130,246,0.8)] hover:border-white/25";
 
-function Field({ icon: Icon, children, error }: { icon: LucideIcon; children: ReactNode; error?: boolean }) {
+function Field({ icon: Icon, children, error, className = "" }: { icon: LucideIcon; children: ReactNode; error?: boolean; className?: string }) {
   return (
-    <motion.label variants={item} className={`${fieldBox} ${error ? "border-pink-500/70" : ""}`}>
+    <motion.label variants={item} className={`${fieldBox} ${error ? "border-pink-500/70" : ""} ${className}`}>
       <Icon size={18} className="shrink-0 text-blue-400 transition-transform duration-300 group-focus-within:scale-110" />
       {children}
     </motion.label>
@@ -121,7 +105,7 @@ const inputCls =
 
 export default function ContactForm() {
   const { t: tx, tr, lang } = useLang();
-  const [form, setForm] = useState({ name: "", email: "", company: "", interest: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
   const [types, setTypes] = useState<string[]>([]);
   const [tried, setTried] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
@@ -136,7 +120,6 @@ export default function ContactForm() {
   const missing = {
     name: !form.name.trim(),
     email: !emailOk,
-    interest: !form.interest,
     message: !form.message.trim(),
   };
   const valid = !Object.values(missing).some(Boolean);
@@ -155,13 +138,12 @@ export default function ContactForm() {
       `Name: ${form.name}`,
       `Email: ${form.email}`,
       form.company && `Company: ${form.company}`,
-      `Interested in: ${form.interest}`,
       types.length > 0 && `Project type: ${projectTypeText}`,
       lang === "es" && "Language: Spanish",
       "",
       form.message,
     ].filter((l) => l !== false && l !== "") as string[];
-    const subject = `New enquiry: ${form.interest} — ${form.name}`;
+    const subject = `New enquiry${projectTypeText ? `: ${projectTypeText}` : ""} — ${form.name}`;
     return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
   })();
 
@@ -186,7 +168,6 @@ export default function ContactForm() {
           Name: form.name,
           Email: form.email,
           Company: form.company || "—",
-          "Interested in": form.interest,
           "Project type": projectTypeText || "—",
           Message: form.message,
           Language: languageText,
@@ -207,7 +188,7 @@ export default function ContactForm() {
   };
 
   const reset = () => {
-    setForm({ name: "", email: "", company: "", interest: "", message: "" });
+    setForm({ name: "", email: "", company: "", message: "" });
     setTypes([]);
     setTried(false);
     setStatus("idle");
@@ -312,27 +293,9 @@ export default function ContactForm() {
                     <input className={inputCls} type="email" placeholder={tr("Email Address *", "Correo electrónico *")}
                       aria-label={tr("Email address (required)", "Correo electrónico (obligatorio)")} autoComplete="email" value={form.email} onChange={set("email")} />
                   </Field>
-                  <Field icon={Building2}>
+                  <Field icon={Building2} className="sm:col-span-2">
                     <input className={inputCls} placeholder={tr("Company (Optional)", "Empresa (opcional)")}
                       aria-label={tr("Company (optional)", "Empresa (opcional)")} autoComplete="organization" value={form.company} onChange={set("company")} />
-                  </Field>
-                  <Field icon={Target} error={tried && missing.interest}>
-                    <select
-                      className={`${inputCls} cursor-pointer appearance-none pr-6 ${form.interest ? "" : "text-zinc-400"}`}
-                      value={form.interest}
-                      onChange={set("interest")}
-                      aria-label={tr("What are you interested in? (required)", "¿Qué te interesa? (obligatorio)")}
-                    >
-                      <option value="" disabled>
-                        {tr("What are you interested in? *", "¿Qué te interesa? *")}
-                      </option>
-                      {interests.map((o) => (
-                        <option key={o.en} value={o.en} className="bg-zinc-900 text-white">
-                          {tx(o)}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown size={16} className="pointer-events-none absolute right-4 text-blue-400" />
                   </Field>
                 </div>
 
