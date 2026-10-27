@@ -24,12 +24,12 @@ const MotionLink = motion.create(Link);
 // Headline split into two lines; the second line is blue.
 const headlineLines = {
   en: [
-    { words: ["Automate", "the", "Work."], accent: false },
-    { words: ["Scale", "the", "Business."], accent: true },
+    { words: ["Technology", "Solutions"], accent: false },
+    { words: ["for", "a", "Smarter", "Future."], accent: true },
   ],
   es: [
-    { words: ["Automatiza", "el", "trabajo."], accent: false },
-    { words: ["Escala", "tu", "negocio."], accent: true },
+    { words: ["Soluciones", "tecnológicas"], accent: false },
+    { words: ["para", "un", "futuro", "más", "inteligente."], accent: true },
   ],
 };
 
