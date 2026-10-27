@@ -16,8 +16,6 @@ import { useLang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Coordinates shown in the HUD (Austin, TX)
-const COORDS = "30.2672° N · 97.7431° W";
 
 /* An elliptical orbit. Rendered twice (behind and in front of the
    planet) so the ring looks like it wraps around it. */
@@ -182,8 +180,8 @@ function Hud() {
       </div>
 
       <div className="absolute bottom-[12%] right-[6%] hidden text-right font-mono sm:block text-[9px] uppercase tracking-[0.25em] text-zinc-400 sm:text-[10px]">
-        <p className="text-blue-300/70">{COORDS}</p>
-        <p className="mt-1">{tr("Studio Base HQ", "Sede Studio Base")}</p>
+        <p className="text-blue-300/70">{tr("Online · Worldwide", "En línea · Todo el mundo")}</p>
+        <p className="mt-1">{tr("Studio Base Network", "Red Studio Base")}</p>
       </div>
     </div>
   );

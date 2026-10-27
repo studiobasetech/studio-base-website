@@ -16,8 +16,9 @@ export const navLinks: { label: Bi; href: string }[] = [
 
 export const contact = {
   email: "info@studiobase.tech",
-  location: "Austin, TX", // same in both languages
-  // Business mailing address (footer, privacy policy, Google structured data)
+  // Company headquarters / mailing address. Shown ONLY where an address belongs
+  // (footer, privacy policy, Google structured data), never in marketing copy,
+  // page titles, descriptions or link previews.
   address: {
     street: "5900 Balcones Drive # 34618",
     city: "Austin",
