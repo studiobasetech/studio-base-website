@@ -9,7 +9,7 @@
  * While the ID is empty, nothing is loaded and no cookie notice is shown.
  * Analytics only starts after a visitor clicks "Accept" in the cookie notice.
  */
-export const GA_MEASUREMENT_ID: string = "";
+export const GA_MEASUREMENT_ID: string = "G-NBVMZXH2R9";
 
 export type Consent = "granted" | "denied";
 
