@@ -235,7 +235,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact-form" className="relative scroll-mt-24 bg-black px-6 pb-16 lg:px-12">
+    <section id="contact-form" className="relative scroll-mt-24 overflow-x-clip bg-black px-6 pb-16 lg:px-12">
       {/* drifting glows */}
       <motion.div
         animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
