@@ -16,4 +16,4 @@ export const EVA_AI_ENDPOINT: string = "";
  * "studiobase" or "studiobase/consultation". When set, the contact page shows
  * a calendar where visitors pick a time for their free consultation.
  */
-export const CAL_LINK: string = "";
+export const CAL_LINK: string = "studiobase.tech/30min";
