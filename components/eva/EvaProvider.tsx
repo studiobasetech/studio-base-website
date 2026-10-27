@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { contact } from "@/data/site";
 import { useLang } from "@/lib/i18n";
-import { LINES, initialState, reply, type ConvState, type Lead, type LineId } from "@/data/receptionist";
+import { LINES, detectLang, initialState, reply, type ConvState, type Lead, type LineId } from "@/data/receptionist";
 
 /* ------------------------------------------------------------------ */
 /*  Eva, the AI receptionist: the call itself (voice, listening,       */
@@ -139,16 +139,37 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     const r = new Ctor();
     r.lang = langRef.current === "es" ? "es-US" : "en-US";
     r.interimResults = true;
-    r.continuous = false;
+    // keep listening through short pauses ("Hello… what does Studio Base do?") and
+    // end the turn ourselves after ~1.2 s of silence
+    r.continuous = true;
     let finalText = "";
-    r.onresult = (e) => {
-      let txt = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const res = e.results[i];
-        if (res.isFinal) finalText += res[0].transcript;
-        else txt += res[0].transcript;
+    let interimText = "";
+    let silence: ReturnType<typeof setTimeout> | null = null;
+    const finish = () => {
+      try {
+        r.stop();
+      } catch {
+        /* already stopped */
       }
-      setInterim((finalText + " " + txt).trim());
+    };
+    const maxTurn = setTimeout(finish, 20000);
+    r.onresult = (e) => {
+      let fin = "";
+      let inter = "";
+      for (let i = 0; i < e.results.length; i++) {
+        const res = e.results[i];
+        const t = res[0].transcript.trim();
+        if (!t) continue;
+        if (res.isFinal) {
+          // some phones repeat the whole sentence in each result: keep the longest version
+          fin = t.toLowerCase().startsWith(fin.toLowerCase()) ? t : `${fin} ${t}`.trim();
+        } else inter = `${inter} ${t}`.trim();
+      }
+      finalText = fin;
+      interimText = inter;
+      setInterim(`${fin} ${inter}`.trim());
+      if (silence) clearTimeout(silence);
+      silence = setTimeout(finish, inter ? 1800 : 1200);
     };
     r.onerror = (e) => {
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
@@ -157,8 +178,10 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       }
     };
     r.onend = () => {
+      if (silence) clearTimeout(silence);
+      clearTimeout(maxTurn);
       if (rec.current !== r) return;
-      const said = finalText.trim();
+      const said = (finalText || interimText).trim();
       setInterim("");
       if (!listening.current) return;
       listening.current = false;
@@ -262,6 +285,11 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       stopListening();
       audio.current?.pause();
       push("you", said);
+      // answer in the language the visitor is using (English or Spanish), not only the site's language
+      if (conv.current.step === "chat") {
+        const spoken = detectLang(said);
+        if (spoken && spoken !== langRef.current) langRef.current = spoken;
+      }
       const r = reply(conv.current, said);
       conv.current = r.state;
       setStep(r.state.step);
