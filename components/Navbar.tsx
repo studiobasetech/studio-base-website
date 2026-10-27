@@ -120,10 +120,10 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          {/* Desktop menu: centered glass capsule with a sliding highlight */}
+          {/* Desktop menu: centered links with a sliding highlight */}
           <div
             onMouseLeave={() => setHovered(null)}
-            className="relative hidden items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur-md lg:flex"
+            className="relative hidden items-center gap-1 p-1 lg:flex"
           >
             {links.map((link) => {
               const highlighted = pillHref === link.href;

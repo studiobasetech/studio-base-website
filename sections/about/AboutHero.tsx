@@ -105,15 +105,23 @@ export default function AboutHero() {
               <span className="relative">{tr("Book a Consultation", "Agenda una consulta")}</span>
               <ArrowRight size={16} className="relative transition-transform duration-300 group-hover:translate-x-1" />
             </MotionLink>
-            <MotionLink
+            <motion.a
               href="#who-we-are"
+              onClick={(e) => {
+                // smooth scroll to the "Who we are" section right below
+                const target = document.getElementById("who-we-are");
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                history.replaceState(null, "", "#who-we-are");
+              }}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               className="group inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-400 hover:text-blue-300"
             >
               {tr("Learn More", "Conoce más")}
               <ArrowDown size={15} className="transition-transform duration-300 group-hover:translate-y-0.5" />
-            </MotionLink>
+            </motion.a>
           </motion.div>
         </motion.div>
 

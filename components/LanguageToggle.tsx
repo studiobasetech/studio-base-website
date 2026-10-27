@@ -23,7 +23,7 @@ export default function LanguageToggle({
     <div
       role="group"
       aria-label={tr("Change language", "Cambiar idioma")}
-      className={`relative flex items-center gap-0.5 rounded-full border border-white/15 bg-white/5 p-1 backdrop-blur-md ${className}`}
+      className={`relative flex items-center gap-0.5 p-1 ${className}`}
     >
       <Globe size={14} aria-hidden="true" className="ml-1.5 mr-0.5 hidden text-blue-400 xl:block" />
       {options.map((o) => {
