@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import ContactHero from "@/sections/contact/ContactHero";
 import ContactForm from "@/sections/contact/ContactForm";
+import BookingCalendar from "@/components/BookingCalendar";
 import ConnectCards from "@/sections/contact/ConnectCards";
 import GlobalTeam from "@/sections/contact/GlobalTeam";
 import ContactQuote from "@/sections/contact/ContactQuote";
@@ -30,6 +31,7 @@ export default function ContactPage() {
     <>
       <ContactHero />
       <ContactForm />
+      <BookingCalendar />
       <SectionTransition><ConnectCards /></SectionTransition>
       <SectionTransition><GlobalTeam /></SectionTransition>
       <ContactQuote />

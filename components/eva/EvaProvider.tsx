@@ -2,6 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { contact } from "@/data/site";
+import { EVA_AI_ENDPOINT } from "@/lib/integrations";
+import { track } from "@/lib/analytics";
 import { useLang } from "@/lib/i18n";
 import {
   LINES,
@@ -66,6 +68,21 @@ export type FormFillHooks = {
 };
 type FormStep = "name" | "email" | "company" | "types" | "message" | "confirm";
 const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/* ---------- spoken answers from the AI (browser voice) ---------- */
+const PREFERRED_VOICES: Record<"en" | "es", string[]> = {
+  en: ["Samantha", "Ava", "Allison", "Microsoft Aria", "Microsoft Jenny", "Google US English", "Karen", "Serena"],
+  es: ["Paulina", "Mónica", "Monica", "Microsoft Dalia", "Microsoft Sabina", "Google español de Estados Unidos", "Google español", "Marisol"],
+};
+function pickVoice(lang: "en" | "es"): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith(lang));
+  for (const name of PREFERRED_VOICES[lang]) {
+    const v = voices.find((x) => x.name.includes(name));
+    if (v) return v;
+  }
+  return voices.find((v) => /female|woman|mujer/i.test(v.name)) ?? voices[0] ?? null;
+}
 
 type EvaApi = {
   status: EvaStatus;
@@ -151,8 +168,11 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     visible[visible.length - 1]?.focus({ preventScroll: true });
   }, []);
 
+  /** what was said so far, for the AI (Eva = "model", visitor = "user") */
+  const history = useRef<{ role: "user" | "model"; text: string }[]>([]);
   const push = useCallback((who: EvaMsg["who"], text: string) => {
     const id = ++msgId.current;
+    history.current.push({ role: who === "you" ? "user" : "model", text });
     setMsgs((m) => [...m, { who, text, id }]);
     return id;
   }, []);
@@ -277,6 +297,64 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     [push, startListening, stopListening, focusInput],
   );
 
+  /** Speak an AI answer with the browser's voice (recorded clips only exist for the scripted lines). */
+  const speakText = useCallback(
+    (text: string) => {
+      const mid = push("eva", text);
+      setCaption({ id: mid, shown: 0 });
+      setStatus("speaking");
+      stopListening();
+      let pulse: ReturnType<typeof setInterval> | null = null;
+      const done = () => {
+        if (pulse) clearInterval(pulse);
+        setCaption(null);
+        level.current = 0;
+        if (!inCallRef.current) return;
+        startListening();
+      };
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) return done();
+      const u = new SpeechSynthesisUtterance(text);
+      const voice = pickVoice(langRef.current);
+      if (voice) u.voice = voice;
+      u.lang = langRef.current === "es" ? "es-US" : "en-US";
+      u.rate = 1.02;
+      u.pitch = 1.05;
+      // the orb breathes with the voice; captions follow the words being spoken
+      pulse = setInterval(() => {
+        level.current = 0.25 + Math.random() * 0.35;
+      }, 120);
+      u.onboundary = (e) => setCaption({ id: mid, shown: Math.min(1, (e.charIndex + 1) / text.length + 0.08) });
+      u.onend = done;
+      u.onerror = done;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    },
+    [push, startListening, stopListening],
+  );
+
+  /** Ask Eva's AI helper (Cloudflare Worker → Gemini). Resolves null if it isn't set up or fails. */
+  const askAI = useCallback(async () => {
+    if (!EVA_AI_ENDPOINT) return null;
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 9000);
+    try {
+      const res = await fetch(EVA_AI_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lang: langRef.current, messages: history.current.slice(-12) }),
+        signal: ctrl.signal,
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = (await res.json()) as { reply?: string; offerBooking?: boolean; wantsToBook?: boolean };
+      return data.reply ? { reply: data.reply, offerBooking: !!data.offerBooking, wantsToBook: !!data.wantsToBook } : null;
+    } catch (err) {
+      console.warn("Eva AI unavailable, using her scripted answer:", err);
+      return null;
+    } finally {
+      clearTimeout(timer);
+    }
+  }, []);
+
   /* ---------- call controls ---------- */
   const endCall = useCallback(() => {
     inCallRef.current = false;
@@ -292,6 +370,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       audio.current.onended = null;
       audio.current.pause();
     }
+    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
     setCaption(null);
     setStatus("idle");
     level.current = 0;
@@ -410,6 +489,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       if (!said || !inCallRef.current) return;
       stopListening();
       audio.current?.pause();
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
       push("you", said);
       if (modeRef.current === "form") {
         setStatus("thinking");
@@ -426,9 +506,27 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       if (r.submit) {
         setStatus("thinking");
         const ok = await submitLead(r.submit);
+        track("eva_booking", { delivered: ok });
+        if (ok) track("generate_lead", { source: "eva" });
         if (!inCallRef.current) return;
         speak(ok ? "booked" : "sendFail");
         return;
+      }
+      // a question Eva's script doesn't cover → ask the AI (if it's set up)
+      if (r.line === "fallback" && EVA_AI_ENDPOINT) {
+        setStatus("thinking");
+        const ai = await askAI();
+        if (!inCallRef.current) return;
+        if (ai?.wantsToBook) {
+          conv.current = { ...conv.current, step: "name", offered: false };
+          setStep("name");
+          return speak("bookName");
+        }
+        if (ai) {
+          conv.current = { ...conv.current, offered: ai.offerBooking };
+          track("eva_ai_answer");
+          return speakText(ai.reply);
+        }
       }
       setStatus("thinking");
       setTimeout(() => {
@@ -437,7 +535,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         else speak(r.line);
       }, 350);
     },
-    [push, speak, stopListening, submitLead, endCall, handleForm],
+    [push, speak, speakText, askAI, stopListening, submitLead, endCall, handleForm],
   );
   useEffect(() => {
     handleUserRef.current = handleUser;
@@ -472,6 +570,12 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       }
     }
     actx.current?.resume().catch(() => {});
+    // some browsers (iPhone) only allow speech that starts from a click: warm it up now
+    if ("speechSynthesis" in window && EVA_AI_ENDPOINT) {
+      const warm = new SpeechSynthesisUtterance(" ");
+      warm.volume = 0;
+      window.speechSynthesis.speak(warm);
+    }
   }, []);
 
   const startCall = useCallback(() => {
@@ -479,6 +583,8 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     setMicSupported(!!getSR());
     ensureAudio();
     conv.current = initialState();
+    history.current = [];
+    track("eva_call_start", { language: lang });
     setStep("chat");
     setMsgs([]);
     inCallRef.current = true;
@@ -497,6 +603,8 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       setMicSupported(!!getSR());
       ensureAudio();
       formHooks.current = hooks;
+      history.current = [];
+      track("eva_form_fill_start", { language: lang });
       formStep.current = "name";
       typesRetried.current = false;
       longTurn.current = false;

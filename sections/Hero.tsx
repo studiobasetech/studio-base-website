@@ -245,13 +245,15 @@ export default function Hero() {
           className="h-full w-full"
         >
           <video
+            poster="/images/hero-poster.webp"
+            preload="auto"
             autoPlay
             muted
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
           >
-            <source src="/videos/hero-bg-blue-v2.mp4" type="video/mp4" />
+            <source src="/videos/hero-bg-blue-v3.mp4" type="video/mp4" />
           </video>
         </motion.div>
       </motion.div>

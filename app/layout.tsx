@@ -2,6 +2,7 @@ import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import MotionPrefs from "@/components/MotionPrefs";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { LEGAL_NAME } from "@/data/site";
 import { EvaProvider } from "@/components/eva/EvaProvider";
@@ -255,12 +256,14 @@ gtag('config', '${GA_MEASUREMENT_ID}');`,
         <HtmlLang />
         <CustomCursor />
         {/* Eva, the AI receptionist: one shared call for the home page section and the floating button */}
-        <EvaProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <EvaWidget />
-        </EvaProvider>
+        <MotionPrefs>
+          <EvaProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <EvaWidget />
+          </EvaProvider>
+        </MotionPrefs>
         <CookieConsent />
       </body>
     </html>

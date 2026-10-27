@@ -25,6 +25,7 @@ import { LightSweep, ShimmerText } from "@/components/Effects";
 import { contact } from "@/data/site";
 import { useLang, type Bi } from "@/lib/i18n";
 import EvaFormAssistant from "@/components/eva/EvaFormAssistant";
+import { track } from "@/lib/analytics";
 import type { FormFillHooks } from "@/components/eva/EvaProvider";
 import type { ProjectTypeId } from "@/data/receptionist";
 
@@ -206,6 +207,7 @@ export default function ContactForm() {
       // FormSubmit explains failures here (e.g. "This form needs Activation…"): visible in the browser console
       if (!ok) console.warn("Contact form not delivered:", res.status, data?.message ?? data);
       setStatus(ok ? "success" : "error");
+      if (ok) track("generate_lead", { source: "contact_form" });
       return ok;
     } catch {
       setStatus("error");

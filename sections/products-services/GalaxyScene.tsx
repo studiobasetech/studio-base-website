@@ -127,7 +127,7 @@ export default function GalaxyScene({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/galaxy-hero-mono.jpg"
+              src="/images/galaxy-hero-mono.webp"
               alt=""
               className="absolute inset-0 h-full w-full select-none"
               draggable={false}

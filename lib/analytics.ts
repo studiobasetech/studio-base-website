@@ -56,6 +56,16 @@ export function subscribeOpenSettings(onOpen: () => void) {
   return () => window.removeEventListener(OPEN_EVENT, onOpen);
 }
 
+/**
+ * Sends an event to Google Analytics (e.g. track("generate_lead", { source: "eva" })).
+ * Does nothing if Google Analytics isn't on the page. Event names: docs/FREE-SERVICES-SETUP.md
+ */
+export function track(event: string, params: Record<string, string | number | boolean> = {}) {
+  if (typeof window === "undefined") return;
+  const g = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+  g?.("event", event, params);
+}
+
 /** Removes Google Analytics cookies when consent is declined or withdrawn. */
 export function disableAnalytics() {
   if (!GA_MEASUREMENT_ID) return;
