@@ -73,7 +73,7 @@ function tooMany(ip) {
   return list.length > 20; // more than 20 questions per minute from one visitor
 }
 
-export default {
+const worker = {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
     const cors = {
@@ -110,30 +110,44 @@ export default {
     }
     if (!contents.length || contents[contents.length - 1].role !== "user") return json({ error: "No question" }, 400, cors);
 
-    const model = env.GEMINI_MODEL || "gemini-flash-latest";
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
-        contents,
-        generationConfig: {
-          temperature: 0.5,
-          maxOutputTokens: 400,
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: "OBJECT",
-            properties: {
-              reply: { type: "STRING" },
-              offerBooking: { type: "BOOLEAN" },
-              wantsToBook: { type: "BOOLEAN" },
-            },
-            required: ["reply", "offerBooking", "wantsToBook"],
+    // try the preferred model first, then backups if Google says it's busy or unavailable
+    const models = [...new Set([env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"].filter(Boolean))];
+    const payload = JSON.stringify({
+      systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
+      contents,
+      generationConfig: {
+        temperature: 0.5,
+        maxOutputTokens: 400,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: "OBJECT",
+          properties: {
+            reply: { type: "STRING" },
+            offerBooking: { type: "BOOLEAN" },
+            wantsToBook: { type: "BOOLEAN" },
           },
+          required: ["reply", "offerBooking", "wantsToBook"],
         },
-      }),
+      },
     });
-    if (!res.ok) return json({ error: `AI error ${res.status}` }, 502, cors);
+    let res = null;
+    const tried = [];
+    for (const model of models) {
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+        body: payload,
+      });
+      if (res.ok) break;
+      let why = "";
+      try {
+        why = ((await res.json()).error || {}).message || "";
+      } catch {}
+      tried.push(`${model}: ${res.status} ${why}`.slice(0, 200));
+      // 400/401/403 mean a problem with the key or request; another model won't help
+      if (res.status === 400 || res.status === 401 || res.status === 403) break;
+    }
+    if (!res || !res.ok) return json({ error: "AI unavailable", tried }, 502, cors);
     const data = await res.json();
     try {
       const out = JSON.parse(data.candidates[0].content.parts.map((p) => p.text || "").join(""));
@@ -145,3 +159,5 @@ export default {
     }
   },
 };
+
+export default worker;
