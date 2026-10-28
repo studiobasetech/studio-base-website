@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { contact } from "@/data/site";
 import { EVA_AI_ENDPOINT } from "@/lib/integrations";
 import { track } from "@/lib/analytics";
+import { asksForArticles, BLOG_LINK, findArticle, type ArticleLink } from "@/data/evaArticles";
 import { useLang } from "@/lib/i18n";
 import {
   LINES,
@@ -34,7 +35,7 @@ import {
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${contact.email}`;
 
 export type EvaStatus = "idle" | "connecting" | "speaking" | "listening" | "thinking";
-export type EvaMsg = { who: "eva" | "you"; text: string; id: number };
+export type EvaMsg = { who: "eva" | "you"; text: string; id: number; link?: ArticleLink };
 
 /* minimal typing for the browser speech recognition API */
 type SRResult = { isFinal: boolean; 0: { transcript: string } };
@@ -175,6 +176,13 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     history.current.push({ role: who === "you" ? "user" : "model", text });
     setMsgs((m) => [...m, { who, text, id }]);
     return id;
+  }, []);
+
+  /** a blog article card under Eva's answer (one suggestion per article per call) */
+  const suggested = useRef<Set<string>>(new Set());
+  const pushLink = useCallback((link: ArticleLink) => {
+    const id = ++msgId.current;
+    setMsgs((m) => [...m, { who: "eva", text: link.title, id, link }]);
   }, []);
 
   /* ---------- listening ---------- */
@@ -500,6 +508,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         const spoken = detectLang(said);
         if (spoken && spoken !== langRef.current) langRef.current = spoken;
       }
+      const wasChat = conv.current.step === "chat";
       const r = reply(conv.current, said);
       conv.current = r.state;
       setStep(r.state.step);
@@ -512,8 +521,42 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         speak(ok ? "booked" : "sendFail");
         return;
       }
-      // a question Eva's script doesn't cover → ask the AI (if it's set up)
-      if (r.line === "fallback" && EVA_AI_ENDPOINT) {
+      // still chatting (not booking, not saying goodbye)
+      const inChat = wasChat && r.state.step === "chat" && !r.end;
+      const es = langRef.current === "es";
+
+      // a matching blog article, shown as a card under Eva's answer
+      const article = inChat ? findArticle(said, langRef.current, suggested.current) : null;
+      const wantsArticles = inChat && asksForArticles(said);
+      const showArticle = () => {
+        if (article) {
+          suggested.current.add(article.slug);
+          pushLink(article.link);
+          track("eva_article_suggested", { article: article.slug });
+        } else if (wantsArticles) pushLink(BLOG_LINK(langRef.current));
+      };
+
+      // "do you have articles about…?" → point to the blog
+      if (wantsArticles) {
+        setStatus("thinking");
+        setTimeout(() => {
+          if (!inCallRef.current) return;
+          speakText(
+            article
+              ? es
+                ? "Sí, escribimos un artículo sobre eso. Te dejé el enlace aquí en el chat."
+                : "Yes, we wrote an article about that. I've put the link here in the chat."
+              : es
+                ? "Encontrarás todos nuestros artículos en el blog. Te dejé el enlace aquí en el chat."
+                : "You'll find all our articles on our blog. I've put the link here in the chat.",
+          );
+          showArticle();
+        }, 350);
+        return;
+      }
+
+      // while chatting, the AI answers every question (the script is the backup if it's down)
+      if (inChat && EVA_AI_ENDPOINT) {
         setStatus("thinking");
         const ai = await askAI();
         if (!inCallRef.current) return;
@@ -525,17 +568,22 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         if (ai) {
           conv.current = { ...conv.current, offered: ai.offerBooking };
           track("eva_ai_answer");
-          return speakText(ai.reply);
+          speakText(ai.reply);
+          showArticle();
+          return;
         }
       }
       setStatus("thinking");
       setTimeout(() => {
         if (!inCallRef.current) return;
         if (r.end) speak(r.line, endCall);
-        else speak(r.line);
+        else {
+          speak(r.line);
+          showArticle();
+        }
       }, 350);
     },
-    [push, speak, speakText, askAI, stopListening, submitLead, endCall, handleForm],
+    [push, pushLink, speak, speakText, askAI, stopListening, submitLead, endCall, handleForm],
   );
   useEffect(() => {
     handleUserRef.current = handleUser;
@@ -584,6 +632,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     ensureAudio();
     conv.current = initialState();
     history.current = [];
+    suggested.current = new Set();
     track("eva_call_start", { language: lang });
     setStep("chat");
     setMsgs([]);
@@ -604,6 +653,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       ensureAudio();
       formHooks.current = hooks;
       history.current = [];
+    suggested.current = new Set();
       track("eva_form_fill_start", { language: lang });
       formStep.current = "name";
       typesRetried.current = false;
