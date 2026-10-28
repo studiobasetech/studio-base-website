@@ -3,26 +3,22 @@
  *
  * The website (GitHub Pages) sends Eva's conversation here; this Worker adds
  * Studio Base's knowledge, asks Google Gemini for an answer, and sends the
- * answer back. The Gemini key stays secret inside Cloudflare.
- *
- * It also gives Eva her voice: every line she says is turned into speech
- * with Cloudflare Workers AI (free daily allowance), so she always sounds the same.
+ * answer back. It also gives Eva her voice (Thalia in English, Celeste in
+ * Spanish), so every line she says sounds the same. Keys stay secret in Cloudflare.
  *
  * Setup: see docs/FREE-SERVICES-SETUP.md in the website repository.
- * Needs one secret in Cloudflare: GEMINI_API_KEY
- * Needs one binding: Workers AI, named AI
+ * Secrets in Cloudflare: GEMINI_API_KEY, DEEPGRAM_API_KEY
+ * Binding: Workers AI, named AI (backup for the voice)
  * Optional variables: GEMINI_MODEL (default "gemini-flash-latest"),
- *   EVA_VOICE_EN / EVA_VOICE_ES (e.g. "melo" or "aura:luna" / "aura:celeste")
+ *   EVA_VOICE_EN / EVA_VOICE_ES (default "thalia" / "celeste")
  */
 
-// Only these websites may use this helper
 const ALLOWED_ORIGINS = [
   "https://studiobase.tech",
   "https://www.studiobase.tech",
   "http://localhost:3000",
 ];
 
-// Everything Eva knows about Studio Base. Keep it in sync with the website.
 const KNOWLEDGE = `
 ABOUT STUDIO BASE
 - Studio Base (legal name Studio Base LLC) is a tech firm. It develops AI-powered products, custom software solutions, and digital infrastructure that help businesses automate, scale, and grow.
@@ -68,58 +64,57 @@ RULES
 const json = (data, status, headers) =>
   new Response(JSON.stringify(data), { status, headers: { ...headers, "Content-Type": "application/json" } });
 
-// light, best-effort protection against abuse (per Cloudflare location)
 const hits = new Map();
 function tooMany(ip) {
   const now = Date.now();
   const list = (hits.get(ip) || []).filter((t) => now - t < 60_000);
   list.push(now);
   hits.set(ip, list);
-  return list.length > 60; // more than 60 requests per minute from one visitor (each answer = text + voice)
+  return list.length > 60;
 }
 
-// ---------- Eva's voice ----------
+// ---------- Eva's voice: Thalia (English) and Celeste (Spanish) ----------
+const VOICES = { en: "thalia", es: "celeste" };
 const b64ToBytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 
-async function speech(env, text, lang, voice) {
-  if (voice.startsWith("aura:")) {
-    const model = lang === "es" ? "@cf/deepgram/aura-2-es" : "@cf/deepgram/aura-2-en";
-    return env.AI.run(model, { text, speaker: voice.slice(5), encoding: "mp3" });
+async function speech(env, text, lang) {
+  const name = (lang === "es" ? env.EVA_VOICE_ES : env.EVA_VOICE_EN) || VOICES[lang];
+  // 1) Deepgram directly (free signup credit)
+  if (env.DEEPGRAM_API_KEY) {
+    const res = await fetch(`https://api.deepgram.com/v1/speak?model=aura-2-${name}-${lang}&encoding=mp3`, {
+      method: "POST",
+      headers: { Authorization: `Token ${env.DEEPGRAM_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (res.ok) return await res.arrayBuffer();
   }
-  return env.AI.run("@cf/myshell-ai/melotts", { prompt: text, lang });
+  // 2) the same voice through Cloudflare Workers AI (small free daily amount)
+  if (env.AI) {
+    const model = lang === "es" ? "@cf/deepgram/aura-2-es" : "@cf/deepgram/aura-2-en";
+    const out = await env.AI.run(model, { text, speaker: name, encoding: "mp3" });
+    if (out && typeof out.audio === "string") return b64ToBytes(out.audio);
+    if (out instanceof ArrayBuffer || out instanceof Uint8Array) return out;
+    if (out instanceof ReadableStream) return await new Response(out).arrayBuffer();
+  }
+  return null;
 }
 
-async function tts(request, env, ctx, body, cors) {
-  if (!env.AI) return json({ error: "Missing Workers AI binding named AI" }, 500, cors);
+async function tts(env, body, cors) {
   const lang = body.lang === "es" ? "es" : "en";
   const text = String(body.tts).replace(/\s+/g, " ").trim().slice(0, 700);
   if (!text) return json({ error: "No text" }, 400, cors);
-  const voice = String(body.voice || (lang === "es" ? env.EVA_VOICE_ES : env.EVA_VOICE_EN) || "melo");
-  const headers = { ...cors, "Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=2592000" };
-
-  // the same sentence is only turned into speech once (saved at Cloudflare for 30 days)
-  const key = new Request(`https://eva-voice.cache/${lang}/${encodeURIComponent(voice)}/${encodeURIComponent(text)}`);
-  const cache = caches.default;
-  const hit = await cache.match(key);
-  if (hit) return new Response(hit.body, { headers });
-
-  let out;
+  let bytes = null;
   try {
-    out = await speech(env, text, lang, voice);
+    bytes = await speech(env, text, lang);
   } catch (e) {
     return json({ error: "Voice failed", detail: String(e).slice(0, 300) }, 502, cors);
   }
-  let bytes;
-  if (out && typeof out.audio === "string") bytes = b64ToBytes(out.audio);
-  else if (out instanceof ArrayBuffer || out instanceof Uint8Array) bytes = out;
-  else if (out instanceof ReadableStream) bytes = await new Response(out).arrayBuffer();
-  else return json({ error: "Voice unreadable" }, 502, cors);
-  if (ctx) ctx.waitUntil(cache.put(key, new Response(bytes, { headers: { "Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=2592000" } })));
-  return new Response(bytes, { headers });
+  if (!bytes) return json({ error: "Voice unavailable" }, 502, cors);
+  return new Response(bytes, { headers: { ...cors, "Content-Type": "audio/mpeg", "Cache-Control": "private, max-age=86400" } });
 }
 
 const worker = {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
     const cors = {
       "Access-Control-Allow-Origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -138,15 +133,13 @@ const worker = {
     } catch {
       return json({ error: "Bad request" }, 400, cors);
     }
-    if (typeof body.tts === "string") return tts(request, env, ctx, body, cors);
+    if (typeof body.tts === "string") return tts(env, body, cors);
     if (!env.GEMINI_API_KEY) return json({ error: "Missing GEMINI_API_KEY" }, 500, cors);
     const lang = body.lang === "es" ? "es" : "en";
     const contents = (Array.isArray(body.messages) ? body.messages : [])
       .slice(-12)
       .filter((m) => m && typeof m.text === "string" && (m.role === "user" || m.role === "model"))
       .map((m) => ({ role: m.role, parts: [{ text: m.text.slice(0, 800) }] }));
-    // Gemini expects turns to start with the visitor and alternate: drop leading
-    // Eva lines and merge back-to-back messages from the same side
     while (contents.length && contents[0].role !== "user") contents.shift();
     for (let i = contents.length - 1; i > 0; i--) {
       if (contents[i].role === contents[i - 1].role) {
@@ -156,7 +149,6 @@ const worker = {
     }
     if (!contents.length || contents[contents.length - 1].role !== "user") return json({ error: "No question" }, 400, cors);
 
-    // try the preferred model first, then backups if Google says it's busy or unavailable
     const models = [...new Set([env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"].filter(Boolean))];
     const payload = JSON.stringify({
       systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
@@ -190,7 +182,6 @@ const worker = {
         why = ((await res.json()).error || {}).message || "";
       } catch {}
       tried.push(`${model}: ${res.status} ${why}`.slice(0, 200));
-      // 400/401/403 mean a problem with the key or request; another model won't help
       if (res.status === 400 || res.status === 401 || res.status === 403) break;
     }
     if (!res || !res.ok) return json({ error: "AI unavailable", tried }, 502, cors);
