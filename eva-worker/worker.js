@@ -99,6 +99,23 @@ async function speech(env, text, lang) {
   return null;
 }
 
+/** voice as a stream (GET), so Eva starts talking while the audio is still arriving */
+async function ttsStream(env, text, lang, cors) {
+  const headers = { ...cors, "Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=604800" };
+  const name = (lang === "es" ? env.EVA_VOICE_ES : env.EVA_VOICE_EN) || VOICES[lang];
+  if (env.DEEPGRAM_API_KEY) {
+    const res = await fetch(`https://api.deepgram.com/v1/speak?model=aura-2-${name}-${lang}&encoding=mp3`, {
+      method: "POST",
+      headers: { Authorization: `Token ${env.DEEPGRAM_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (res.ok && res.body) return new Response(res.body, { headers });
+  }
+  const bytes = await speech({ ...env, DEEPGRAM_API_KEY: "" }, text, lang).catch(() => null);
+  if (!bytes) return json({ error: "Voice unavailable" }, 502, cors);
+  return new Response(bytes, { headers });
+}
+
 async function tts(env, body, cors) {
   const lang = body.lang === "es" ? "es" : "en";
   const text = String(body.tts).replace(/\s+/g, " ").trim().slice(0, 700);
@@ -123,6 +140,16 @@ const worker = {
       Vary: "Origin",
     };
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+    if (request.method === "GET") {
+      const url = new URL(request.url);
+      const text = (url.searchParams.get("tts") || "").replace(/\s+/g, " ").trim().slice(0, 700);
+      if (!text) return json({ ok: true }, 200, cors);
+      const referer = request.headers.get("Referer") || "";
+      const fromSite = ALLOWED_ORIGINS.includes(origin) || ALLOWED_ORIGINS.some((o) => referer.startsWith(o + "/"));
+      if (!fromSite) return json({ error: "Not allowed" }, 403, cors);
+      if (tooMany(request.headers.get("CF-Connecting-IP") || "unknown")) return json({ error: "Too many requests" }, 429, cors);
+      return ttsStream(env, text, url.searchParams.get("lang") === "es" ? "es" : "en", cors);
+    }
     if (request.method !== "POST") return json({ error: "Use POST" }, 405, cors);
     if (!ALLOWED_ORIGINS.includes(origin)) return json({ error: "Not allowed" }, 403, cors);
     if (tooMany(request.headers.get("CF-Connecting-IP") || "unknown")) return json({ error: "Too many requests" }, 429, cors);
@@ -149,8 +176,9 @@ const worker = {
     }
     if (!contents.length || contents[contents.length - 1].role !== "user") return json({ error: "No question" }, 400, cors);
 
-    const models = [...new Set([env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"].filter(Boolean))];
-    const payload = JSON.stringify({
+    // fastest models first (a receptionist answer is short); each one gets a few seconds, then the next is tried
+    const models = [...new Set([env.GEMINI_MODEL, "gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-2.5-flash"].filter(Boolean))];
+    const request_ = {
       systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
       contents,
       generationConfig: {
@@ -166,23 +194,46 @@ const worker = {
           },
           required: ["reply", "offerBooking", "wantsToBook"],
         },
+        thinkingConfig: { thinkingBudget: 0 }, // no "thinking" step: much faster
       },
-    });
+    };
+    const callModel = async (model, body) => {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 4500);
+      try {
+        return await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
+          body: JSON.stringify(body),
+          signal: ctrl.signal,
+        });
+      } catch {
+        return null; // too slow: try the next model
+      } finally {
+        clearTimeout(timer);
+      }
+    };
     let res = null;
     const tried = [];
     for (const model of models) {
-      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
-        body: payload,
-      });
-      if (res.ok) break;
-      let why = "";
-      try {
-        why = ((await res.json()).error || {}).message || "";
-      } catch {}
-      tried.push(`${model}: ${res.status} ${why}`.slice(0, 200));
-      if (res.status === 400 || res.status === 401 || res.status === 403) break;
+      res = await callModel(model, request_);
+      // a model that doesn't accept the "no thinking" setting: ask again without it
+      if (res && res.status === 400) {
+        const plain = { ...request_, generationConfig: { ...request_.generationConfig } };
+        delete plain.generationConfig.thinkingConfig;
+        res = await callModel(model, plain);
+      }
+      if (res && res.ok) break;
+      let why = "timeout";
+      if (res) {
+        try {
+          why = res.status + " " + (((await res.json()).error || {}).message || "");
+        } catch {
+          why = String(res.status);
+        }
+      }
+      tried.push(`${model}: ${why}`.slice(0, 200));
+      if (res && (res.status === 401 || res.status === 403)) break;
     }
     if (!res || !res.ok) return json({ error: "AI unavailable", tried }, 502, cors);
     const data = await res.json();

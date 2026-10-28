@@ -221,7 +221,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       interimText = inter;
       setInterim(`${fin} ${inter}`.trim());
       if (silence) clearTimeout(silence);
-      silence = setTimeout(finish, longTurn.current ? 2600 : inter ? 1800 : 1200);
+      silence = setTimeout(finish, longTurn.current ? 2600 : inter ? 1500 : 1000);
     };
     r.onerror = (e) => {
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
@@ -259,48 +259,27 @@ export function EvaProvider({ children }: { children: ReactNode }) {
   }, [startListening]);
 
   /* ---------- speaking: one voice for everything (Thalia in English, Celeste in Spanish) ---------- */
-  const voiceCache = useRef(new Map<string, Promise<string | null>>());
-  /** Eva's voice for a sentence, made by her AI helper (cached, so a line is only fetched once per visit) */
-  const fetchVoice = useCallback((text: string, lang: "en" | "es") => {
-    const key = `${lang}|${text}`;
-    let p = voiceCache.current.get(key);
-    if (!p) {
-      p = (async () => {
-        if (!EVA_AI_ENDPOINT) return null;
-        const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), 10000);
-        try {
-          const res = await fetch(EVA_AI_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ tts: text, lang }),
-            signal: ctrl.signal,
-          });
-          if (!res.ok || !(res.headers.get("content-type") || "").includes("audio")) return null;
-          return URL.createObjectURL(await res.blob());
-        } catch {
-          return null;
-        } finally {
-          clearTimeout(timer);
-        }
-      })();
-      voiceCache.current.set(key, p);
-      p.then((u) => {
-        if (!u) voiceCache.current.delete(key);
-      });
-    }
-    return p;
+  /** address of Eva's voice for a sentence (streamed by her AI helper, so playback starts right away) */
+  const voiceUrl = useCallback((text: string, lang: "en" | "es") => {
+    const u = new URL(EVA_AI_ENDPOINT);
+    u.searchParams.set("lang", lang);
+    u.searchParams.set("tts", text);
+    return u.toString();
   }, []);
+  /** warm up the browser cache for a line Eva is about to say */
+  const prefetchVoice = useCallback(
+    (text: string, lang: "en" | "es") => {
+      if (EVA_AI_ENDPOINT) void fetch(voiceUrl(text, lang), { mode: "cors" }).catch(() => {});
+    },
+    [voiceUrl],
+  );
 
   const speakSeq = useRef(0);
   const sayText = useCallback(
-    async (text: string, after?: () => void, onShown?: () => void) => {
+    (text: string, after?: () => void, onShown?: () => void) => {
       const seq = ++speakSeq.current;
       stopListening();
-      setStatus("thinking");
-      const url = await fetchVoice(text, langRef.current);
-      // the call ended, or the visitor spoke again while the voice was loading
-      if (!inCallRef.current || seq !== speakSeq.current) return;
+      if (!inCallRef.current) return;
       const mid = push("eva", text);
       onShown?.();
       const a = audio.current;
@@ -315,20 +294,25 @@ export function EvaProvider({ children }: { children: ReactNode }) {
           focusInput();
         } else startListening();
       };
-      // voice not available right now: show the words only (never a different voice)
-      if (!a || !url) return done();
+      // voice not available: show the words only (never a different voice)
+      if (!a || !EVA_AI_ENDPOINT) return done();
+      setStatus("thinking");
       setCaption({ id: mid, shown: 0 });
-      setStatus("speaking");
+      // a streamed voice has no known length yet: estimate it from the words
+      const estimate = Math.max(1.5, text.split(" ").length * 0.36);
+      a.onplaying = () => {
+        if (seq === speakSeq.current) setStatus("speaking");
+      };
       a.onended = done;
       a.onerror = done;
       a.ontimeupdate = () => {
-        if (a.duration) setCaption({ id: mid, shown: Math.min(1, a.currentTime / (a.duration * 0.92)) });
+        const d = Number.isFinite(a.duration) && a.duration > 0 ? a.duration : estimate;
+        setCaption({ id: mid, shown: Math.min(1, a.currentTime / (d * 0.92)) });
       };
-      a.src = url;
-      a.currentTime = 0;
+      a.src = voiceUrl(text, langRef.current);
       a.play().catch(done);
     },
-    [push, fetchVoice, startListening, stopListening, focusInput],
+    [push, voiceUrl, startListening, stopListening, focusInput],
   );
   const speak = useCallback(
     (id: LineId, after?: () => void, onShown?: () => void) => void sayText(LINES[id][langRef.current], after, onShown),
@@ -340,7 +324,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
   const askAI = useCallback(async () => {
     if (!EVA_AI_ENDPOINT) return null;
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 9000);
+    const timer = setTimeout(() => ctrl.abort(), 12000);
     try {
       const res = await fetch(EVA_AI_ENDPOINT, {
         method: "POST",
@@ -547,7 +531,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
                 : "You'll find all our articles on our blog. I've put the link here in the chat.",
             showArticle,
           );
-        }, 350);
+        }, 120);
         return;
       }
 
@@ -575,7 +559,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         else {
           speak(r.line, undefined, showArticle);
         }
-      }, 350);
+      }, 120);
     },
     [push, pushLink, speak, speakText, askAI, stopListening, submitLead, endCall, handleForm],
   );
@@ -596,6 +580,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     if (!audio.current) {
       const a = new Audio();
       a.preload = "auto";
+      a.crossOrigin = "anonymous"; // the voice comes from the AI helper; needed for the orb to react to it
       audio.current = a;
       try {
         const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -627,11 +612,11 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     inCallRef.current = true;
     setInCall(true);
     setStatus("connecting");
-    void fetchVoice(LINES.greet[lang], lang);
+    prefetchVoice(LINES.greet[lang], lang);
     setTimeout(() => {
       if (inCallRef.current) speak("greet");
     }, 900);
-  }, [lang, speak, ensureAudio, fetchVoice]);
+  }, [lang, speak, ensureAudio, prefetchVoice]);
 
   /** Eva helps fill out the contact form: asks each field by voice and types the answers in */
   const startFormFill = useCallback(
@@ -654,12 +639,12 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       inCallRef.current = true;
       setInCall(true);
       setStatus("connecting");
-      void fetchVoice(LINES.formIntro[lang], lang);
+      prefetchVoice(LINES.formIntro[lang], lang);
       setTimeout(() => {
         if (inCallRef.current) speak("formIntro");
       }, 600);
     },
-    [lang, endCall, ensureAudio, speak, fetchVoice],
+    [lang, endCall, ensureAudio, speak, prefetchVoice],
   );
 
   const toggleMic = useCallback(() => {
