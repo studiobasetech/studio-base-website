@@ -45,11 +45,27 @@ export const EVA_AI_ENDPOINT: string = "https://eva-ai.your-name.workers.dev";
 
 Commit and push. Test it: start a call with Eva and ask something her script
 doesn't cover (e.g. "Can you build an app for my gym with class bookings?").
-She answers with AI, read aloud with the browser's voice.
+She answers with AI, in her own voice.
 
-**How it works:** common questions still use Eva's recorded voice; only
-questions outside her script go to the AI. If the AI is ever unavailable, she
-falls back to her scripted answer, so she never breaks.
+**How it works:** while chatting, every question goes to the AI. Booking steps
+and goodbye use her scripted lines. If the AI is ever unavailable, she falls
+back to her scripted answer, so she never breaks.
+
+### c) Eva's voice (Thalia in English, Celeste in Spanish)
+
+Every line Eva says (scripted or AI) is turned into speech by the same Worker,
+so her voice never changes during a call.
+
+1. Create a free account at console.deepgram.com (free signup credit, no card).
+2. Create an API key and add it in Cloudflare: eva-ai → Settings → Variables
+   and Secrets → Secret named `DEEPGRAM_API_KEY`.
+3. Backup: eva-ai → Settings → Bindings → Workers AI, variable name `AI`
+   (same voices, small free daily amount, used only if Deepgram fails).
+
+To change a voice, add a Text variable `EVA_VOICE_EN` or `EVA_VOICE_ES` with a
+Deepgram Aura-2 voice name (e.g. `luna`, `estrella`). If no voice is available
+at all, Eva shows her words in the chat instead of switching to another voice.
+Check your remaining Deepgram credit now and then in console.deepgram.com.
 
 **Costs and limits:** Gemini's free tier has daily limits that easily cover a
 small business site. On free tiers Google may use the requests to improve its

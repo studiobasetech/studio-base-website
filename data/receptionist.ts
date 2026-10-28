@@ -1,9 +1,9 @@
 /**
  * "Eva", the AI receptionist demo on the website (home page section + floating button on every page).
  *
- * Everything Eva can say lives in LINES. Each line has a matching voice clip
- * in public/audio/eva/<en|es>/<id>.mp3 (generated from this text). If you
- * edit a line, the clip must be regenerated so the voice still matches.
+ * Everything Eva can say lives in LINES. Her voice (Thalia in English, Celeste
+ * in Spanish) is made live by her AI helper (eva-worker), so you can edit a
+ * line freely and she will say the new words in the same voice.
  *
  * The conversation logic (what Eva answers to what) is in reply() below.
  * It understands English and Spanish (with typos and chat shorthand), scores

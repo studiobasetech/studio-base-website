@@ -294,7 +294,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
 
   const speakSeq = useRef(0);
   const sayText = useCallback(
-    async (text: string, after?: () => void) => {
+    async (text: string, after?: () => void, onShown?: () => void) => {
       const seq = ++speakSeq.current;
       stopListening();
       setStatus("thinking");
@@ -302,6 +302,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       // the call ended, or the visitor spoke again while the voice was loading
       if (!inCallRef.current || seq !== speakSeq.current) return;
       const mid = push("eva", text);
+      onShown?.();
       const a = audio.current;
       const done = () => {
         if (seq !== speakSeq.current) return;
@@ -329,8 +330,11 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     },
     [push, fetchVoice, startListening, stopListening, focusInput],
   );
-  const speak = useCallback((id: LineId, after?: () => void) => void sayText(LINES[id][langRef.current], after), [sayText]);
-  const speakText = useCallback((text: string) => void sayText(text), [sayText]);
+  const speak = useCallback(
+    (id: LineId, after?: () => void, onShown?: () => void) => void sayText(LINES[id][langRef.current], after, onShown),
+    [sayText],
+  );
+  const speakText = useCallback((text: string, onShown?: () => void) => void sayText(text, undefined, onShown), [sayText]);
 
   /** Ask Eva's AI helper (Cloudflare Worker → Gemini). Resolves null if it isn't set up or fails. */
   const askAI = useCallback(async () => {
@@ -541,8 +545,8 @@ export function EvaProvider({ children }: { children: ReactNode }) {
               : es
                 ? "Encontrarás todos nuestros artículos en el blog. Te dejé el enlace aquí en el chat."
                 : "You'll find all our articles on our blog. I've put the link here in the chat.",
+            showArticle,
           );
-          showArticle();
         }, 350);
         return;
       }
@@ -560,8 +564,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         if (ai) {
           conv.current = { ...conv.current, offered: ai.offerBooking };
           track("eva_ai_answer");
-          speakText(ai.reply);
-          showArticle();
+          speakText(ai.reply, showArticle);
           return;
         }
       }
@@ -570,8 +573,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
         if (!inCallRef.current) return;
         if (r.end) speak(r.line, endCall);
         else {
-          speak(r.line);
-          showArticle();
+          speak(r.line, undefined, showArticle);
         }
       }, 350);
     },
