@@ -5,9 +5,14 @@
  * Studio Base's knowledge, asks Google Gemini for an answer, and sends the
  * answer back. The Gemini key stays secret inside Cloudflare.
  *
- * Setup: see docs/EVA-AI-SETUP.md in the website repository.
+ * It also gives Eva her voice: every line she says is turned into speech
+ * with Cloudflare Workers AI (free daily allowance), so she always sounds the same.
+ *
+ * Setup: see docs/FREE-SERVICES-SETUP.md in the website repository.
  * Needs one secret in Cloudflare: GEMINI_API_KEY
- * Optional variable: GEMINI_MODEL (default "gemini-flash-latest")
+ * Needs one binding: Workers AI, named AI
+ * Optional variables: GEMINI_MODEL (default "gemini-flash-latest"),
+ *   EVA_VOICE_EN / EVA_VOICE_ES (e.g. "melo" or "aura:luna" / "aura:celeste")
  */
 
 // Only these websites may use this helper
@@ -70,11 +75,51 @@ function tooMany(ip) {
   const list = (hits.get(ip) || []).filter((t) => now - t < 60_000);
   list.push(now);
   hits.set(ip, list);
-  return list.length > 20; // more than 20 questions per minute from one visitor
+  return list.length > 60; // more than 60 requests per minute from one visitor (each answer = text + voice)
+}
+
+// ---------- Eva's voice ----------
+const b64ToBytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+
+async function speech(env, text, lang, voice) {
+  if (voice.startsWith("aura:")) {
+    const model = lang === "es" ? "@cf/deepgram/aura-2-es" : "@cf/deepgram/aura-2-en";
+    return env.AI.run(model, { text, speaker: voice.slice(5), encoding: "mp3" });
+  }
+  return env.AI.run("@cf/myshell-ai/melotts", { prompt: text, lang });
+}
+
+async function tts(request, env, ctx, body, cors) {
+  if (!env.AI) return json({ error: "Missing Workers AI binding named AI" }, 500, cors);
+  const lang = body.lang === "es" ? "es" : "en";
+  const text = String(body.tts).replace(/\s+/g, " ").trim().slice(0, 700);
+  if (!text) return json({ error: "No text" }, 400, cors);
+  const voice = String(body.voice || (lang === "es" ? env.EVA_VOICE_ES : env.EVA_VOICE_EN) || "melo");
+  const headers = { ...cors, "Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=2592000" };
+
+  // the same sentence is only turned into speech once (saved at Cloudflare for 30 days)
+  const key = new Request(`https://eva-voice.cache/${lang}/${encodeURIComponent(voice)}/${encodeURIComponent(text)}`);
+  const cache = caches.default;
+  const hit = await cache.match(key);
+  if (hit) return new Response(hit.body, { headers });
+
+  let out;
+  try {
+    out = await speech(env, text, lang, voice);
+  } catch (e) {
+    return json({ error: "Voice failed", detail: String(e).slice(0, 300) }, 502, cors);
+  }
+  let bytes;
+  if (out && typeof out.audio === "string") bytes = b64ToBytes(out.audio);
+  else if (out instanceof ArrayBuffer || out instanceof Uint8Array) bytes = out;
+  else if (out instanceof ReadableStream) bytes = await new Response(out).arrayBuffer();
+  else return json({ error: "Voice unreadable" }, 502, cors);
+  if (ctx) ctx.waitUntil(cache.put(key, new Response(bytes, { headers: { "Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=2592000" } })));
+  return new Response(bytes, { headers });
 }
 
 const worker = {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get("Origin") || "";
     const cors = {
       "Access-Control-Allow-Origin": ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -85,7 +130,6 @@ const worker = {
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (request.method !== "POST") return json({ error: "Use POST" }, 405, cors);
     if (!ALLOWED_ORIGINS.includes(origin)) return json({ error: "Not allowed" }, 403, cors);
-    if (!env.GEMINI_API_KEY) return json({ error: "Missing GEMINI_API_KEY" }, 500, cors);
     if (tooMany(request.headers.get("CF-Connecting-IP") || "unknown")) return json({ error: "Too many requests" }, 429, cors);
 
     let body;
@@ -94,6 +138,8 @@ const worker = {
     } catch {
       return json({ error: "Bad request" }, 400, cors);
     }
+    if (typeof body.tts === "string") return tts(request, env, ctx, body, cors);
+    if (!env.GEMINI_API_KEY) return json({ error: "Missing GEMINI_API_KEY" }, 500, cors);
     const lang = body.lang === "es" ? "es" : "en";
     const contents = (Array.isArray(body.messages) ? body.messages : [])
       .slice(-12)

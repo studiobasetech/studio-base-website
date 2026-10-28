@@ -176,7 +176,8 @@ export function findArticle(said: string, lang: Lang, skip: Set<string> = new Se
       bestScore = score;
     }
   }
-  if (!best || bestScore < 2) return null;
+  // asking for articles on a topic: one general keyword is enough
+  if (!best || bestScore < (asksForArticles(said) ? 1 : 2)) return null;
   return { slug: best.slug, link: { href: `/blog/${best.slug}/`, title: best.title[lang] } as ArticleLink };
 }
 
