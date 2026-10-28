@@ -29,7 +29,7 @@ import {
 /*  shared by the home page section and the floating button, and it    */
 /*  keeps going while the visitor moves between pages.                 */
 /*  Wording + logic: data/receptionist.ts                              */
-/*  Voice clips: public/audio/eva/<en|es>/<line>.mp3                   */
+/*  Voice: made by the AI helper (eva-worker): Thalia EN, Celeste ES   */
 /* ------------------------------------------------------------------ */
 
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${contact.email}`;
@@ -370,7 +370,7 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       audio.current.onended = null;
       audio.current.pause();
     }
-    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    speakSeq.current++;
     setCaption(null);
     setStatus("idle");
     level.current = 0;
