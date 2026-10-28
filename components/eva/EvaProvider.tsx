@@ -70,6 +70,19 @@ export type FormFillHooks = {
 type FormStep = "name" | "email" | "company" | "types" | "message" | "confirm";
 const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+/** split what Eva says into sentences, so she can start talking after the first one is ready */
+function splitSentences(text: string): string[] {
+  const raw = text.split(/(?<=[.!?…])\s+/).filter((p) => p.trim());
+  const out: string[] = [];
+  for (const p of raw) {
+    // very short bits ("Hi!", "Sure.") go together with the next sentence
+    if (out.length && out[out.length - 1].split(" ").length < 4) out[out.length - 1] += " " + p;
+    else out.push(p);
+  }
+  return out.length ? out : [text];
+}
+const wordCount = (t: string) => t.split(/\s+/).filter(Boolean).length;
+
 type EvaApi = {
   status: EvaStatus;
   inCall: boolean;
@@ -266,10 +279,23 @@ export function EvaProvider({ children }: { children: ReactNode }) {
     u.searchParams.set("tts", text);
     return u.toString();
   }, []);
+  /** Eva's voice for each sentence, downloaded in parallel (cached by the browser for repeats) */
+  const loadVoice = useCallback(
+    (text: string, lang: "en" | "es") =>
+      splitSentences(text).map((part) => ({
+        part,
+        url: fetch(voiceUrl(part, lang), { mode: "cors" })
+          .then((r) => (r.ok && (r.headers.get("content-type") || "").includes("audio") ? r.blob() : null))
+          .then((b) => (b ? URL.createObjectURL(b) : null))
+          .catch(() => null),
+      })),
+    [voiceUrl],
+  );
   /** warm up the browser cache for a line Eva is about to say */
   const prefetchVoice = useCallback(
     (text: string, lang: "en" | "es") => {
-      if (EVA_AI_ENDPOINT) void fetch(voiceUrl(text, lang), { mode: "cors" }).catch(() => {});
+      if (!EVA_AI_ENDPOINT) return;
+      for (const part of splitSentences(text)) void fetch(voiceUrl(part, lang), { mode: "cors" }).catch(() => {});
     },
     [voiceUrl],
   );
@@ -298,21 +324,41 @@ export function EvaProvider({ children }: { children: ReactNode }) {
       if (!a || !EVA_AI_ENDPOINT) return done();
       setStatus("thinking");
       setCaption({ id: mid, shown: 0 });
-      // a streamed voice has no known length yet: estimate it from the words
-      const estimate = Math.max(1.5, text.split(" ").length * 0.36);
-      a.onplaying = () => {
-        if (seq === speakSeq.current) setStatus("speaking");
+      // sentence by sentence: she starts as soon as the first one is ready, the rest load meanwhile
+      const parts = loadVoice(text, langRef.current);
+      const total = Math.max(1, wordCount(text));
+      let wordsBefore = 0;
+      const playPart = async (i: number): Promise<void> => {
+        if (seq !== speakSeq.current || !inCallRef.current) return;
+        if (i >= parts.length) return done();
+        const url = await parts[i].url;
+        if (seq !== speakSeq.current) return;
+        const words = wordCount(parts[i].part);
+        let moved = false;
+        const next = () => {
+          if (moved) return;
+          moved = true;
+          wordsBefore += words;
+          if (url) URL.revokeObjectURL(url);
+          void playPart(i + 1);
+        };
+        if (!url) return next(); // this sentence has no voice: its words are already on screen
+        a.onplaying = () => {
+          if (seq === speakSeq.current) setStatus("speaking");
+        };
+        a.ontimeupdate = () => {
+          const d = Number.isFinite(a.duration) && a.duration > 0 ? a.duration : words * 0.36;
+          setCaption({ id: mid, shown: Math.min(1, (wordsBefore + words * Math.min(1, a.currentTime / (d * 0.92))) / total) });
+        };
+        a.onended = next;
+        a.onerror = next;
+        a.src = url;
+        a.currentTime = 0;
+        a.play().catch(next);
       };
-      a.onended = done;
-      a.onerror = done;
-      a.ontimeupdate = () => {
-        const d = Number.isFinite(a.duration) && a.duration > 0 ? a.duration : estimate;
-        setCaption({ id: mid, shown: Math.min(1, a.currentTime / (d * 0.92)) });
-      };
-      a.src = voiceUrl(text, langRef.current);
-      a.play().catch(done);
+      void playPart(0);
     },
-    [push, voiceUrl, startListening, stopListening, focusInput],
+    [push, loadVoice, startListening, stopListening, focusInput],
   );
   const speak = useCallback(
     (id: LineId, after?: () => void, onShown?: () => void) => void sayText(LINES[id][langRef.current], after, onShown),
