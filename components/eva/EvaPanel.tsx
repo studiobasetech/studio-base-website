@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Mic, MicOff, Phone, PhoneOff, Send, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, Mic, MicOff, Phone, PhoneOff, Send, X } from "lucide-react";
+import LangLink from "@/components/LangLink";
 import { useLang } from "@/lib/i18n";
 import { CHIPS } from "@/data/receptionist";
 import { useEva, type EvaStatus } from "./EvaProvider";
@@ -203,6 +204,24 @@ export default function EvaPanel({ compact = false, onClose }: { compact?: boole
           </p>
         )}
         {msgs.map((m) => {
+          if (m.link)
+            return (
+              <div key={m.id} className="flex justify-start">
+                <LangLink
+                  href={m.link.href}
+                  className="group flex max-w-[85%] items-center gap-3 rounded-2xl rounded-bl-md border border-blue-500/30 bg-blue-500/[0.08] px-4 py-3 text-left transition hover:border-blue-400/60 hover:bg-blue-500/[0.14]"
+                >
+                  <BookOpen size={18} className="shrink-0 text-blue-400" />
+                  <span className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-[0.2em] text-blue-300">
+                      {tr("Recommended reading", "Lectura recomendada")}
+                    </span>
+                    <span className="mt-0.5 block text-sm leading-snug text-white">{m.link.title}</span>
+                  </span>
+                  <ArrowUpRight size={16} className="shrink-0 text-blue-300 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </LangLink>
+              </div>
+            );
           const isCap = caption && caption.id === m.id;
           const words = m.text.split(" ");
           const shownText = isCap ? words.slice(0, Math.max(1, Math.ceil(words.length * caption.shown))).join(" ") : m.text;
